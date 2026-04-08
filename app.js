@@ -152,5 +152,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Initialize Map
-    initMap();
+    initMap().then(() => {
+        // 레이아웃 렌더링 후 지도가 깨지는 현상 방지용 (Leaflet 필수 팁)
+        setTimeout(() => {
+            const mapEl = document.querySelector('.leaflet-container');
+            if (mapEl && mapEl._leaflet_id) {
+                // Leaflet 인스턴스에 접근하여 크기 재조정
+                window.dispatchEvent(new Event('resize'));
+            }
+        }, 500);
+    });
 });

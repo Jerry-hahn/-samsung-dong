@@ -490,10 +490,13 @@ button {
     background: var(--bg-card);
     border: 1px solid var(--glass-border);
     border-radius: 24px;
-    padding: 2rem;
-    margin-top: 3rem;
+    padding: 1.2rem;
+    margin: 3rem auto 0;
     box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-    overflow-x: auto;
+    width: 100%;
+    max-width: 1100px; /* 지도가 너무 퍼지지 않게 적절히 제한 */
+    overflow: hidden;
+    position: relative;
 }
 .market-dashboard table {
     width: 100%;
@@ -762,13 +765,14 @@ body.modal-open {
 
 /* Interactive Map Styling */
 .interactive-map {
-    width: 100%;
+    width: 100% !important;
     height: 600px;
-    border-radius: 24px;
+    border-radius: 20px;
     border: 1px solid var(--glass-border);
     background: #0d0d0d;
     overflow: hidden;
-    z-index: 1;
+    z-index: 10;
+    display: block;
 }
 
 /* Customizing Leaflet for Dark UI */
