@@ -10,6 +10,8 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Leaflet Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
@@ -161,69 +163,7 @@
             </div>
             
             <div class="market-dashboard" data-aos="fade-up" data-aos-delay="200">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>단지명</th>
-                            <th>주요 평형</th>
-                            <th>최근 실거래가</th>
-                            <th>변동 추이</th>
-                            <th>업데이트 시간</th>
-                        </tr>
-                    </thead>
-                    <tbody id="live-data-body">
-                        <!-- Data will be dynamically loaded or mocked here -->
-                        <tr>
-                            <td><div class="complex-name"><i class="ph-fill ph-building"></i> 푸른솔진흥</div></td>
-                            <td>31평형</td>
-                            <td><strong>21억 5,000만</strong></td>
-                            <td><span class="data-up"><i class="ph ph-trend-up"></i> 상위 돌파</span></td>
-                            <td class="text-dim">오늘 10:30 AM</td>
-                        </tr>
-                        <tr>
-                            <td><div class="complex-name"><i class="ph-fill ph-building"></i> 한솔</div></td>
-                            <td>32평형</td>
-                            <td><strong>22억 1,000만</strong></td>
-                            <td><span class="data-up"><i class="ph ph-trend-up"></i> 강보합 흐름</span></td>
-                            <td class="text-dim">오늘 09:15 AM</td>
-                        </tr>
-                        <tr>
-                            <td><div class="complex-name"><i class="ph-fill ph-building"></i> 석탑</div></td>
-                            <td>28평형</td>
-                            <td><strong>19억 8,000만</strong></td>
-                            <td><span class="data-up"><i class="ph ph-trend-up"></i> 매물 부족</span></td>
-                            <td class="text-dim">오늘 11:00 AM</td>
-                        </tr>
-                        <tr>
-                            <td><div class="complex-name"><i class="ph-fill ph-building"></i> 현대</div></td>
-                            <td>33평형</td>
-                            <td><strong>23억 0,000만</strong></td>
-                            <td><span class="data-up"><i class="ph ph-trend-up"></i> 신고가 경신</span></td>
-                            <td class="text-dim">어제 16:40 PM</td>
-                        </tr>
-                        <tr>
-                            <td><div class="complex-name"><i class="ph-fill ph-building"></i> CLK</div></td>
-                            <td>25평형</td>
-                            <td><strong>16억 5,000만</strong></td>
-                            <td><span class="data-up"><i class="ph ph-trend-up"></i> 문의 급증</span></td>
-                            <td class="text-dim">오늘 08:50 AM</td>
-                        </tr>
-                        <tr>
-                            <td><div class="complex-name"><i class="ph-fill ph-building"></i> 월드타워</div></td>
-                            <td>24평형</td>
-                            <td><strong>15억 8,000만</strong></td>
-                            <td><span class="data-up"><i class="ph ph-trend-up"></i> 거래 활발</span></td>
-                            <td class="text-dim">오늘 13:20 PM</td>
-                        </tr>
-                        <tr>
-                            <td><div class="complex-name"><i class="ph-fill ph-building"></i> 우정에쉐르</div></td>
-                            <td>22평형</td>
-                            <td><strong>14억 9,000만</strong></td>
-                            <td><span class="data-up"><i class="ph ph-trend-up"></i> 가성비 주목</span></td>
-                            <td class="text-dim">오늘 14:05 PM</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div id="map" class="interactive-map"></div>
             </div>
         </div>
     </section>
@@ -384,6 +324,7 @@
     </div>
 
     <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="app.js"></script>
 </body>

@@ -56,8 +56,19 @@ exports.handler = async function(event, context) {
                     const dealMonth = extract('dealMonth');
                     const dealDay = extract('dealDay');
                     
+                    // 정밀 필터링: 7개 단지 이름과 정확히 매칭되거나 핵심 키워드 포함 확인
+                    // '현대'의 경우 삼성동 내 다른 현대아파트와 섞이지 않도록 정교하게 처리
                     targetApts.forEach(target => {
-                        if (aptNm.includes(target)) {
+                        let isMatch = false;
+                        if (target === '현대') {
+                            // 삼성동 16-2번지 현대아파트는 보통 '현대'로 찍힘. 
+                            // 다른 '아이파크'나 '현대힐스테이트' 등과 구분 필요
+                            if (aptNm === '현대' || aptNm === '삼성현대') isMatch = true;
+                        } else if (aptNm.includes(target)) {
+                            isMatch = true;
+                        }
+
+                        if (isMatch) {
                             const pyNum = Math.round(parseFloat(area) * 0.3025);
                             const key = `${target}_${pyNum}`; 
                             const dateVal = parseInt(`${dealYear}${dealMonth.padStart(2,'0')}${dealDay.padStart(2,'0')}`);

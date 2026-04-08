@@ -65,66 +65,92 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Real-Time API Linkage
-    async function updateMarketData() {
-        const tableBody = document.getElementById('live-data-body');
-        if (!tableBody) return;
+    // 7개 단지 정확한 위치 (위도, 경도) 및 메타데이터
+    const complexes = [
+        { id: '한솔', name: '한솔', lat: 37.5196, lng: 127.0431 },
+        { id: '푸른솔진흥', name: '푸른솔진흥', lat: 37.5208, lng: 127.0438 },
+        { id: '석탑', name: '석탑', lat: 37.5192, lng: 127.0439 },
+        { id: '현대', name: '현대', lat: 37.5186, lng: 127.0452 },
+        { id: 'CLK', name: 'CLK', lat: 37.5181, lng: 127.0446 },
+        { id: '월드타워', name: '월드타워', lat: 37.5201, lng: 127.0458 },
+        { id: '우정에쉐르', name: '우정에쉐르', lat: 37.5192, lng: 127.0454 }
+    ];
 
-        // Show loading state
-        const backupHtml = tableBody.innerHTML;
-        tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:3rem;"><i class="ph ph-spinner ph-spin" style="font-size:2rem; color:var(--primary);"></i><br>국토부 공공데이터 API 실시간 연동 중...</td></tr>`;
+    // Real-Time API Map Linkage
+    async function initMap() {
+        const mapContainer = document.getElementById('map');
+        if (!mapContainer) return;
+
+        // 지도 초기화 (삼성동 통합부지 중심)
+        const map = L.map('map', {
+            center: [37.5195, 127.0445],
+            zoom: 17,
+            zoomControl: false
+        });
+
+        // 다크 테마 지도 타일 (CartoDB Dark Matter)
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
+
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
 
         try {
             const response = await fetch('/.netlify/functions/getAptPrices');
             if (!response.ok) throw new Error('API fetch failed');
             
-            // 백엔드에서 미리 파싱되고 정제된 JSON 데이터를 바로 받음
             const aptDataMap = await response.json();
-            const targetApts = ['푸른솔진흥', '한솔', '석탑', '현대', 'CLK', '월드타워', '우정에쉐르'];
-            let htmlContent = '';
             
-            // 찾은 평형들을 고유 단지 순서 & 평형 크기 순서로 정렬
-            const foundKeys = Object.keys(aptDataMap).sort((a,b) => {
-                const aptA = aptDataMap[a].apt;
-                const aptB = aptDataMap[b].apt;
-                if (aptA !== aptB) {
-                    return targetApts.indexOf(aptA) - targetApts.indexOf(aptB);
-                }
-                return aptDataMap[a].pyNum - aptDataMap[b].pyNum; // 같은 아파트면 평수 작은 것부터
-            });
+            // 각 단지별로 마커 생성
+            complexes.forEach(comp => {
+                // 해당 단지의 모든 평형 데이터 추출
+                const pyEntries = Object.keys(aptDataMap)
+                    .filter(key => key.startsWith(comp.id))
+                    .map(key => aptDataMap[key])
+                    .sort((a, b) => a.pyNum - b.pyNum);
 
-            // 매물이 있는 단지들 출력
-            foundKeys.forEach(key => {
-                const info = aptDataMap[key];
-                htmlContent += `
-                <tr>
-                    <td><div class="complex-name"><i class="ph-fill ph-building"></i> ${info.apt}</div></td>
-                    <td>${info.py}</td>
-                    <td><strong>${info.price}</strong></td>
-                    <td><span class="data-up text-gold"><i class="ph ph-check-circle"></i> ${info.dateStr} 실거래</span></td>
-                    <td class="text-dim">최근 5년 최고</td>
-                </tr>`;
-            });
+                let popupContent = `<h4><i class="ph ph-buildings"></i> ${comp.name}</h4>`;
+                
+                if (pyEntries.length > 0) {
+                    pyEntries.forEach(entry => {
+                        popupContent += `
+                        <div class="price-item">
+                            <span class="py">${entry.py}</span>
+                            <span class="val">${entry.price}</span>
+                            <span class="date">${entry.dateStr}</span>
+                        </div>`;
+                    });
+                } else {
+                    popupContent += `<p class="text-dim">최근 5년 실거래 내역 없음</p>`;
+                }
 
-            // 단 한 건도 없는 단지들 출력
-            targetApts.forEach(apt => {
-                const hasTrade = foundKeys.some(k => aptDataMap[k].apt === apt);
-                if (!hasTrade) {
-                    htmlContent += `
-                    <tr>
-                        <td><div class="complex-name"><i class="ph-fill ph-building"></i> ${apt}</div></td>
-                        <td colspan="4" class="text-dim">최근 5년(60개월) 내 실거래 없음</td>
-                    </tr>`;
+                // 커스텀 펄스 마커 (CSS 클래스 marker-pulse 기반)
+                const pulseIcon = L.divIcon({
+                    className: 'custom-div-icon',
+                    html: `<div class='marker-pulse'></div>`,
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
+                });
+
+                L.marker([comp.lat, comp.lng], { icon: pulseIcon })
+                    .addTo(map)
+                    .bindPopup(popupContent);
+                    
+                // 기본으로 팝업 하나 열어두기 (가장 큰 한솔이나 푸른솔)
+                if (comp.id === '한솔') {
+                    // L.marker([comp.lat, comp.lng]).addTo(map).bindPopup(popupContent).openPopup();
                 }
             });
-            tableBody.innerHTML = htmlContent;
             
         } catch(err) {
-            console.error('API Local Fallback:', err);
-            tableBody.innerHTML = backupHtml;
+            console.error('Map Data Error:', err);
+            // 에러 시 안내 마커라도 표시
+            complexes.forEach(comp => {
+                L.marker([comp.lat, comp.lng]).addTo(map).bindPopup(`<h4>${comp.name}</h4><p>데이터 연동 오류</p>`);
+            });
         }
     }
 
-    // Initialize API update
-    updateMarketData();
+    // Initialize Map
+    initMap();
 });
