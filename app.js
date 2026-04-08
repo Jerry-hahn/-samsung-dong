@@ -77,24 +77,24 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch('/.netlify/functions/getAptPrices');
             if (!response.ok) throw new Error('API fetch failed');
-            const dataJson = await response.json();
-            
             const parser = new DOMParser();
-            const xml1 = parser.parseFromString(dataJson.xml1, "text/xml");
-            const xml2 = parser.parseFromString(dataJson.xml2, "text/xml");
+            const allItems = [];
             
-            const items1 = Array.from(xml1.getElementsByTagName('item'));
-            const items2 = Array.from(xml2.getElementsByTagName('item'));
-            const allItems = [...items1, ...items2];
+            // 60개월치 모든 XML 파싱 후 아이템 합치기
+            if (dataJson.xmls && dataJson.xmls.length > 0) {
+                dataJson.xmls.forEach(xmlStr => {
+                    const doc = parser.parseFromString(xmlStr, "text/xml");
+                    const items = Array.from(doc.getElementsByTagName('item'));
+                    allItems.push(...items);
+                });
+            }
             
             const targetApts = ['푸른솔진흥', '한솔', '석탑', '현대', 'CLK', '월드타워', '우정에쉐르'];
             const aptDataMap = {};
-            targetApts.forEach(apt => aptDataMap[apt] = null);
             
             allItems.forEach(item => {
                 const dong = item.getElementsByTagName('umdNm')[0]?.textContent?.trim() || '';
                 const apiLAWD = item.getElementsByTagName('sggCd')[0]?.textContent?.trim() || '';
-                // Check if it's Gangnam(11680) and Samsung-dong
                 if (!dong.includes('삼성동') && apiLAWD !== '11680') return;
                 
                 const aptNm = item.getElementsByTagName('aptNm')[0]?.textContent?.trim() || '';
@@ -106,18 +106,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 targetApts.forEach(target => {
                     if (aptNm.includes(target)) {
-                        const py = Math.round(parseFloat(area) * 0.3025);
+                        const pyNum = Math.round(parseFloat(area) * 0.3025);
+                        const key = `${target}_${pyNum}`; // 아파트명 + 평형 조합으로 식별
                         const dateVal = parseInt(`${dealYear}${dealMonth.padStart(2,'0')}${dealDay.padStart(2,'0')}`);
                         
-                        if (!aptDataMap[target] || aptDataMap[target].dateVal < dateVal) {
+                        if (!aptDataMap[key] || aptDataMap[key].dateVal < dateVal) {
                             let numPrice = parseInt(price.replace(/,/g, ''));
                             let formattedPrice = numPrice >= 10000 ? `${Math.floor(numPrice/10000)}억 ${numPrice%10000 > 0 ? (numPrice%10000 + '만') : ''}` : `${numPrice}만`;
                             
-                            aptDataMap[target] = {
-                                py: `${py}평`,
+                            aptDataMap[key] = {
+                                apt: target,
+                                py: `${pyNum}평`,
+                                pyNum: pyNum,
                                 price: formattedPrice,
                                 dateVal: dateVal,
-                                dateStr: `${dealMonth}/${dealDay}`
+                                dateStr: `${dealYear.slice(-2)}.${dealMonth}.${dealDay}`
                             };
                         }
                     }
@@ -125,22 +128,38 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             
             let htmlContent = '';
+            
+            // 찾은 평형들을 고유 단지 순서 & 평형 크기 순서로 정렬
+            const foundKeys = Object.keys(aptDataMap).sort((a,b) => {
+                const aptA = aptDataMap[a].apt;
+                const aptB = aptDataMap[b].apt;
+                if (aptA !== aptB) {
+                    return targetApts.indexOf(aptA) - targetApts.indexOf(aptB);
+                }
+                return aptDataMap[a].pyNum - aptDataMap[b].pyNum; // 같은 아파트면 평수 작은 것부터
+            });
+
+            // 매물이 있는 단지들 출력
+            foundKeys.forEach(key => {
+                const info = aptDataMap[key];
+                htmlContent += `
+                <tr>
+                    <td><div class="complex-name"><i class="ph-fill ph-building"></i> ${info.apt}</div></td>
+                    <td>${info.py}</td>
+                    <td><strong>${info.price}</strong></td>
+                    <td><span class="data-up text-gold"><i class="ph ph-check-circle"></i> ${info.dateStr} 실거래</span></td>
+                    <td class="text-dim">최근 5년 기준</td>
+                </tr>`;
+            });
+
+            // 단 한 건도 없는 단지들 출력
             targetApts.forEach(apt => {
-                const info = aptDataMap[apt];
-                if (info) {
+                const hasTrade = foundKeys.some(k => aptDataMap[k].apt === apt);
+                if (!hasTrade) {
                     htmlContent += `
                     <tr>
                         <td><div class="complex-name"><i class="ph-fill ph-building"></i> ${apt}</div></td>
-                        <td>${info.py}</td>
-                        <td><strong>${info.price}</strong></td>
-                        <td><span class="data-up text-gold"><i class="ph ph-check-circle"></i> ${info.dateStr} 실거래반영</span></td>
-                        <td class="text-dim">국토부 API 연동 완료</td>
-                    </tr>`;
-                } else {
-                    htmlContent += `
-                    <tr>
-                        <td><div class="complex-name"><i class="ph-fill ph-building"></i> ${apt}</div></td>
-                        <td colspan="4" class="text-dim">최근 2개월 내 국토부 실거래 내역 없음</td>
+                        <td colspan="4" class="text-dim">최근 5년(60개월) 내 실거래 없음</td>
                     </tr>`;
                 }
             });
