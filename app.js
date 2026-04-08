@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:3rem;"><i class="ph ph-spinner ph-spin" style="font-size:2rem; color:var(--primary);"></i><br>국토부 공공데이터 API 실시간 연동 중...</td></tr>`;
 
         try {
-            const response = await fetch('/api/getAptPrices');
+            const response = await fetch('/.netlify/functions/getAptPrices');
             if (!response.ok) throw new Error('API fetch failed');
             const dataJson = await response.json();
             

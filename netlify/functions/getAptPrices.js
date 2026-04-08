@@ -17,18 +17,26 @@ exports.handler = async function(event, context) {
     const DEAL_YMD_CURRENT = `${year}${month}`;
     const DEAL_YMD_LAST = `${lastYear}${lastMonthStr}`;
     
-    // 강남구(11680) 데이터 호출
-    const baseUrl = `http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev?serviceKey=${serviceKey}&LAWD_CD=11680&pageNo=1&numOfRows=1000`;
+    // 최신 공공데이터포털 HTTPS 주소 사용 (구버전 HTTP IP 차단 회피용)
+    const baseUrl = `https://apis.data.go.kr/1613000/RTMSDataSvcAptTradeDev/getRTMSDataSvcAptTradeDev?serviceKey=${serviceKey}&LAWD_CD=11680&pageNo=1&numOfRows=1000`;
     
     try {
-        // 이번 달과 지난 달 데이터를 함께 요청하여 합침 (최근 실거래가 없을 수 있으므로)
+        // 서버 봇(봇 차단) 방지를 위한 헤더 추가
+        const options = {
+            method: 'GET',
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'application/xml, text/xml, */*; q=0.01'
+            }
+        };
+
         const [res1, res2] = await Promise.all([
-            fetch(`${baseUrl}&DEAL_YMD=${DEAL_YMD_CURRENT}`),
-            fetch(`${baseUrl}&DEAL_YMD=${DEAL_YMD_LAST}`)
+            fetch(`${baseUrl}&DEAL_YMD=${DEAL_YMD_CURRENT}`, options),
+            fetch(`${baseUrl}&DEAL_YMD=${DEAL_YMD_LAST}`, options)
         ]);
         
         const data1 = await res1.text();
-        const data2 = await res2.text(); // 프론트엔드에서 파싱을 쉽게하기 위해 일단 두 결과를 배열(JSON)형태로 담아 보냄
+        const data2 = await res2.text();
         
         return {
             statusCode: 200,
