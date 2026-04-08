@@ -65,15 +65,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 7개 단지 정확한 위치 (위도, 경도) 및 메타데이터
+    // 7개 단지 정확한 위치 (제공된 주소 기반 정밀 위경도)
     const complexes = [
-        { id: '한솔', name: '한솔', lat: 37.5196, lng: 127.0431 },
-        { id: '푸른솔진흥', name: '푸른솔진흥', lat: 37.5208, lng: 127.0438 },
-        { id: '석탑', name: '석탑', lat: 37.5192, lng: 127.0439 },
-        { id: '현대', name: '현대', lat: 37.5186, lng: 127.0452 },
-        { id: 'CLK', name: 'CLK', lat: 37.5181, lng: 127.0446 },
-        { id: '월드타워', name: '월드타워', lat: 37.5201, lng: 127.0458 },
-        { id: '우정에쉐르', name: '우정에쉐르', lat: 37.5192, lng: 127.0454 }
+        { id: '한솔', name: '한솔', lat: 37.5205, lng: 127.0428 },
+        { id: '푸른솔', name: '푸른솔', lat: 37.5201, lng: 127.0423 },
+        { id: '현대', name: '현대', lat: 37.5198, lng: 127.0435 },
+        { id: '석탑', name: '석탑', lat: 37.5194, lng: 127.0415 },
+        { id: 'CLK', name: 'CLK', lat: 37.5192, lng: 127.0409 },
+        { id: '월드타워', name: '월드타워', lat: 37.5189, lng: 127.0404 },
+        { id: '우정', name: '우정에쉐르', lat: 37.5187, lng: 127.0412 }
     ];
 
     // Real-Time API Map Linkage
@@ -81,14 +81,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const mapContainer = document.getElementById('map');
         if (!mapContainer) return;
 
-        // 지도 초기화 (삼성동 통합부지 중심)
+        // 지도 초기화 (7개 단지 밀집 지역 중심)
         const map = L.map('map', {
-            center: [37.5195, 127.0445],
-            zoom: 17,
+            center: [37.5195, 127.0425],
+            zoom: 18,
             zoomControl: false
         });
 
-        // 다크 테마 지도 타일 (CartoDB Dark Matter)
+        // 다크 테마 지도 타일
         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; OpenStreetMap'
         }).addTo(map);
@@ -101,50 +101,48 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const aptDataMap = await response.json();
             
-            // 각 단지별로 마커 생성
             complexes.forEach(comp => {
-                // 해당 단지의 모든 평형 데이터 추출
-                const pyEntries = Object.keys(aptDataMap)
+                // 대표 평형 2개 (25평형 전후, 33평형 전후) 데이터 추출
+                const allPyEntries = Object.keys(aptDataMap)
                     .filter(key => key.startsWith(comp.id))
-                    .map(key => aptDataMap[key])
-                    .sort((a, b) => a.pyNum - b.pyNum);
+                    .map(key => aptDataMap[key]);
 
-                let popupContent = `<h4><i class="ph ph-buildings"></i> ${comp.name}</h4>`;
+                // 20평대 대표 (25평에 가장 가까운 것)
+                const py20 = allPyEntries.filter(e => e.pyNum >= 18 && e.pyNum <= 29)
+                                          .sort((a,b) => Math.abs(a.pyNum - 25) - Math.abs(b.pyNum - 25))[0];
                 
-                if (pyEntries.length > 0) {
-                    pyEntries.forEach(entry => {
-                        popupContent += `
-                        <div class="price-item">
-                            <span class="py">${entry.py}</span>
-                            <span class="val">${entry.price}</span>
-                            <span class="date">${entry.dateStr}</span>
-                        </div>`;
-                    });
-                } else {
-                    popupContent += `<p class="text-dim">최근 5년 실거래 내역 없음</p>`;
-                }
+                // 30평대 대표 (33평에 가장 가까운 것)
+                const py30 = allPyEntries.filter(e => e.pyNum >= 30 && e.pyNum <= 39)
+                                          .sort((a,b) => Math.abs(a.pyNum - 33) - Math.abs(b.pyNum - 33))[0];
 
-                // 커스텀 펄스 마커 (CSS 클래스 marker-pulse 기반)
-                const pulseIcon = L.divIcon({
-                    className: 'custom-div-icon',
-                    html: `<div class='marker-pulse'></div>`,
-                    iconSize: [20, 20],
-                    iconAnchor: [10, 10]
+                let tagHtml = `<div class="map-price-tag">
+                    <div class="tag-name">${comp.name}</div>`;
+                
+                if (py20) {
+                    tagHtml += `<div class="tag-row"><span class="tag-py">${py20.py}</span><span class="tag-val">${py20.price}</span></div>`;
+                }
+                if (py30) {
+                    tagHtml += `<div class="tag-row"><span class="tag-py">${py30.py}</span><span class="tag-val">${py30.price}</span></div>`;
+                }
+                if (!py20 && !py30) {
+                    tagHtml += `<div class="tag-row"><span class="tag-py">실거래</span><span class="tag-val">문의</span></div>`;
+                }
+                tagHtml += `</div>`;
+
+                // 커스텀 가격표 마커 생성
+                const priceTagIcon = L.divIcon({
+                    className: 'custom-tag-icon',
+                    html: tagHtml,
+                    iconSize: [120, 60],
+                    iconAnchor: [60, 30]
                 });
 
-                L.marker([comp.lat, comp.lng], { icon: pulseIcon })
-                    .addTo(map)
-                    .bindPopup(popupContent);
-                    
-                // 기본으로 팝업 하나 열어두기 (가장 큰 한솔이나 푸른솔)
-                if (comp.id === '한솔') {
-                    // L.marker([comp.lat, comp.lng]).addTo(map).bindPopup(popupContent).openPopup();
-                }
+                L.marker([comp.lat, comp.lng], { icon: priceTagIcon })
+                    .addTo(map);
             });
             
         } catch(err) {
             console.error('Map Data Error:', err);
-            // 에러 시 안내 마커라도 표시
             complexes.forEach(comp => {
                 L.marker([comp.lat, comp.lng]).addTo(map).bindPopup(`<h4>${comp.name}</h4><p>데이터 연동 오류</p>`);
             });

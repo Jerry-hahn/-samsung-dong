@@ -844,6 +844,59 @@ body.modal-open {
     70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(191, 155, 106, 0); }
     100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(191, 155, 106, 0); }
 }
+/* Map Price Tag Styling */
+.map-price-tag {
+    background: rgba(13, 13, 13, 0.9);
+    border: 1px solid var(--primary-glow);
+    border-radius: 8px;
+    padding: 6px 10px;
+    color: var(--text-light);
+    font-family: 'Pretendard', sans-serif;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+    white-space: nowrap;
+    pointer-events: auto;
+    backdrop-filter: blur(5px);
+    transition: transform 0.2s, border-color 0.2s;
+    min-width: 100px;
+}
+
+.map-price-tag:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary);
+    z-index: 1000 !important;
+}
+
+.map-price-tag .tag-name {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 4px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 2px;
+}
+
+.map-price-tag .tag-row {
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 2px;
+}
+
+.map-price-tag .tag-py {
+    color: var(--text-dim);
+}
+
+.map-price-tag .tag-val {
+    font-weight: 700;
+    color: var(--text-light);
+}
+
+/* Override Leaflet divIcon default */
+.leaflet-div-icon {
+    background: transparent !important;
+    border: none !important;
+}
 
 @media (max-width: 768px) {
     .interactive-map { height: 400px; }

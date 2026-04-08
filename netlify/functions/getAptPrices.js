@@ -28,7 +28,7 @@ exports.handler = async function(event, context) {
         const fetchPromises = monthsToFetch.map(ymd => fetch(`${baseUrl}&DEAL_YMD=${ymd}`, options));
         const results = await Promise.allSettled(fetchPromises);
         
-        const targetApts = ['푸른솔진흥', '한솔', '석탑', '현대', 'CLK', '월드타워', '우정에쉐르'];
+        const targetApts = ['한솔', '푸른솔', '현대', '석탑', '우정', 'CLK', '월드타워'];
         const aptDataMap = {};
 
         for (const result of results) {
@@ -56,26 +56,35 @@ exports.handler = async function(event, context) {
                     const dealMonth = extract('dealMonth');
                     const dealDay = extract('dealDay');
                     
-                    // 정밀 필터링: 7개 단지 이름과 정확히 매칭되거나 핵심 키워드 포함 확인
-                    // '현대'의 경우 삼성동 내 다른 현대아파트와 섞이지 않도록 정교하게 처리
+                    // 정밀 필터링: 유저가 명시한 명칭과 실거래 데이터상의 명칭 매칭
                     targetApts.forEach(target => {
                         let isMatch = false;
-                        if (target === '현대') {
-                            // 삼성동 16-2번지 현대아파트는 보통 '현대'로 찍힘. 
-                            // 다른 '아이파크'나 '현대힐스테이트' 등과 구분 필요
+                        if (target === '푸른솔') {
+                            if (aptNm.includes('푸른솔') || aptNm.includes('진흥')) isMatch = true;
+                        } else if (target === '우정') {
+                            if (aptNm.includes('우정') || aptNm.includes('에쉐르')) isMatch = true;
+                        } else if (target === '현대') {
+                            // 삼성로104길 23 (삼성동 16-2) 현대아파트만 필터링
                             if (aptNm === '현대' || aptNm === '삼성현대') isMatch = true;
                         } else if (aptNm.includes(target)) {
                             isMatch = true;
                         }
 
                         if (isMatch) {
-                            const pyNum = Math.round(parseFloat(area) * 0.3025);
+                            // 면적(m2) -> 일반적인 공급평형 근사치 계산 로직
+                            const m2 = parseFloat(area);
+                            let pyNum = 0;
+                            if (m2 < 50) pyNum = 18;
+                            else if (m2 < 70) pyNum = 25; // 전용 59 -> 공급 25
+                            else if (m2 < 100) pyNum = 33; // 전용 84 -> 공급 33
+                            else pyNum = Math.round(m2 * 0.3025 * 1.3); // 그 외 대략적 보정
+
                             const key = `${target}_${pyNum}`; 
                             const dateVal = parseInt(`${dealYear}${dealMonth.padStart(2,'0')}${dealDay.padStart(2,'0')}`);
                             
                             if (!aptDataMap[key] || aptDataMap[key].dateVal < dateVal) {
                                 let numPrice = parseInt(price.replace(/,/g, ''));
-                                let formattedPrice = numPrice >= 10000 ? `${Math.floor(numPrice/10000)}억 ${numPrice%10000 > 0 ? (numPrice%10000 + '만') : ''}` : `${numPrice}만`;
+                                let formattedPrice = numPrice >= 10000 ? `${(numPrice/10000).toFixed(1)}억` : `${numPrice}만`;
                                 
                                 aptDataMap[key] = {
                                     apt: target,
