@@ -65,15 +65,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 7개 단지 정확한 위치 (제공된 주소 기반 정밀 위경도)
+    // 7개 단지 정확한 위치 (제공된 주소 기반 소수점 6자리 정밀 위경도)
     const complexes = [
-        { id: '한솔', name: '한솔', lat: 37.5205, lng: 127.0428 },
-        { id: '푸른솔', name: '푸른솔', lat: 37.5201, lng: 127.0423 },
-        { id: '현대', name: '현대', lat: 37.5198, lng: 127.0435 },
-        { id: '석탑', name: '석탑', lat: 37.5194, lng: 127.0415 },
-        { id: 'CLK', name: 'CLK', lat: 37.5192, lng: 127.0409 },
-        { id: '월드타워', name: '월드타워', lat: 37.5189, lng: 127.0404 },
-        { id: '우정', name: '우정에쉐르', lat: 37.5187, lng: 127.0412 }
+        { id: '한솔', name: '한솔', lat: 37.518663, lng: 127.050630 },
+        { id: '푸른솔', name: '푸른솔', lat: 37.51888, lng: 127.05068 },
+        { id: '현대', name: '현대', lat: 37.51805, lng: 127.05085 },
+        { id: '석탑', name: '석탑', lat: 37.51870, lng: 127.04983 },
+        { id: 'CLK', name: 'CLK', lat: 37.51865, lng: 127.04961 },
+        { id: '월드타워', name: '월드타워', lat: 37.51860, lng: 127.04940 },
+        { id: '우정', name: '우정', lat: 37.51735, lng: 127.04535 }
     ];
 
     // Real-Time API Map Linkage
@@ -81,10 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const mapContainer = document.getElementById('map');
         if (!mapContainer) return;
 
-        // 지도 초기화 (7개 단지 밀집 지역 중심)
+        // 지도 초기화 (7개 단지 밀집 지역 정밀 중심점)
         const map = L.map('map', {
-            center: [37.5195, 127.0425],
-            zoom: 18,
+            center: [37.5185, 127.049],
+            zoom: 17,
             zoomControl: false
         });
 
