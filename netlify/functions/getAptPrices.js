@@ -24,15 +24,60 @@ exports.handler = async function(event, context) {
             }
         };
 
-        // 60개월 동시 요청 (Promise.allSettled 사용하여 일부 실패해도 전체가 터지지 않게 보호)
+    // 60개월 동시 요청 (Promise.allSettled 사용하여 일부 실패해도 전체가 터지지 않게 보호)
         const fetchPromises = monthsToFetch.map(ymd => fetch(`${baseUrl}&DEAL_YMD=${ymd}`, options));
         const results = await Promise.allSettled(fetchPromises);
         
-        let xmlDataArray = [];
+        const targetApts = ['푸른솔진흥', '한솔', '석탑', '현대', 'CLK', '월드타워', '우정에쉐르'];
+        const aptDataMap = {};
+
         for (const result of results) {
             if (result.status === 'fulfilled' && result.value.ok) {
-                const text = await result.value.text();
-                xmlDataArray.push(text);
+                const xmlStr = await result.value.text();
+                
+                // 브라우저 DOMParser 대신 정규식으로 안전하게 추출 (Lambda 환경)
+                const items = xmlStr.split('<item>');
+                items.shift();
+                
+                items.forEach(itemStr => {
+                    const extract = (tag) => {
+                        const match = itemStr.match(new RegExp(`<${tag}>([^<]*)</${tag}>`));
+                        return match ? match[1].trim() : '';
+                    };
+                    
+                    const dong = extract('umdNm');
+                    const apiLAWD = extract('sggCd');
+                    if (!dong.includes('삼성동') && apiLAWD !== '11680') return;
+                    
+                    const aptNm = extract('aptNm');
+                    const price = extract('dealAmount');
+                    const area = extract('excluUseAr');
+                    const dealYear = extract('dealYear');
+                    const dealMonth = extract('dealMonth');
+                    const dealDay = extract('dealDay');
+                    
+                    targetApts.forEach(target => {
+                        if (aptNm.includes(target)) {
+                            const pyNum = Math.round(parseFloat(area) * 0.3025);
+                            const key = `${target}_${pyNum}`; 
+                            const dateVal = parseInt(`${dealYear}${dealMonth.padStart(2,'0')}${dealDay.padStart(2,'0')}`);
+                            
+                            if (!aptDataMap[key] || aptDataMap[key].dateVal < dateVal) {
+                                let numPrice = parseInt(price.replace(/,/g, ''));
+                                let formattedPrice = numPrice >= 10000 ? `${Math.floor(numPrice/10000)}억 ${numPrice%10000 > 0 ? (numPrice%10000 + '만') : ''}` : `${numPrice}만`;
+                                
+                                aptDataMap[key] = {
+                                    apt: target,
+                                    py: `${pyNum}평`,
+                                    pyNum: pyNum,
+                                    price: formattedPrice,
+                                    dateVal: dateVal,
+                                    dateStr: `${dealYear.slice(-2)}.${dealMonth}.${dealDay}`
+                                };
+                            }
+                        }
+                    });
+                });
             }
         }
         
@@ -42,7 +87,7 @@ exports.handler = async function(event, context) {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*"
             },
-            body: JSON.stringify({ xmls: xmlDataArray })
+            body: JSON.stringify(aptDataMap)
         };
     } catch (error) {
         return { statusCode: 500, body: JSON.stringify({ error: error.toString() }) };

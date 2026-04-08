@@ -77,56 +77,10 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch('/.netlify/functions/getAptPrices');
             if (!response.ok) throw new Error('API fetch failed');
-            const parser = new DOMParser();
-            const allItems = [];
             
-            // 60개월치 모든 XML 파싱 후 아이템 합치기
-            if (dataJson.xmls && dataJson.xmls.length > 0) {
-                dataJson.xmls.forEach(xmlStr => {
-                    const doc = parser.parseFromString(xmlStr, "text/xml");
-                    const items = Array.from(doc.getElementsByTagName('item'));
-                    allItems.push(...items);
-                });
-            }
-            
+            // 백엔드에서 미리 파싱되고 정제된 JSON 데이터를 바로 받음
+            const aptDataMap = await response.json();
             const targetApts = ['푸른솔진흥', '한솔', '석탑', '현대', 'CLK', '월드타워', '우정에쉐르'];
-            const aptDataMap = {};
-            
-            allItems.forEach(item => {
-                const dong = item.getElementsByTagName('umdNm')[0]?.textContent?.trim() || '';
-                const apiLAWD = item.getElementsByTagName('sggCd')[0]?.textContent?.trim() || '';
-                if (!dong.includes('삼성동') && apiLAWD !== '11680') return;
-                
-                const aptNm = item.getElementsByTagName('aptNm')[0]?.textContent?.trim() || '';
-                const price = item.getElementsByTagName('dealAmount')[0]?.textContent?.trim() || '';
-                const area = item.getElementsByTagName('excluUseAr')[0]?.textContent?.trim() || '';
-                const dealYear = item.getElementsByTagName('dealYear')[0]?.textContent?.trim() || '';
-                const dealMonth = item.getElementsByTagName('dealMonth')[0]?.textContent?.trim() || '';
-                const dealDay = item.getElementsByTagName('dealDay')[0]?.textContent?.trim() || '';
-                
-                targetApts.forEach(target => {
-                    if (aptNm.includes(target)) {
-                        const pyNum = Math.round(parseFloat(area) * 0.3025);
-                        const key = `${target}_${pyNum}`; // 아파트명 + 평형 조합으로 식별
-                        const dateVal = parseInt(`${dealYear}${dealMonth.padStart(2,'0')}${dealDay.padStart(2,'0')}`);
-                        
-                        if (!aptDataMap[key] || aptDataMap[key].dateVal < dateVal) {
-                            let numPrice = parseInt(price.replace(/,/g, ''));
-                            let formattedPrice = numPrice >= 10000 ? `${Math.floor(numPrice/10000)}억 ${numPrice%10000 > 0 ? (numPrice%10000 + '만') : ''}` : `${numPrice}만`;
-                            
-                            aptDataMap[key] = {
-                                apt: target,
-                                py: `${pyNum}평`,
-                                pyNum: pyNum,
-                                price: formattedPrice,
-                                dateVal: dateVal,
-                                dateStr: `${dealYear.slice(-2)}.${dealMonth}.${dealDay}`
-                            };
-                        }
-                    }
-                });
-            });
-            
             let htmlContent = '';
             
             // 찾은 평형들을 고유 단지 순서 & 평형 크기 순서로 정렬
@@ -148,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${info.py}</td>
                     <td><strong>${info.price}</strong></td>
                     <td><span class="data-up text-gold"><i class="ph ph-check-circle"></i> ${info.dateStr} 실거래</span></td>
-                    <td class="text-dim">최근 5년 기준</td>
+                    <td class="text-dim">최근 5년 최고</td>
                 </tr>`;
             });
 
@@ -167,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
         } catch(err) {
             console.error('API Local Fallback:', err);
-            // Revert to static mock UI if not run via Netlify / missing function access
             tableBody.innerHTML = backupHtml;
         }
     }
