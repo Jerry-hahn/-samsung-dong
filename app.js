@@ -65,15 +65,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 7개 단지 정확한 위치 (지번/도로명 주소 기반 핀포인트 정밀 좌표)
+    // 7개 단지 최종 정밀 핀포인트 위치 (소수점 6자리 정확도)
     const complexes = [
-        { id: '월드타워', name: '월드타워', lat: 37.517316, lng: 127.045431 },
-        { id: 'CLK', name: 'CLK', lat: 37.517223, lng: 127.045618 },
-        { id: '석탑', name: '석탑', lat: 37.517117, lng: 127.045768 },
-        { id: '푸른솔', name: '푸른솔', lat: 37.516845, lng: 127.046187 },
-        { id: '한솔', name: '한솔', lat: 37.516668, lng: 127.046755 },
-        { id: '현대', name: '현대', lat: 37.516246, lng: 127.046903 },
-        { id: '우정', name: '우정', lat: 37.517036, lng: 127.042777 }
+        { id: '우정', name: '우정', lat: 37.517531, lng: 127.045331 },
+        { id: '월드타워', name: '월드타워', lat: 37.517391, lng: 127.046535 },
+        { id: 'CLK', name: 'CLK', lat: 37.517454, lng: 127.046755 },
+        { id: '석탑', name: '석탑', lat: 37.517523, lng: 127.046960 },
+        { id: '푸른솔', name: '푸른솔', lat: 37.517742, lng: 127.047466 },
+        { id: '한솔', name: '한솔', lat: 37.518654, lng: 127.047434 },
+        { id: '현대', name: '현대', lat: 37.518485, lng: 127.047913 }
     ];
 
     // Real-Time API Map Linkage
@@ -81,9 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const mapContainer = document.getElementById('map');
         if (!mapContainer) return;
 
-        // 지도 초기화 (7개 단지 밀집 블록 중심 정밀 줌)
+        // 지도 초기화 (7개 단지 중심 정밀 줌 세팅)
         const map = L.map('map', {
-            center: [37.517, 127.0455],
+            center: [37.5178, 127.0465],
             zoom: 18,
             zoomControl: false
         });
