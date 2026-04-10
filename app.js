@@ -119,10 +119,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="tag-name">${comp.name}</div>`;
                 
                 if (py20) {
-                    tagHtml += `<div class="tag-row"><span class="tag-py">${py20.py}</span><span class="tag-val">${py20.price}</span></div>`;
+                    tagHtml += `<div class="tag-row">
+                        <span class="tag-py">${py20.py}</span>
+                        <div class="tag-price-group">
+                            <span class="tag-val">${py20.price}</span>
+                            <span class="tag-date">${py20.dateStr}</span>
+                        </div>
+                    </div>`;
                 }
                 if (py30) {
-                    tagHtml += `<div class="tag-row"><span class="tag-py">${py30.py}</span><span class="tag-val">${py30.price}</span></div>`;
+                    tagHtml += `<div class="tag-row">
+                        <span class="tag-py">${py30.py}</span>
+                        <div class="tag-price-group">
+                            <span class="tag-val">${py30.price}</span>
+                            <span class="tag-date">${py30.dateStr}</span>
+                        </div>
+                    </div>`;
                 }
                 if (!py20 && !py30) {
                     tagHtml += `<div class="tag-row"><span class="tag-py">실거래</span><span class="tag-val">문의</span></div>`;

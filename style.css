@@ -892,6 +892,18 @@ body.modal-open {
     color: var(--text-light);
 }
 
+.map-price-tag .tag-price-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.map-price-tag .tag-date {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    font-weight: 400;
+}
+
 /* Override Leaflet divIcon default */
 .leaflet-div-icon {
     background: transparent !important;
@@ -899,5 +911,36 @@ body.modal-open {
 }
 
 @media (max-width: 768px) {
-    .interactive-map { height: 400px; }
+    .interactive-map { 
+        height: 450px; 
+        border-radius: 12px;
+    }
+    
+    .map-price-tag {
+        padding: 4px 8px;
+        min-width: 85px;
+        border-radius: 6px;
+    }
+
+    .map-price-tag .tag-name {
+        font-size: 0.7rem;
+        margin-bottom: 2px;
+    }
+
+    .map-price-tag .tag-row {
+        font-size: 0.75rem;
+        gap: 6px;
+    }
+    
+    .map-price-tag .tag-date {
+        font-size: 0.6rem;
+    }
+
+    section {
+        padding: 4rem 1.5rem;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
 }
