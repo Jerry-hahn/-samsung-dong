@@ -118,18 +118,26 @@ document.addEventListener('DOMContentLoaded', () => {
         map.fitBounds(bounds, { padding: [50, 50] });
 
         try {
-            const response = await fetch('/.netlify/functions/getAptPrices');
-            if (!response.ok) throw new Error('API fetch failed');
+            // 1단계: 넷리파이 서버리스 함수 호출 시도
+            let response = await fetch('/.netlify/functions/getAptPrices');
+            
+            // 2단계: 실패 시(넷리파이 플랜 만료 등) 로컬 JSON 파일로 폴백
+            if (!response.ok) {
+                console.warn('Netlify API unavailable, falling back to local data...');
+                response = await fetch('./realtime-data.json');
+            }
+            
+            if (!response.ok) throw new Error('All data sources failed');
             
             allTransactions = await response.json();
             
-            // 데이터 수신 후 초기 렌더링 (가장 최근 데이터가 있는 연도 우선, 기본은 2026)
+            // 데이터 수신 후 초기 렌더링 (2026년 기준)
             renderYear('2026');
             
         } catch(err) {
-            console.error('Data Error:', err);
+            console.error('Data Loading Error:', err);
             const listContainer = document.getElementById('transaction-list');
-            if (listContainer) listContainer.innerHTML = '<div class="loading-state">데이터를 불러오는 중 오류가 발생했습니다.</div>';
+            if (listContainer) listContainer.innerHTML = '<div class="loading-state">데이터를 불러오는 중 오류가 발생했습니다. (오프라인 모드 확인 필요)</div>';
         }
     }
 
