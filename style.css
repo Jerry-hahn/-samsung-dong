@@ -775,43 +775,9 @@ body.modal-open {
     display: block;
 }
 
-/* Customizing Leaflet for Dark UI */
 .leaflet-container {
     background: #0d0d0d !important;
 }
-
-.leaflet-popup-content-wrapper, .leaflet-popup-tip {
-    background: rgba(13, 13, 13, 0.95) !important;
-    backdrop-filter: blur(10px);
-    color: var(--text-light) !important;
-    border: 1px solid var(--primary-glow) !important;
-    border-radius: 12px !important;
-    padding: 10px;
-}
-
-.leaflet-popup-content {
-    margin: 10px !important;
-    min-width: 200px;
-}
-
-.leaflet-popup-content h4 {
-    color: var(--primary);
-    margin-bottom: 8px;
-    font-size: 1.1rem;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding-bottom: 4px;
-}
-
-.price-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-    font-size: 0.9rem;
-}
-
-.price-item .py { color: var(--text-dim); }
-.price-item .val { font-weight: 700; color: var(--primary); }
-.price-item .date { font-size: 0.75rem; color: #888; }
 
 .leaflet-bar {
     border: none !important;
@@ -829,118 +795,174 @@ body.modal-open {
     color: #000 !important;
 }
 
-/* Pulse Animation for Markers */
-.marker-pulse {
-    width: 12px;
-    height: 12px;
-    background: var(--primary);
-    border-radius: 50%;
-    box-shadow: 0 0 0 rgba(191, 155, 106, 0.4);
-    animation: pulse 2s infinite;
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+    background: rgba(13, 13, 13, 0.95) !important;
+    backdrop-filter: blur(10px);
+    color: var(--text-light) !important;
+    border: 1px solid var(--primary-glow) !important;
+    border-radius: 12px !important;
 }
 
-@keyframes pulse {
-    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(191, 155, 106, 0.7); }
-    70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(191, 155, 106, 0); }
-    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(191, 155, 106, 0); }
-}
-/* Map Price Tag Styling */
-.map-price-tag {
-    background: rgba(13, 13, 13, 0.9);
-    border: 1px solid var(--primary-glow);
-    border-radius: 8px;
-    padding: 6px 10px;
-    color: var(--text-light);
-    font-family: 'Pretendard', sans-serif;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-    white-space: nowrap;
-    pointer-events: auto;
-    backdrop-filter: blur(5px);
-    transition: transform 0.2s, border-color 0.2s;
-    min-width: 100px;
-}
-
-.map-price-tag:hover {
-    transform: translateY(-2px);
-    border-color: var(--primary);
-    z-index: 1000 !important;
-}
-
-.map-price-tag .tag-name {
-    font-size: 0.75rem;
-    font-weight: 800;
-    color: var(--primary);
-    margin-bottom: 4px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding-bottom: 2px;
-}
-
-.map-price-tag .tag-row {
-    font-size: 0.8rem;
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 2px;
-}
-
-.map-price-tag .tag-py {
-    color: var(--text-dim);
-}
-
-.map-price-tag .tag-val {
-    font-weight: 700;
-    color: var(--text-light);
-}
-
-.map-price-tag .tag-price-group {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
-
-.map-price-tag .tag-date {
-    font-size: 0.65rem;
-    color: var(--text-dim);
-    font-weight: 400;
-}
-
-/* Override Leaflet divIcon default */
 .leaflet-div-icon {
     background: transparent !important;
     border: none !important;
 }
 
+/* Year Tabs Styling */
+.transaction-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.transaction-header h3 {
+    font-size: 1.25rem;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.year-tabs {
+    display: flex;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 6px;
+    border-radius: 12px;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.9rem;
+}
+
+.tab-btn.active {
+    background: var(--primary);
+    color: #000;
+    box-shadow: 0 4px 15px rgba(191, 155, 106, 0.3);
+}
+
+.tab-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+}
+
+.transaction-list-v2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    min-height: 200px;
+}
+
+.transaction-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s, border-color 0.3s;
+}
+
+.transaction-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+}
+
+.card-info .apt-name {
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: var(--text-light);
+    margin-bottom: 4px;
+}
+
+.card-info .apt-meta {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+}
+
+.card-price {
+    text-align: right;
+}
+
+.card-price .price-val {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.card-price .deal-date {
+    font-size: 0.75rem;
+    color: #888;
+}
+
+.loading-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem;
+    color: var(--text-dim);
+}
+
+/* Dot Marker Pulse Styling */
+.dot-marker {
+    width: 14px;
+    height: 14px;
+    background: var(--primary);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 15px var(--primary);
+    position: relative;
+    cursor: pointer;
+}
+
+.dot-marker::after {
+    content: '';
+    position: absolute;
+    width: 300%;
+    height: 300%;
+    left: -100%;
+    top: -100%;
+    border-radius: 50%;
+    border: 2px solid var(--primary);
+    opacity: 0;
+    animation: marker-ripple 2s infinite;
+}
+
+@keyframes marker-ripple {
+    0% { transform: scale(0.3); opacity: 1; }
+    100% { transform: scale(1.2); opacity: 0; }
+}
+
 @media (max-width: 768px) {
-    .interactive-map { 
-        height: 450px; 
-        border-radius: 12px;
+    .transaction-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.25rem;
     }
-    
-    .map-price-tag {
-        padding: 4px 8px;
-        min-width: 85px;
-        border-radius: 6px;
+    .year-tabs {
+        width: 100%;
+        overflow-x: auto;
+        justify-content: space-between;
     }
-
-    .map-price-tag .tag-name {
-        font-size: 0.7rem;
-        margin-bottom: 2px;
+    .tab-btn {
+        flex: 1;
+        padding: 8px 4px;
+        font-size: 0.8rem;
     }
-
-    .map-price-tag .tag-row {
-        font-size: 0.75rem;
-        gap: 6px;
+    .transaction-list-v2 {
+        grid-template-columns: 1fr;
     }
-    
-    .map-price-tag .tag-date {
-        font-size: 0.6rem;
-    }
-
-    section {
-        padding: 4rem 1.5rem;
-    }
-
-    .hero-content h1 {
-        font-size: 2.5rem;
-    }
+    .interactive-map { height: 400px; }
 }

@@ -164,6 +164,22 @@
             
             <div class="market-dashboard" data-aos="fade-up" data-aos-delay="200">
                 <div id="map" class="interactive-map"></div>
+                
+                <div class="transaction-container mt-12">
+                    <div class="transaction-header">
+                        <h3><i class="ph ph-calendar-check"></i> 연도별 실거래 내역</h3>
+                        <div class="year-tabs" id="year-tabs">
+                            <button class="tab-btn active" data-year="2026">2026</button>
+                            <button class="tab-btn" data-year="2025">2025</button>
+                            <button class="tab-btn" data-year="2024">2024</button>
+                            <button class="tab-btn" data-year="2023">2023</button>
+                            <button class="tab-btn" data-year="2022">2022</button>
+                        </div>
+                    </div>
+                    <div id="transaction-list" class="transaction-list-v2">
+                        <div class="loading-state">데이터를 집계 중입니다...</div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

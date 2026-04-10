@@ -76,100 +76,109 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: '푸른솔', name: '푸른솔', lat: 37.5177284, lng: 127.0461070 }
     ];
 
-    // Real-Time API Map Linkage
-    async function initMap() {
+    let allTransactions = [];
+
+    // Real-Time API Map & Transaction Linkage
+    async function initDashboard() {
         const mapContainer = document.getElementById('map');
         if (!mapContainer) return;
 
-        // 지도 초기화 (7개 단지 밀집 블록 중심 정밀 세팅)
+        // 지도 초기화 (기본 뷰는 fitBounds로 자동 조정됨)
         const map = L.map('map', {
-            center: [37.5174, 127.0445],
-            zoom: 18,
-            zoomControl: false
+            zoomControl: false,
+            scrollWheelZoom: false
         });
 
-        // 다크 테마 지도 타일
+        // 다크 모드 타일 설정
         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; OpenStreetMap'
+            attribution: '&copy; OpenStreetMap &copy; CARTO'
         }).addTo(map);
 
-        L.control.zoom({ position: 'bottomright' }).addTo(map);
+        const markers = [];
+        const bounds = L.latLngBounds();
+
+        // 7개 단지 위치에 점(Dot) 마커 배치 및 바운드 확장
+        complexes.forEach(comp => {
+            const dotIcon = L.divIcon({
+                className: 'custom-dot-icon',
+                html: `<div class="dot-marker" title="${comp.name}"></div>`,
+                iconSize: [14, 14],
+                iconAnchor: [7, 7]
+            });
+
+            const marker = L.marker([comp.lat, comp.lng], { icon: dotIcon })
+                .addTo(map)
+                .bindPopup(`<strong>${comp.name}</strong>`);
+            
+            markers.push(marker);
+            bounds.extend([comp.lat, comp.lng]);
+        });
+
+        // 7개 단지가 모두 보이도록 자동 줌/중심 조정
+        map.fitBounds(bounds, { padding: [50, 50] });
 
         try {
             const response = await fetch('/.netlify/functions/getAptPrices');
             if (!response.ok) throw new Error('API fetch failed');
             
-            const aptDataMap = await response.json();
+            allTransactions = await response.json();
             
-            complexes.forEach(comp => {
-                // 대표 평형 2개 (25평형 전후, 33평형 전후) 데이터 추출
-                const allPyEntries = Object.keys(aptDataMap)
-                    .filter(key => key.startsWith(comp.id))
-                    .map(key => aptDataMap[key]);
-
-                // 20평대 대표 (25평에 가장 가까운 것)
-                const py20 = allPyEntries.filter(e => e.pyNum >= 18 && e.pyNum <= 29)
-                                          .sort((a,b) => Math.abs(a.pyNum - 25) - Math.abs(b.pyNum - 25))[0];
-                
-                // 30평대 대표 (33평에 가장 가까운 것)
-                const py30 = allPyEntries.filter(e => e.pyNum >= 30 && e.pyNum <= 39)
-                                          .sort((a,b) => Math.abs(a.pyNum - 33) - Math.abs(b.pyNum - 33))[0];
-
-                let tagHtml = `<div class="map-price-tag">
-                    <div class="tag-name">${comp.name}</div>`;
-                
-                if (py20) {
-                    tagHtml += `<div class="tag-row">
-                        <span class="tag-py">${py20.py}</span>
-                        <div class="tag-price-group">
-                            <span class="tag-val">${py20.price}</span>
-                            <span class="tag-date">${py20.dateStr}</span>
-                        </div>
-                    </div>`;
-                }
-                if (py30) {
-                    tagHtml += `<div class="tag-row">
-                        <span class="tag-py">${py30.py}</span>
-                        <div class="tag-price-group">
-                            <span class="tag-val">${py30.price}</span>
-                            <span class="tag-date">${py30.dateStr}</span>
-                        </div>
-                    </div>`;
-                }
-                if (!py20 && !py30) {
-                    tagHtml += `<div class="tag-row"><span class="tag-py">실거래</span><span class="tag-val">문의</span></div>`;
-                }
-                tagHtml += `</div>`;
-
-                // 커스텀 가격표 마커 생성
-                const priceTagIcon = L.divIcon({
-                    className: 'custom-tag-icon',
-                    html: tagHtml,
-                    iconSize: [120, 60],
-                    iconAnchor: [60, 30]
-                });
-
-                L.marker([comp.lat, comp.lng], { icon: priceTagIcon })
-                    .addTo(map);
-            });
+            // 데이터 수신 후 초기 렌더링 (가장 최근 데이터가 있는 연도 우선, 기본은 2026)
+            renderYear('2026');
             
         } catch(err) {
-            console.error('Map Data Error:', err);
-            complexes.forEach(comp => {
-                L.marker([comp.lat, comp.lng]).addTo(map).bindPopup(`<h4>${comp.name}</h4><p>데이터 연동 오류</p>`);
-            });
+            console.error('Data Error:', err);
+            const listContainer = document.getElementById('transaction-list');
+            if (listContainer) listContainer.innerHTML = '<div class="loading-state">데이터를 불러오는 중 오류가 발생했습니다.</div>';
         }
     }
 
-    // Initialize Map
-    initMap().then(() => {
-        // 레이아웃 렌더링 후 지도가 깨지는 현상 방지용 (Leaflet 필수 팁)
-        setTimeout(() => {
-            const mapEl = document.querySelector('.leaflet-container');
-            if (mapEl && mapEl._leaflet_id) {
-                // Leaflet 인스턴스에 접근하여 크기 재조정
-                window.dispatchEvent(new Event('resize'));
-            }
-        }, 500);
+    // 연도별 탭 클릭 이벤트 바인딩
+    document.getElementById('year-tabs')?.addEventListener('click', (e) => {
+        const btn = e.target.closest('.tab-btn');
+        if (!btn) return;
+
+        // UI 업데이트
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const selectedYear = btn.dataset.year;
+        renderYear(selectedYear);
     });
+
+    function renderYear(year) {
+        const listContainer = document.getElementById('transaction-list');
+        if (!listContainer) return;
+
+        // 해당 연도 데이터 필터링 및 최신순 정렬
+        const filtered = allTransactions
+            .filter(t => t.year === year)
+            .sort((a, b) => b.dateVal - a.dateVal);
+
+        if (allTransactions.length === 0) {
+            listContainer.innerHTML = `<div class="loading-state">데이터를 불러오는 중입니다...</div>`;
+            return;
+        }
+
+        if (filtered.length === 0) {
+            listContainer.innerHTML = `<div class="loading-state">${year}년도 실거래 데이터가 없습니다.</div>`;
+            return;
+        }
+
+        listContainer.innerHTML = filtered.map(t => `
+            <div class="transaction-card">
+                <div class="card-info">
+                    <div class="apt-name">${t.apt}</div>
+                    <div class="apt-meta">${t.py} • ${t.dateStr}</div>
+                </div>
+                <div class="card-price">
+                    <span class="price-val">${t.price}</span>
+                    <span class="deal-date">실거래완료</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Initialize Dashboard
+    initDashboard();
 });

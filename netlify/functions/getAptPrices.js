@@ -29,13 +29,11 @@ exports.handler = async function(event, context) {
         const results = await Promise.allSettled(fetchPromises);
         
         const targetApts = ['한솔', '푸른솔', '현대', '석탑', '우정', 'CLK', '월드타워'];
-        const aptDataMap = {};
+        const allTransactions = [];
 
         for (const result of results) {
             if (result.status === 'fulfilled' && result.value.ok) {
                 const xmlStr = await result.value.text();
-                
-                // 브라우저 DOMParser 대신 정규식으로 안전하게 추출 (Lambda 환경)
                 const items = xmlStr.split('<item>');
                 items.shift();
                 
@@ -56,7 +54,6 @@ exports.handler = async function(event, context) {
                     const dealMonth = extract('dealMonth');
                     const dealDay = extract('dealDay');
                     
-                    // 정밀 필터링: 유저가 명시한 명칭과 실거래 데이터상의 명칭 매칭
                     targetApts.forEach(target => {
                         let isMatch = false;
                         if (target === '푸른솔') {
@@ -64,37 +61,30 @@ exports.handler = async function(event, context) {
                         } else if (target === '우정') {
                             if (aptNm.includes('우정') || aptNm.includes('에쉐르')) isMatch = true;
                         } else if (target === '현대') {
-                            // 삼성로104길 23 (삼성동 16-2) 현대아파트만 필터링
                             if (aptNm === '현대' || aptNm === '삼성현대') isMatch = true;
                         } else if (aptNm.includes(target)) {
                             isMatch = true;
                         }
 
                         if (isMatch) {
-                            // 면적(m2) -> 일반적인 공급평형 근사치 계산 로직
                             const m2 = parseFloat(area);
                             let pyNum = 0;
                             if (m2 < 50) pyNum = 18;
-                            else if (m2 < 70) pyNum = 25; // 전용 59 -> 공급 25
-                            else if (m2 < 100) pyNum = 33; // 전용 84 -> 공급 33
-                            else pyNum = Math.round(m2 * 0.3025 * 1.3); // 그 외 대략적 보정
+                            else if (m2 < 70) pyNum = 25; 
+                            else if (m2 < 100) pyNum = 33; 
+                            else pyNum = Math.round(m2 * 0.3025 * 1.3);
 
-                            const key = `${target}_${pyNum}`; 
-                            const dateVal = parseInt(`${dealYear}${dealMonth.padStart(2,'0')}${dealDay.padStart(2,'0')}`);
+                            let numPrice = parseInt(price.replace(/,/g, ''));
+                            let formattedPrice = numPrice >= 10000 ? `${(numPrice/10000).toFixed(1)}억` : `${numPrice}만`;
                             
-                            if (!aptDataMap[key] || aptDataMap[key].dateVal < dateVal) {
-                                let numPrice = parseInt(price.replace(/,/g, ''));
-                                let formattedPrice = numPrice >= 10000 ? `${(numPrice/10000).toFixed(1)}억` : `${numPrice}만`;
-                                
-                                aptDataMap[key] = {
-                                    apt: target,
-                                    py: `${pyNum}평`,
-                                    pyNum: pyNum,
-                                    price: formattedPrice,
-                                    dateVal: dateVal,
-                                    dateStr: `${dealYear.slice(-2)}.${dealMonth}.${dealDay}`
-                                };
-                            }
+                            allTransactions.push({
+                                apt: target,
+                                py: `${pyNum}평`,
+                                price: formattedPrice,
+                                year: dealYear,
+                                dateVal: parseInt(`${dealYear}${dealMonth.padStart(2,'0')}${dealDay.padStart(2,'0')}`),
+                                dateStr: `${dealYear.slice(-2)}.${dealMonth}.${dealDay}`
+                            });
                         }
                     });
                 });
@@ -107,7 +97,7 @@ exports.handler = async function(event, context) {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*"
             },
-            body: JSON.stringify(aptDataMap)
+            body: JSON.stringify(allTransactions)
         };
     } catch (error) {
         return { statusCode: 500, body: JSON.stringify({ error: error.toString() }) };
