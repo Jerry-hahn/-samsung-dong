@@ -2,346 +2,222 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>삼성동 통합재건축 비전</title>
-    <!-- Fonts -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SAMSUNG-DONG MEGA TOWN | Geometic Blueprint</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
-    <!-- AOS Animation -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <!-- Leaflet Map -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Navbar -->
-    <nav id="navbar" class="navbar">
-        <div class="nav-container">
-            <div class="brand">삼성동 통합재건축</div>
-            <div class="nav-right">
-                <span class="committee">통합재건축 추진위원회</span>
+    <div id="app">
+        <!-- Dashboard Header -->
+        <header class="dashboard-header">
+            <div class="live-activity-bar">
+                <span class="pulse-icon"></span>
+                <span id="live-visitors">846</span> residents currently viewing the vision
             </div>
-        </div>
-    </nav>
+            <div class="header-content">
+                <span class="badge">SAMSUNG-DONG UNIFIED COUNCIL</span>
+                <h1>삼성동 메가타운<br><span class="text-gold">지능형 지적 비전</span></h1>
+                <p>실제 입지와 건물의 형태를 기반으로 설계된 7개 단지 통합 마스터플랜입니다.</p>
+            </div>
+        </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="hero">
-        <div class="hero-bg" style="background-image: url('assets/hero.png');"></div>
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h1 data-aos="fade-up" data-aos-duration="1000">강남의 미래,<br>새로운 랜드마크의 탄생</h1>
-            <p class="subtitle" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
-                푸른솔진흥 · 한솔 · 석탑 · 현대 · CLK · 월드타워 · 우정에쉐르
-            </p>
-            <button class="primary-btn mt-8" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="400">
-                통합 재건축 비전 공유하기 <i class="ph ph-arrow-right"></i>
-            </button>
-        </div>
-    </section>
+        <!-- Consensus Mastery: Momentum Tracker -->
+        <section class="consensus-momentum">
+            <div class="momentum-header">
+                <div class="m-stat">
+                    <span class="m-label">현재 동의율</span>
+                    <span class="m-count text-gold"><span class="counter">68.4</span>%</span>
+                </div>
+                <div class="m-stat right">
+                    <span class="m-label">법정 한도까지</span>
+                    <span class="m-count">-6.6%</span>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 68.4%;"></div>
+                <div class="progress-target" style="left: 75%;"></div>
+            </div>
+            <p class="momentum-desc">75% 동의 시 하이엔드 브랜드 선정 및 사업시행 인가 단계로 즉시 진입합니다.</p>
+        </section>
 
-    <!-- Mega Town Section -->
-    <section class="mega-town section-padding" id="megatown">
-        <div class="container">
-            <div class="section-header center" data-aos="fade-up">
-                <span class="sub-heading">SAMSUNG-DONG MEGA TOWN</span>
-                <h2>강남의 지도를 바꿀 마지막 퍼즐,<br>삼성동 메가 타운</h2>
-                <div class="divider center"></div>
-                <p class="desc mt-4">대한민국 최상급지 강남구 삼성동은 GBC(글로벌비즈니스센터) 건립, 영동대로 지하공간 복합개발,<br>GTX 개통 등 초대형 호재가 집중된 핵심 업무지구이자 2만 명 이상의 상주 인구가 유입될 폭발적인 수요처입니다.<br><br>이제 7개의 알짜 소규모 단지들이 1,000세대 이상의 거대한 '메가 타운'으로 뭉쳐, 하이엔드 1군 브랜드를 유치하고<br>삼성동의 새로운 스카이라인을 완성할 완벽한 '똘똘한 한 채'로 거듭날 준비를 마쳤습니다.</p>
+        <!-- Interactive Map Frame -->
+        <main class="map-frame">
+            <div id="blueprint-container">
+                <svg id="blueprint-svg" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Road Networks (Accurate Geometry) -->
+                    <g class="roads">
+                        <rect x="0" y="80" width="1000" height="60" fill="rgba(255,255,255,0.03)" /> <!-- 학동로 (Hakdong-ro) -->
+                        <text x="50" y="120" fill="rgba(255,255,255,0.2)" font-size="24" font-weight="800">학동로 (HAKDONG-RO)</text>
+                        
+                        <rect x="0" y="520" width="1000" height="40" fill="rgba(255,255,255,0.02)" /> <!-- 선릉로 130길 -->
+                        <text x="50" y="545" fill="rgba(255,255,255,0.15)" font-size="18">선릉로 130길 (SEONREUNG-RO 130-GIL)</text>
+
+                        <rect x="750" y="140" width="40" height="860" fill="rgba(255,255,255,0.02)" /> <!-- 학동로 64길 -->
+                        <text x="765" y="900" fill="rgba(255,255,255,0.1)" font-size="16" transform="rotate(-90 765, 900)">학동로 64길</text>
+                    </g>
+
+                    <!-- Station Reference -->
+                    <g class="station" transform="translate(850, 100)">
+                        <circle r="30" fill="rgba(201, 162, 109, 0.15)" stroke="var(--primary)" stroke-width="2" />
+                        <text y="5" text-anchor="middle" fill="var(--primary)" font-size="14" font-weight="900">7/수인</text>
+                        <text y="45" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="14">강남구청역</text>
+                    </g>
+
+                    <!-- Complexes (True Shape Schematic) -->
+                    <!-- World Tower: Simple Block -->
+                    <path id="complex-world-tower" d="M 120 180 H 260 V 420 H 120 Z" class="complex-site" data-name="월드타워" />
+                    
+                    <!-- CLK: Vertical Block -->
+                    <path id="complex-clk" d="M 280 180 H 380 V 450 H 280 Z" class="complex-site" data-name="CLK" />
+                    
+                    <!-- Seoktap: L-Shape (Accurate to DISCO) -->
+                    <path id="complex-seoktap" d="M 400 180 H 720 V 380 H 520 V 500 H 400 Z" class="complex-site" data-name="석탑" />
+                    
+                    <!-- Hansol: Tall L-Shape (Accurate to DISCO) -->
+                    <path id="complex-hansol" d="M 800 180 H 950 V 700 H 840 V 350 H 800 Z" class="complex-site" data-name="한솔" />
+                    
+                    <!-- Pureunsol: Eastern Rectangular -->
+                    <path id="complex-pureunsol" d="M 150 50 H 450 V 100 H 150 Z" transform="translate(680, 30) rotate(15)" style="display:none;" /> <!-- will place elsewhere -->
+                    <path id="complex-pureunsol" d="M 820 400 H 980 V 650 H 820 Z" class="complex-site" data-name="푸른솔진흥" />
+
+                    <!-- Woojung: Central square -->
+                    <path id="complex-woojung" d="M 280 580 H 480 V 820 H 280 Z" class="complex-site" data-name="우정에쉐르" />
+                    
+                    <!-- Hyundai: Large J/Hook Shape (Accurate to DISCO) -->
+                    <path id="complex-hyundai" d="M 120 580 H 260 V 750 H 720 V 950 H 120 V 850 H 120 Z" class="complex-site" data-name="현대" />
+                    <path id="complex-hyundai-wing" d="M 500 580 H 720 V 950 H 500 Z" class="complex-site no-stroke" data-name="현대" /> <!-- combined in app.js -->
+
+                    <!-- Strategic Overlay (Merged Vision Hint) -->
+                    <rect id="mega-town-boundary" x="100" y="160" width="880" height="820" fill="none" stroke="rgba(201, 162, 109, 0.1)" stroke-width="2" stroke-dasharray="10 10" />
+                </svg>
+            </div>
+        </main>
+
+        <!-- Value Vision: ROI & Synergy Dashboard -->
+        <section class="value-engine">
+            <div class="section-title">
+                <span class="sheet-sub">STRATEGIC ROI</span>
+                <h2>단지 통합의 압도적 시너지</h2>
             </div>
             
-            <div class="why-grid mt-12">
-                <div class="why-card clickable" data-modal-target="modal-gbc" data-aos="fade-up" data-aos-delay="200">
-                    <div class="icon-box"><i class="ph ph-subway"></i></div>
-                    <h3>압도적인 초역세권 입지 <i class="ph ph-arrow-up-right"></i></h3>
-                    <p>강남구청역(7호선, 수인분당선)과 청담역(7호선)을 도보로 이용하는 쿼드러플 역세권의 완벽한 인프라를 그대로 독점합니다.</p>
-                </div>
-                <div class="why-card clickable" data-modal-target="modal-synergy" data-aos="fade-up" data-aos-delay="300">
-                    <div class="icon-box"><i class="ph ph-chart-line-up"></i></div>
-                    <h3>규모의 경제가 만드는 프리미엄 <i class="ph ph-arrow-up-right"></i></h3>
-                    <p>소규모 나홀로 아파트의 한계를 넘어, 강남권 랜드마크 필수 조건인 초대형 조경과 인피니티 풀, 고품격 스카이라운지 조성이 가능해집니다.</p>
-                </div>
-                <div class="why-card clickable" data-modal-target="modal-masterplan" data-aos="fade-up" data-aos-delay="400">
-                    <div class="icon-box"><i class="ph ph-key"></i></div>
-                    <h3>선택의 폭을 넓히는 다양한 진입로 <i class="ph ph-arrow-up-right"></i></h3>
-                    <p>안정적인 대지지분을 뽐내는 '한솔', '석탑'부터 소액 투자로 랜드마크 대단지 탑승권을 쥘 수 있는 '우정에쉐르', '월드타워'까지 성향에 맞춘 다채로운 매물이 존재합니다.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Synergy Section -->
-    <section class="synergy" id="synergy">
-        <div class="synergy-bg" style="background-image: url('assets/synergy.png');"></div>
-        <div class="synergy-overlay"></div>
-        <div class="container section-content">
-            <div class="section-header" data-aos="fade-right">
-                <span class="sub-heading">THE GREAT SYNERGY</span>
-                <h2>7개 단지의 위대한 시너지</h2>
-                <div class="divider"></div>
-            </div>
-            <div class="text-content" data-aos="fade-up" data-aos-delay="200">
-                <p>각자 재건축 시 발생할 수 있는 시공 제약과 한계를 넘어, 7개 단지가 모여 강남 최고의 스카이라인을 완성합니다.</p>
-                <p>초대형 규모만이 누릴 수 있는 압도적인 최고급 커뮤니티(인피니티 풀, 조식 서비스 등)와 스카이브릿지로 전에 없던 혁신적인 프리미엄을 창출합니다.</p>
-            </div>
-            <div class="feature-grid mt-12">
-                <div class="feature-card" data-aos="zoom-in" data-aos-delay="300">
-                    <i class="ph ph-swimming-pool"></i>
-                    <h3>루프탑 인피니티 풀</h3>
-                </div>
-                <div class="feature-card" data-aos="zoom-in" data-aos-delay="400">
-                    <i class="ph ph-coffee"></i>
-                    <h3>프리미엄 조식 라운지</h3>
-                </div>
-                <div class="feature-card" data-aos="zoom-in" data-aos-delay="500">
-                    <i class="ph ph-buildings"></i>
-                    <h3>시그니처 스카이브릿지</h3>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Master Plan Section -->
-    <section class="master-plan section-padding" id="plan">
-        <div class="container section-content center-content">
-            <div class="section-header center" data-aos="fade-up">
-                <span class="sub-heading">FUTURE VALUE</span>
-                <h2>진화하는 미래 가치, 3가지 마스터플랜</h2>
-                <div class="divider center"></div>
-                <p class="desc mt-4">단조로운 재건축을 넘어 자산 가치를 극대화할 수 있는 거대한 청사진</p>
-            </div>
-            <div class="text-content center mt-8 clickable-text" data-modal-target="modal-masterplan" data-aos="fade-up" data-aos-delay="200">
-                <p>단지 사이의 도로를 없애고 완벽히 하나의 부지로 통합하여 강남의 상징인 압구정을 넘볼 수 있는 초대형 프리미엄 단지로 탄생하는 전면 철거 방식부터, 강남구청 신청사 부지 및 인근 상업지구와 연계하여 도쿄의 '아자부다이 힐스'에 버금가는 주거·상업·행정 복합 랜드마크로 도약하는 방안까지 열려 있습니다.</p>
-                <p class="text-gold mt-4" style="font-size: 1.3rem;"><strong>어떤 선택을 하든 강남 최중심부의 희소성 있는 하이엔드 자산으로 퀀텀점프할 것입니다. <i class="ph ph-arrow-up-right"></i></strong></p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Value Explosion Section -->
-    <section class="value-explosion" id="value">
-        <div class="container">
-            <div class="section-header center" data-aos="fade-up">
-                <span class="sub-heading">ASSET VALUE EXPLOSION</span>
-                <h2>압도적인 가치 상승의 기회</h2>
-                <div class="divider center"></div>
-            </div>
-            <div class="comparison-cards">
-                <div class="card current" data-aos="fade-right" data-aos-delay="200">
-                    <div class="card-title">현재 가치 (20평대, 30평대)</div>
-                    <div class="price" style="font-size: 3rem;">20억 <span class="sign">전후</span></div>
-                    <ul class="features mt-4">
-                        <li><i class="ph ph-x-circle"></i> 나홀로 단지의 낮은 인지도</li>
-                        <li><i class="ph ph-x-circle"></i> 파편화된 자산 가치</li>
-                        <li><i class="ph ph-x-circle"></i> 커뮤니티 시설의 한계</li>
-                    </ul>
-                </div>
-                <div class="vs-badge" data-aos="zoom-in" data-aos-delay="400">VS</div>
-                <div class="card integrated" data-aos="fade-left" data-aos-delay="400">
-                    <div class="card-title text-gold">통합 재건축 시 (예상)</div>
-                    <div class="price text-gold" style="font-size: 3rem;">50억<span style="font-size:1.5rem"> ~ </span>100억</div>
-                    <ul class="features mt-4">
-                        <li><i class="ph ph-check-circle text-gold"></i> 초대형 랜드마크 스카이라인 구축</li>
-                        <li><i class="ph ph-check-circle text-gold"></i> GBC 직주근접 최고 프리미엄 확보</li>
-                        <li><i class="ph ph-check-circle text-gold"></i> 압도적인 자산가치 수직 상승</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Real-Time Tracker Section -->
-    <section class="live-tracker-section" id="live-tracker">
-        <div class="container section-content center-content">
-            <div class="section-header center" data-aos="fade-up">
-                <div class="live-badge">
-                    <span class="live-dot"></span> REAL-TIME LIVE DATA
-                </div>
-                <h2>7개 단지 평형별 실거래가 현황</h2>
-                <div class="divider center"></div>
-                <p class="desc mt-4">삼성동 통합재건축 구역 내 7개 단지의 매일 업데이트되는 가장 최근의 실거래가 추이입니다.<br>최상의 투자 타이밍을 놓치지 마세요.</p>
-            </div>
-            
-            <div class="market-dashboard" data-aos="fade-up" data-aos-delay="200">
-                <div id="map" class="interactive-map"></div>
-                
-                <div class="transaction-container mt-12">
-                    <div class="transaction-header">
-                        <h3><i class="ph ph-calendar-check"></i> 연도별 실거래 내역</h3>
-                        <div class="year-tabs" id="year-tabs">
-                            <button class="tab-btn active" data-year="2026">2026</button>
-                            <button class="tab-btn" data-year="2025">2025</button>
-                            <button class="tab-btn" data-year="2024">2024</button>
-                            <button class="tab-btn" data-year="2023">2023</button>
-                            <button class="tab-btn" data-year="2022">2022</button>
+            <div class="value-card-stack">
+                <div class="value-compare-card">
+                    <div class="vc-header">자산 가치 프리미엄 전망</div>
+                    <div class="vc-body">
+                        <div class="compare-row">
+                            <span class="c-label">현재 (개별 재건축)</span>
+                            <span class="c-val">평당 8,500~9,000만</span>
+                        </div>
+                        <div class="compare-arrow"><i class="ph ph-trend-up"></i> +95% Expected</div>
+                        <div class="compare-row highlight">
+                            <span class="c-label">통합 메가타운 비전</span>
+                            <span class="c-val">평당 1.8억~2.1억</span>
                         </div>
                     </div>
-                    <div id="transaction-list" class="transaction-list-v2">
-                        <div class="loading-state">데이터를 집계 중입니다...</div>
+                </div>
+
+                <div class="synergy-meter-box">
+                    <div class="vc-header">공동 개발 규모의 경제</div>
+                    <div class="meter-content">
+                        <div class="meter-circle">
+                            <span class="m-big">34,000</span>
+                            <span class="m-small">㎡ 통합 부지 확보</span>
+                        </div>
+                        <ul class="synergy-list">
+                            <li><i class="ph ph-check-circle"></i> 1군 시그니처 브랜드 유치 (래미안/아크로 등)</li>
+                            <li><i class="ph ph-check-circle"></i> 루프탑 인피니티 풀 & 스카이 라운지</li>
+                            <li><i class="ph ph-check-circle"></i> 통합 발주를 통한 공동 이익 극대화</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Global Vision: Azabudai Hills Benchmark -->
+        <section class="global-vision">
+            <div class="section-title center">
+                <span class="sheet-sub">GLOBAL STANDARD</span>
+                <h2>도쿄 아자부다이 힐스의 <br>미래를 삼성동에서</h2>
+            </div>
+            
+            <div class="benchmark-carousel">
+                <div class="benchmark-card">
+                    <div class="b-img-placeholder" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&q=80&w=600'); background-size: cover;">
+                        <span class="b-location">TOKYO</span>
+                        <span class="b-name">Azabudai Hills</span>
+                    </div>
+                    <p>도심 파편화된 부지를 통합하여 일본 최고의 부촌이자 문화 랜드마크로 재탄생</p>
+                </div>
+                <div class="benchmark-card">
+                    <div class="b-img-placeholder" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1517733925043-4731bd9dc14d?auto=format&fit=crop&q=80&w=600'); background-size: cover;">
+                        <span class="b-location">SAMSUNG-DONG</span>
+                        <span class="b-name">Mega Town</span>
+                    </div>
+                    <p>GBC와 GTX의 맥을 잇는 대한민국 유일의 하이엔드 통합 미니 신도시</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Sheet HUD (iPhone Style) -->
+        <div id="bottom-sheet" class="sheet-closed">
+            <div class="sheet-handle-area" id="sheet-trigger">
+                <div class="sheet-bar"></div>
+            </div>
+            <div class="sheet-body">
+                <div class="sheet-header">
+                    <div class="title-group">
+                        <span class="sheet-sub">SAMSUNG-DONG MEGA TOWN UNIT</span>
+                        <h2 id="sheet-title">단지를 선택하십시오</h2>
+                    </div>
+                    <div class="sheet-actions">
+                        <button class="action-btn active" id="btn-basic">기본정보</button>
+                        <button class="action-btn" id="btn-vision">통합비전</button>
+                    </div>
+                </div>
+                <div class="sheet-main-info">
+                    <div class="metric-row">
+                        <div class="metric">
+                            <span class="m-label">현세대수</span>
+                            <span class="m-value" id="val-households">-</span>
+                        </div>
+                        <div class="metric">
+                            <span class="m-label">현재 용적률</span>
+                            <span class="m-value" id="val-far">-</span>
+                        </div>
+                        <div class="metric">
+                            <span class="m-label">대지면적</span>
+                            <span class="m-value" id="val-area">-</span>
+                        </div>
+                    </div>
+                    <div class="strategy-box">
+                        <div class="s-label"><i class="ph ph-lightning"></i> 통합 재건축 시너지 효과</div>
+                        <p id="val-strategy">지도의 단지를 터치하면 개별 제원과 통합 시 예상되는 가치 상승분을 분석해 드립니다.</p>
+                    </div>
+                    <div class="action-footer">
+                        <button class="cta-btn">상세 사업성 분석 리포트 보기 <i class="ph ph-arrow-right"></i></button>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Safety and Timing Section -->
-    <section class="safety-timing section-padding" id="safety">
-        <div class="container">
-            <div class="grid-2-col">
-                <div class="info-block" data-aos="fade-right">
-                    <span class="sub-heading">PERFECT SAFETY</span>
-                    <h2>완벽한 안전 장치,<br>빠르고 투명한 사업 추진</h2>
-                    <div class="divider"></div>
-                    <ul class="check-list mt-8">
-                        <li class="clickable" data-modal-target="modal-safety">
-                            <i class="ph-fill ph-check-circle text-gold"></i>
-                            <div>
-                                <strong>독립채산제 적용 <i class="ph ph-arrow-up-right"></i></strong>
-                                <p>통합 재건축의 가장 큰 리스크인 단지별 이해관계 충돌을 막기 위해 서초구 '래미안 원베일리' 성공 모델을 도입합니다. 각 단지의 고유 자산 가치와 대지지분을 철저하고 투명하게 보호합니다.</p>
-                            </div>
-                        </li>
-                        <li class="mt-4 clickable" data-modal-target="modal-safety">
-                            <i class="ph-fill ph-check-circle text-gold"></i>
-                            <div>
-                                <strong>제자리 재건축 원칙 <i class="ph ph-arrow-up-right"></i></strong>
-                                <p>기존 거주 위치를 보장하여 동 배정 분쟁을 원천 차단하고 인허가 속도를 극대화합니다. 주변 단지보다 더 빠르고 안전하게 랜드마크 입주 티켓을 거머쥘 수 있습니다.</p>
-                            </div>
-                        </li>
-                    </ul>
+        <!-- Fixed Bottom CTA -->
+        <div class="fixed-cta-bar">
+            <div class="cta-inner">
+                <div class="cta-text">
+                    <strong>추진위와 상담하기</strong>
+                    <span>동의율 68% 돌파 중</span>
                 </div>
-                
-                <div class="info-block highlight-box" data-aos="fade-left" data-aos-delay="200">
-                    <span class="sub-heading text-action">GOLDEN TIME</span>
-                    <h2>지금이 가장 확실한<br>투자 타이밍</h2>
-                    <div class="divider"></div>
-                    <p class="mt-4 text-dim">현재 통합 재건축은 추진위 구성을 위한 초기 단계에 진입해 있습니다.</p>
-                    <p class="mt-4 text-dim">마스터플랜이 확정되고 1군 건설사의 하이엔드 브랜드 깃발이 꽂히는 순간, 이 7개 단지의 진입 장벽은 현재와 비교할 수 없을 만큼 가파르게 높아질 것입니다.</p>
-                    <p class="mt-6 text-gold" style="font-size: 1.15rem; line-height: 1.6;"><strong>강남 한복판, 가장 확실한 안전마진을 확보하고 미래 강남의 대장주를 선점할 수 있는 골든타임은 바로 지금입니다.</strong></p>
-                </div>
+                <button class="nav-btn-gold">문의하기</button>
             </div>
         </div>
-    </section>
 
-    <!-- Private Park Section -->
-    <section class="private-park" id="park">
-        <div class="park-bg" style="background-image: url('assets/park.png');"></div>
-        <div class="park-overlay"></div>
-        <div class="container section-content center-content">
-            <div class="section-header center" data-aos="fade-up">
-                <h2>하이엔드 커뮤니티와 품격 있는 프라이빗 파크</h2>
-                <div class="divider center"></div>
-            </div>
-            <div class="text-content center" data-aos="fade-up" data-aos-delay="200">
-                <p>단지 내 시그니처 폭포와 호텔급 드롭오프 존, 입주민 전용 럭셔리 중앙 공원은 바쁜 삼성동 도심 속에서 완벽한 휴식과 차원이 다른 자부심을 선사합니다.</p>
-                <p>강남 한복판에서 누리는 프라이빗 리조트, 오직 통합 재건축만이 보여드릴 수 있는 힘입니다.</p>
-            </div>
-            
-            <button class="secondary-btn mt-12" data-aos="zoom-in" data-aos-delay="400">
-                <span>참여 동의서 다운로드</span> <i class="ph ph-download-simple"></i>
-            </button>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">삼성동 통합재건축</div>
-                <div class="footer-info">
-                    <p class="committee-full">푸른솔진흥 · 한솔 · 석탑 · 현대 · CLK · 월드타워 · 우정에쉐르 통합재건축 추진위원회</p>
-                    <p class="disclaimer">본 예상 가치 및 조감도는 통합 재건축 비전 공유를 위한 가설적 예시입니다.</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Modals -->
-    <div class="modal-overlay" id="modal-gbc">
-        <div class="modal-content">
-            <button class="modal-close"><i class="ph ph-x"></i></button>
-            <div class="modal-header">
-                <span class="sub-heading">INFRASTRUCTURE</span>
-                <h2>삼성동 메가 타운의 교통 및 상업 인프라 호재</h2>
-            </div>
-            <div class="modal-body">
-                <img src="assets/modal_gbc.png" alt="GBC 조감도" class="modal-img">
-                <p>강남구 삼성동은 명실상부한 대한민국 최고의 교통 및 업무 중심지로 거듭나고 있습니다. 글로벌비즈니스센터(GBC)가 완공되면 약 120만 명의 고용 창출 효과와 최상급 비즈니스 수요가 예상되며, 삼성동 일대의 주거 수요는 폭발적으로 증가할 것입니다.</p>
-                <div class="feature-box">
-                    <h4>영동대로 지하공간 복합개발</h4>
-                    <p>삼성역과 봉은사역을 잇는 거대한 지하 공간에 GTX-A/C노선, 위례신사선, 버스환승센터가 들어서 세계 최고 수준의 대중교통 복합환승센터로 재탄생합니다. 삼성동 7개 통합 단지는 구청역 초역세권 프리미엄에 더해 이러한 광역 교통망을 도보권으로 누릴 수 있는 유일무이한 입지입니다.</p>
-                </div>
-            </div>
-        </div>
     </div>
 
-    <div class="modal-overlay" id="modal-synergy">
-        <div class="modal-content">
-            <button class="modal-close"><i class="ph ph-x"></i></button>
-            <div class="modal-header">
-                <span class="sub-heading">HIGH-END COMMUNITY</span>
-                <h2>초대형 스케일이 선사하는 하이엔드 라이프</h2>
-            </div>
-            <div class="modal-body">
-                <p>개별 나홀로 재건축으로는 절대 구현할 수 없는 규모의 경제를 통해, 하이엔드 1군 건설사가 제시하는 최상급 커뮤니티 시설을 삼성동 통합 재건축 단지에 실현합니다.</p>
-                <div class="feature-box mt-4">
-                    <i class="ph ph-swimming-pool text-gold" style="font-size:2rem"></i>
-                    <h4>스카이 인피니티 풀 & 피트니스</h4>
-                    <p>도심의 스카이라인을 한눈에 내려다보며 여유를 즐길 수 있는 6성급 호텔 스케일의 루프탑 인피니티 풀을 계획합니다. 피트니스 시설 역시 최고급 테크노짐 장비를 바탕으로 프라이빗하게 운영됩니다.</p>
-                </div>
-                <div class="feature-box mt-4">
-                    <i class="ph ph-coffee text-gold" style="font-size:2rem"></i>
-                    <h4>프리미엄 조식 및 컨시어지 서비스</h4>
-                    <p>입주민 전용 럭셔리 라운지에서 제공되는 프리미엄 다이닝 조식 서비스, 일상의 모든 번거로움을 해결해 주는 호텔급 컨시어지 데스크가 삼성동 랜드마크의 품격을 증명합니다.</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Background Cinematic Gradient -->
+    <div class="cinematic-bg"></div>
 
-    <div class="modal-overlay" id="modal-masterplan">
-        <div class="modal-content">
-            <button class="modal-close"><i class="ph ph-x"></i></button>
-            <div class="modal-header">
-                <span class="sub-heading">FUTURE SCENARIO</span>
-                <h2>도쿄 아자부다이 힐스를 뛰어넘을 청사진</h2>
-            </div>
-            <div class="modal-body">
-                <p>단순한 주거 단지 재건축이 아닙니다. 주변 상업지역과 강남구청역 행정 타운이 완벽하게 연계되는 초대형 입체 도시(Compact City) 랜드마크로의 도약을 준비합니다.</p>
-                <div class="feature-box">
-                    <h4>전면 철거 및 완전 통합 플랜</h4>
-                    <p>단지 사이를 가로막고 있는 도로를 지하화 또는 폐도 처리하여 완벽히 하나로 이어진 초대형 부지로 전환합니다. 이를 통해 지상 공간에는 압구정 재건축에 필적하는 어마어마한 규모의 프라이빗 센트럴 파크가 조성되며, 녹지와 하이엔드 상위 브랜드가 결합된 최고의 작품이 탄생합니다.</p>
-                </div>
-                <div class="feature-box mt-4">
-                    <h4>최고의 사업성을 위한 유연한 전락</h4>
-                    <p>주거 전용 하이엔드를 향한 정통 재건축부터 단지 내 고급 상업/행정 시설을 유치해 복합 랜드마크로 용적률 인센티브를 극대화하는 방안까지, 조합원의 최대 이익을 실현하기 위한 모든 가능성이 입체적으로 검토되고 있습니다.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="modal-safety">
-        <div class="modal-content">
-            <button class="modal-close"><i class="ph ph-x"></i></button>
-            <div class="modal-header">
-                <span class="sub-heading">INDEPENDENT ACCOUNTING</span>
-                <h2>가장 투명하고 빠른 '독립채산제' 적용</h2>
-            </div>
-            <div class="modal-body">
-                <p>여러 단지가 뭉칠 때 발생하는 '내 재산권 침해'에 대한 우려를 원천적으로 종식시킬 해답, 바로 <strong>독립채산제</strong>입니다.</p>
-                <div class="feature-box">
-                    <h4>독립채산제란 무엇인가요?</h4>
-                    <p>각 아파트 단지별로 가지고 있는 현재의 대지지분, 감정평가 금액, 그리고 발생할 분담금을 철저히 분리하여 산정하는 선진화된 회계 방식입니다. 내가 속한 단지의 가치를 다른 단지와 섞지 않고 100% 온전히 보존받을 수 있습니다. 성공적으로 완공된 래미안 원베일리(신반포3차·경남아파트 통합) 역시 이 방식을 통해 내부 갈등을 없애고 역대급 속도로 사업을 추진할 수 있었습니다.</p>
-                </div>
-                <div class="feature-box mt-4">
-                    <h4>제자리 재건축으로 인한 동 배정 분쟁 방지</h4>
-                    <p>통합 재건축 시 기존 소유주들이 원래 거주하던 위치(로얄동, 도로변 등)의 특성을 최대한 반영하여 신축 아파트의 동기초 배정이 이루어지므로, 불필요한 분쟁 없이 인허가 절차가 빛의 속도로 진행됩니다.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

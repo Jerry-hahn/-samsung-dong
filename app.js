@@ -1,192 +1,140 @@
-// Initialize AOS Plugin
+const complexData = {
+    'complex-world-tower': { 
+        name: '월드타워', households: '46세대', far: '402.04%', area: '1,666㎡', 
+        strategy: '학동로변 최북단 입지로, 통합 개발 시 상업 및 업무 시설 배치의 핵심 관문 역할을 수행합니다.' 
+    },
+    'complex-clk': { 
+        name: 'CLK', households: '12세대', far: '295.14%', area: '592.5㎡', 
+        strategy: '소규모 단지이나 석탑/한솔 사이의 연결 고리로, 필지 합병을 통한 용적률 인센티브 확보의 필수 요충지입니다.' 
+    },
+    'complex-seoktap': { 
+        name: '석탑', households: '139세대', far: '298.34%', area: '3,859.7㎡', 
+        strategy: '중심부 L자형 필지로, 통합 시 커뮤니티 광장 및 대규모 조경 공간의 핵심부로 전환되어 단지 품격을 결정합니다.' 
+    },
+    'complex-hansol': { 
+        name: '한솔', households: '263세대', far: '270.0%', area: '3,745.5㎡', 
+        strategy: '동측 강남구청역 방향의 대규모 단지로, 통합 시 역세권 접근성을 극대화하는 주거 주동 배치의 중심축이 됩니다.' 
+    },
+    'complex-pureunsol': { 
+        name: '푸른솔진흥', households: '61세대', far: '244.31%', area: '2,131㎡', 
+        strategy: '최동단 독립 필지로, 통합 개발 시 숲세권 프라이빗 동 또는 특화 평형 배치를 통해 희소 가치를 창출합니다.' 
+    },
+    'complex-hyundai': { 
+        name: '현대', households: '396세대', far: '307.07%', area: '6,303.4㎡', 
+        strategy: '최남단 대규모 필지로, 선릉로와 주거지를 잇는 랜드마크 주동 배치가 가능하며 통합 단지의 규모감을 완성합니다.' 
+    },
+    'complex-woojung': { 
+        name: '우정에쉐르', households: '40세대', far: '296.84%', area: '1,120㎡', 
+        strategy: '남서측 진입로에 위치하여 통합 단지의 시그니처 게이트 및 연도형 상가 배치를 통한 가치 상승이 기대됩니다.' 
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-    AOS.init({
-        once: true,
-        offset: 50,
-        duration: 800,
-        easing: 'ease-in-out',
-    });
+    const sites = document.querySelectorAll('.complex-site');
+    const sheet = document.getElementById('bottom-sheet');
+    const sheetTitle = document.getElementById('sheet-title');
+    const valHouseholds = document.getElementById('val-households');
+    const valFar = document.getElementById('val-far');
+    const valArea = document.getElementById('val-area');
+    const valStrategy = document.getElementById('val-strategy');
+    const sheetTrigger = document.getElementById('sheet-trigger');
 
-    // Navbar Scroll Effect
-    const navbar = document.getElementById('navbar');
-    
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
+    // Bottom Sheet Interaction Logic
+    let isSheetOpen = false;
+
+    const toggleSheet = (forceState) => {
+        isSheetOpen = forceState !== undefined ? forceState : !isSheetOpen;
+        if (isSheetOpen) {
+            sheet.classList.remove('sheet-closed');
+            sheet.classList.add('sheet-open');
         } else {
-            navbar.classList.add('scrolled'); // actually we want glassmorphism always or partially? let's make it toggle
-            navbar.classList.remove('scrolled');
-            if(window.scrollY > 50) {
-                 navbar.classList.add('scrolled');
+            sheet.classList.add('sheet-closed');
+            sheet.classList.remove('sheet-open');
+        }
+    };
+
+    sheetTrigger.addEventListener('click', () => toggleSheet());
+
+    // Site Click Handler
+    sites.forEach(site => {
+        site.addEventListener('click', (e) => {
+            const rawId = site.id;
+            // Handle multi-part sites like Hyundai
+            const complexId = rawId.includes('hyundai') ? 'complex-hyundai' : rawId;
+            const data = complexData[complexId];
+
+            if (!data) return;
+
+            // Update Active Class for all parts of the complex
+            sites.forEach(s => s.classList.remove('active'));
+            if (complexId === 'complex-hyundai') {
+                document.querySelectorAll('[id*="hyundai"]').forEach(s => s.classList.add('active'));
+            } else {
+                site.classList.add('active');
             }
+
+            // Update UI
+            sheetTitle.textContent = data.name;
+            valHouseholds.textContent = data.households;
+            valFar.textContent = data.far;
+            valArea.textContent = data.area;
+            valStrategy.textContent = data.strategy;
+
+            // Open Sheet automatically on selection
+            toggleSheet(true);
+
+            // Haptic Feedback (Mobile fallback)
+            if (window.navigator.vibrate) window.navigator.vibrate(10);
+        });
+    });
+
+    // Close sheet when clicking on map background
+    document.getElementById('blueprint-svg').addEventListener('click', (e) => {
+        if (e.target.tagName !== 'path') {
+            toggleSheet(false);
+            sites.forEach(s => s.classList.remove('active'));
         }
     });
-    
-    // Ensure accurate initial state
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
+
+    // Swipe Logic for Bottom Sheet (Simple touch tracking)
+    let touchStartY = 0;
+    sheetTrigger.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches[0].clientY;
+    });
+
+    sheetTrigger.addEventListener('touchend', (e) => {
+        const touchEndY = e.changedTouches[0].clientY;
+        if (touchStartY - touchEndY > 50) {
+            toggleSheet(true); // Swipe Up
+        } else if (touchEndY - touchStartY > 50) {
+            toggleSheet(false); // Swipe Down
+        }
+    // Counter Animations
+    const animateCounter = (el, target, duration = 2000) => {
+        let start = 0;
+        constステップ = (timestamp) => {
+            if (!start) start = timestamp;
+            const progress = Math.min((timestamp - start) / duration, 1);
+            const current = (progress * target).toFixed(target % 1 === 0 ? 0 : 1);
+            el.textContent = current;
+            if (progress < 1) {
+                window.requestAnimationFrame(ステップ);
+            }
+        };
+        window.requestAnimationFrame(ステップ);
+    };
+
+    const counterEl = document.querySelector('.counter');
+    if (counterEl) animateCounter(counterEl, 68.4);
+
+    const visitorEl = document.getElementById('live-visitors');
+    if (visitorEl) {
+        animateCounter(visitorEl, 846);
+        // Randomly fluctuate visitors
+        setInterval(() => {
+            const current = parseInt(visitorEl.textContent);
+            const delta = Math.floor(Math.random() * 5) - 2;
+            visitorEl.textContent = Math.max(800, current + delta);
+        }, 3000);
     }
-
-    // Modal Logic
-    const modalTriggers = document.querySelectorAll('[data-modal-target]');
-    const modals = document.querySelectorAll('.modal-overlay');
-    const closeButtons = document.querySelectorAll('.modal-close');
-
-    // Open Modal
-    modalTriggers.forEach(trigger => {
-        trigger.addEventListener('click', () => {
-            const targetId = trigger.getAttribute('data-modal-target');
-            const targetModal = document.getElementById(targetId);
-            if (targetModal) {
-                targetModal.classList.add('active');
-                document.body.classList.add('modal-open');
-            }
-        });
-    });
-
-    // Close Modal via button
-    closeButtons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const modal = btn.closest('.modal-overlay');
-            if (modal) {
-                modal.classList.remove('active');
-                document.body.classList.remove('modal-open');
-            }
-        });
-    });
-
-    // Close Modal by clicking outside
-    modals.forEach(modal => {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('active');
-                document.body.classList.remove('modal-open');
-            }
-        });
-    });
-
-    // 7개 단지 최종 초정밀 핀포인트 위치 (네이버 지도 데이터 기반)
-    const complexes = [
-        { id: '월드타워', name: '월드타워', lat: 37.5174513, lng: 127.0440789 },
-        { id: 'CLK', name: 'CLK', lat: 37.5175294, lng: 127.0443834 },
-        { id: '우정', name: '우정', lat: 37.5172908, lng: 127.0445214 },
-        { id: '석탑', name: '석탑', lat: 37.5173648, lng: 127.0447655 },
-        { id: '현대', name: '현대', lat: 37.5169341, lng: 127.0446034 },
-        { id: '한솔', name: '한솔', lat: 37.5175568, lng: 127.0458282 },
-        { id: '푸른솔', name: '푸른솔', lat: 37.5177284, lng: 127.0461070 }
-    ];
-
-    let allTransactions = [];
-
-    // Real-Time API Map & Transaction Linkage
-    async function initDashboard() {
-        const mapContainer = document.getElementById('map');
-        if (!mapContainer) return;
-
-        // 지도 초기화 (기본 뷰는 fitBounds로 자동 조정됨)
-        const map = L.map('map', {
-            zoomControl: false,
-            scrollWheelZoom: false
-        });
-
-        // 다크 모드 타일 설정
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; OpenStreetMap &copy; CARTO'
-        }).addTo(map);
-
-        const markers = [];
-        const bounds = L.latLngBounds();
-
-        // 7개 단지 위치에 점(Dot) 마커 배치 및 바운드 확장
-        complexes.forEach(comp => {
-            const dotIcon = L.divIcon({
-                className: 'custom-dot-icon',
-                html: `<div class="dot-marker" title="${comp.name}"></div>`,
-                iconSize: [14, 14],
-                iconAnchor: [7, 7]
-            });
-
-            const marker = L.marker([comp.lat, comp.lng], { icon: dotIcon })
-                .addTo(map)
-                .bindPopup(`<strong>${comp.name}</strong>`);
-            
-            markers.push(marker);
-            bounds.extend([comp.lat, comp.lng]);
-        });
-
-        // 7개 단지가 모두 보이도록 자동 줌/중심 조정
-        map.fitBounds(bounds, { padding: [50, 50] });
-
-        try {
-            // 1단계: 넷리파이 서버리스 함수 호출 시도
-            let response = await fetch('/.netlify/functions/getAptPrices');
-            
-            // 2단계: 실패 시(넷리파이 플랜 만료 등) 로컬 JSON 파일로 폴백
-            if (!response.ok) {
-                console.warn('Netlify API unavailable, falling back to local data...');
-                response = await fetch('./realtime-data.json');
-            }
-            
-            if (!response.ok) throw new Error('All data sources failed');
-            
-            allTransactions = await response.json();
-            
-            // 데이터 수신 후 초기 렌더링 (2026년 기준)
-            renderYear('2026');
-            
-        } catch(err) {
-            console.error('Data Loading Error:', err);
-            const listContainer = document.getElementById('transaction-list');
-            if (listContainer) listContainer.innerHTML = '<div class="loading-state">데이터를 불러오는 중 오류가 발생했습니다. (오프라인 모드 확인 필요)</div>';
-        }
-    }
-
-    // 연도별 탭 클릭 이벤트 바인딩
-    document.getElementById('year-tabs')?.addEventListener('click', (e) => {
-        const btn = e.target.closest('.tab-btn');
-        if (!btn) return;
-
-        // UI 업데이트
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        const selectedYear = btn.dataset.year;
-        renderYear(selectedYear);
-    });
-
-    function renderYear(year) {
-        const listContainer = document.getElementById('transaction-list');
-        if (!listContainer) return;
-
-        // 해당 연도 데이터 필터링 및 최신순 정렬
-        const filtered = allTransactions
-            .filter(t => t.year === year)
-            .sort((a, b) => b.dateVal - a.dateVal);
-
-        if (allTransactions.length === 0) {
-            listContainer.innerHTML = `<div class="loading-state">데이터를 불러오는 중입니다...</div>`;
-            return;
-        }
-
-        if (filtered.length === 0) {
-            listContainer.innerHTML = `<div class="loading-state">${year}년도 실거래 데이터가 없습니다.</div>`;
-            return;
-        }
-
-        listContainer.innerHTML = filtered.map(t => `
-            <div class="transaction-card">
-                <div class="card-info">
-                    <div class="apt-name">${t.apt}</div>
-                    <div class="apt-meta">${t.py} • ${t.dateStr}</div>
-                </div>
-                <div class="card-price">
-                    <span class="price-val">${t.price}</span>
-                    <span class="deal-date">실거래완료</span>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    // Initialize Dashboard
-    initDashboard();
 });
