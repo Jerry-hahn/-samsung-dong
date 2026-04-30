@@ -137,4 +137,23 @@ document.addEventListener('DOMContentLoaded', () => {
             visitorEl.textContent = Math.max(800, current + delta);
         }, 3000);
     }
+
+    // Scroll Reveal Animation (Intersection Observer)
+    const revealElements = document.querySelectorAll('.reveal-up');
+    const revealOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px"
+    };
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+        });
+    }, revealOptions);
+
+    revealElements.forEach(el => {
+        revealObserver.observe(el);
+    });
 });
