@@ -1,0 +1,127 @@
+{
+  "강남구": [
+    {"name": "대치은마", "complexNo": "1148", "size": "84㎡"},
+    {"name": "래미안대치팰리스", "complexNo": "103859", "size": "84㎡"},
+    {"name": "도곡렉슬", "complexNo": "11082", "size": "84㎡"}
+  ],
+  "서초구": [
+    {"name": "반포자이", "complexNo": "24320", "size": "84㎡"},
+    {"name": "아크로리버파크", "complexNo": "108428", "size": "84㎡"},
+    {"name": "래미안원베일리", "complexNo": "112613", "size": "84㎡"}
+  ],
+  "송파구": [
+    {"name": "잠실엘스", "complexNo": "11826", "size": "84㎡"},
+    {"name": "헬리오시티", "complexNo": "109559", "size": "84㎡"},
+    {"name": "파크리오", "complexNo": "22421", "size": "84㎡"}
+  ],
+  "성동구": [
+    {"name": "래미안옥수리버젠", "complexNo": "25875", "size": "84㎡"},
+    {"name": "트리마제", "complexNo": "107624", "size": "84㎡"},
+    {"name": "아크로서울포레스트", "complexNo": "118047", "size": "84㎡"}
+  ],
+  "마포구": [
+    {"name": "마포래미안푸르지오", "complexNo": "26569", "size": "84㎡"},
+    {"name": "마포프레스티지자이", "complexNo": "118749", "size": "84㎡"},
+    {"name": "마포자이3차", "complexNo": "112444", "size": "84㎡"}
+  ],
+  "용산구": [
+    {"name": "한남더힐", "complexNo": "26117", "size": "84㎡"},
+    {"name": "래미안첼리투스", "complexNo": "26433", "size": "84㎡"},
+    {"name": "한강현대", "complexNo": "1217", "size": "84㎡"}
+  ],
+  "영등포구": [
+    {"name": "당산래미안푸르지오", "complexNo": "11155", "size": "84㎡"},
+    {"name": "아크로타워스퀘어", "complexNo": "110461", "size": "84㎡"},
+    {"name": "여의도시범", "complexNo": "1196", "size": "84㎡"}
+  ],
+  "강동구": [
+    {"name": "올림픽파크포레온", "complexNo": "110427", "size": "84㎡"},
+    {"name": "고덕그라시움", "complexNo": "112108", "size": "84㎡"},
+    {"name": "고덕아르테온", "complexNo": "116035", "size": "84㎡"}
+  ],
+  "동작구": [
+    {"name": "아크로리버하임", "complexNo": "109282", "size": "84㎡"},
+    {"name": "상도역래미안클라시아", "complexNo": "121665", "size": "84㎡"},
+    {"name": "상도자이", "complexNo": "12521", "size": "84㎡"}
+  ],
+  "양천구": [
+    {"name": "목동신시가지7단지", "complexNo": "1198", "size": "84㎡"},
+    {"name": "목동신시가지5단지", "complexNo": "1192", "size": "84㎡"},
+    {"name": "목동현대하이페리온", "complexNo": "1247", "size": "84㎡"}
+  ],
+  "광진구": [
+    {"name": "더샵스타시티", "complexNo": "11707", "size": "84㎡"},
+    {"name": "광장현대3단지", "complexNo": "1250", "size": "84㎡"},
+    {"name": "광장힐스테이트", "complexNo": "26135", "size": "84㎡"}
+  ],
+  "서대문구": [
+    {"name": "신촌푸르지오", "complexNo": "102073", "size": "84㎡"},
+    {"name": "e편한세상신촌", "complexNo": "108249", "size": "84㎡"},
+    {"name": "홍제센트럴아이파크", "complexNo": "115786", "size": "84㎡"}
+  ],
+  "성북구": [
+    {"name": "래미안센터피스", "complexNo": "110884", "size": "84㎡"},
+    {"name": "길음뉴타운8단지", "complexNo": "22434", "size": "84㎡"},
+    {"name": "롯데캐슬클라시아", "complexNo": "120698", "size": "84㎡"}
+  ],
+  "동대문구": [
+    {"name": "답십리래미안위브", "complexNo": "26410", "size": "84㎡"},
+    {"name": "청량리역롯데캐슬SKY-L65", "complexNo": "120489", "size": "84㎡"},
+    {"name": "래미안크레시티", "complexNo": "26244", "size": "84㎡"}
+  ],
+  "은평구": [
+    {"name": "녹번역e편한세상캐슬", "complexNo": "118551", "size": "84㎡"},
+    {"name": "힐스테이트녹번", "complexNo": "111751", "size": "84㎡"},
+    {"name": "은평뉴타운제각말", "complexNo": "23073", "size": "84㎡"}
+  ],
+  "노원구": [
+    {"name": "월계미륭미성삼호3차", "complexNo": "1485", "size": "84㎡"},
+    {"name": "상계주공7단지", "complexNo": "1529", "size": "84㎡"},
+    {"name": "중계건영3차", "complexNo": "1576", "size": "84㎡"}
+  ],
+  "종로구": [
+    {"name": "경희궁자이", "complexNo": "108500", "size": "84㎡"},
+    {"name": "경희궁롯데캐슬", "complexNo": "113840", "size": "84㎡"},
+    {"name": "창신쌍용1차", "complexNo": "1204", "size": "84㎡"}
+  ],
+  "중구": [
+    {"name": "남산타운", "complexNo": "1092", "size": "84㎡"},
+    {"name": "서울역센트럴자이", "complexNo": "108985", "size": "84㎡"},
+    {"name": "남산롯데캐슬아이리스", "complexNo": "25482", "size": "84㎡"}
+  ],
+  "강서구": [
+    {"name": "마곡엠밸리7단지", "complexNo": "107248", "size": "84㎡"},
+    {"name": "화곡푸르지오", "complexNo": "8826", "size": "84㎡"},
+    {"name": "마곡힐스테이트", "complexNo": "107270", "size": "84㎡"}
+  ],
+  "관악구": [
+    {"name": "e편한세상서울대입구", "complexNo": "115682", "size": "84㎡"},
+    {"name": "관악드림타운", "complexNo": "1038", "size": "84㎡"},
+    {"name": "관악푸르지오", "complexNo": "1166", "size": "84㎡"}
+  ],
+  "구로구": [
+    {"name": "신도림4차대림", "complexNo": "1099", "size": "84㎡"},
+    {"name": "구로삼성", "complexNo": "1053", "size": "84㎡"},
+    {"name": "신도림현대", "complexNo": "1093", "size": "84㎡"}
+  ],
+  "금천구": [
+    {"name": "롯데캐슬골드파크1차", "complexNo": "107871", "size": "84㎡"},
+    {"name": "롯데캐슬골드파크3차", "complexNo": "110996", "size": "84㎡"},
+    {"name": "독산한신", "complexNo": "1133", "size": "84㎡"}
+  ],
+  "강북구": [
+    {"name": "송천센트레빌", "complexNo": "24505", "size": "84㎡"},
+    {"name": "미아래미안트리베라2차", "complexNo": "23999", "size": "84㎡"},
+    {"name": "번동주공1단지", "complexNo": "1453", "size": "84㎡"}
+  ],
+  "도봉구": [
+    {"name": "창동동아", "complexNo": "1310", "size": "84㎡"},
+    {"name": "창동삼성래미안", "complexNo": "1308", "size": "84㎡"},
+    {"name": "도봉한신", "complexNo": "8717", "size": "84㎡"}
+  ],
+  "중랑구": [
+    {"name": "신내우디안1단지", "complexNo": "107693", "size": "84㎡"},
+    {"name": "망우금호어울림", "complexNo": "10862", "size": "84㎡"},
+    {"name": "상봉프레미어스엠코", "complexNo": "26127", "size": "84㎡"}
+  ]
+}

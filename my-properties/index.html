@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>1·2·3호기 부동산 포트폴리오 & 라이벌 비교 대시보드</title>
+    <title>1·2·3호기 부동산 포트폴리오 & 다중 주요 아파트 시세 비교</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -18,14 +18,14 @@
             <div class="header-content">
                 <div class="brand">
                     <span class="badge">MY REAL ESTATE PORTFOLIO</span>
-                    <h1>보유 자산 현황 & 라이벌 분석 <span>(2006~2026)</span></h1>
+                    <h1>보유 자산 현황 & 주요 아파트 시세 비교 <span>(2006~2026)</span></h1>
                 </div>
                 <div class="last-updated">
                     <i class="icon-sync">🔄</i> 매일 실거래가 갱신중 (국토교통부 API)
                 </div>
             </div>
             
-            <!-- Global Main Navigation Tabs (Mobile Compact) -->
+            <!-- Global Main Navigation Tabs -->
             <nav class="main-nav-tabs" id="mainNavTabs">
                 <button class="nav-tab-btn active" data-tab="overview">
                     <span class="nav-icon">🏠</span>
@@ -33,7 +33,7 @@
                 </button>
                 <button class="nav-tab-btn" data-tab="rival">
                     <span class="nav-icon">🥊</span>
-                    <span class="nav-text">1대1 라이벌 비교</span>
+                    <span class="nav-text">주요 아파트 시세 비교</span>
                 </button>
                 <button class="nav-tab-btn" data-tab="table">
                     <span class="nav-icon">📜</span>
@@ -152,38 +152,48 @@
 
             <div class="overview-cta">
                 <button class="btn-goto-rival" onclick="switchTab('rival')">
-                    🥊 1대1 라이벌 단지 시세 비교 차트 보기 ➔
+                    🥊 과거/현재 비슷한 가격대 주요 아파트 다중 비교하기 ➔
                 </button>
             </div>
         </main>
 
-        <!-- TAB 2: Interactive Rival Comparison & Divergence Analytics -->
+        <!-- TAB 2: Multi-Property Rival Comparison Analytics -->
         <main class="tab-view" id="view-rival">
-            <!-- Rival Selection Sub Tabs -->
+            <!-- Property Selector Tabs -->
             <section class="rival-selector-section">
-                <h2>🥊 비교할 라이벌 단지 선택</h2>
+                <h2>🥊 분석 대상 보유 물건 선택</h2>
                 <div class="rival-tab-group" id="rivalPairTabs">
                     <button class="r-tab-btn active" data-pair="1">
-                        <span class="r-num">1호기 vs 라이벌</span>
-                        <span class="r-names">역삼아이파크 11평 🆚 삼성동 힐스테이트2단지 15평</span>
+                        <span class="r-num">1호기 대상</span>
+                        <span class="r-names">역삼아이파크 11평 🆚 주요 소형 단지 비교</span>
                     </button>
                     <button class="r-tab-btn" data-pair="2">
-                        <span class="r-num">2호기 vs 라이벌</span>
-                        <span class="r-names">쌍용더플래티넘 17㎡ 🆚 중림동 브라운스톤서울</span>
+                        <span class="r-num">2호기 대상</span>
+                        <span class="r-names">쌍용더플래티넘 17㎡ 🆚 주요 도심 오피스텔</span>
                     </button>
                     <button class="r-tab-btn" data-pair="3">
-                        <span class="r-num">3호기 vs 라이벌</span>
-                        <span class="r-names">삼성동 한솔 23평 🆚 삼성동 석탑아파트 23평</span>
+                        <span class="r-num">3호기 대상</span>
+                        <span class="r-names">삼성동 한솔 23평 🆚 강남/주요 지역 비교</span>
                     </button>
                 </div>
             </section>
 
-            <!-- Interactive Rival Chart -->
+            <!-- Dynamic Multi-Rival Checkbox Filter Bar -->
+            <section class="filter-chips-section">
+                <div class="filter-title">
+                    <span>💡 <strong>함께 비교할 주요 단지 온/오프 (터치 시 차트 반영)</strong></span>
+                </div>
+                <div class="chips-container" id="rivalChipsContainer">
+                    <!-- Populated dynamically via app.js -->
+                </div>
+            </section>
+
+            <!-- Interactive Multi-Rival Chart -->
             <section class="chart-section">
                 <div class="chart-header">
                     <div>
-                        <h2 id="rivalChartTitle">📈 [1호기] 역삼아이파크 11평 vs 삼성동 힐스테이트2단지 15평</h2>
-                        <p class="chart-sub" id="rivalChartSub">20년간 두 단지의 매매 실거래 시세 격차 및 우상향 추이 비교</p>
+                        <h2 id="rivalChartTitle">📈 [1호기] 역삼아이파크 11평 vs 과거/현재 주요 아파트 시세 추이</h2>
+                        <p class="chart-sub" id="rivalChartSub">20년간 비슷한 가격대를 형성했거나 현재 경쟁구도인 단지들과의 실거래 시세 비교</p>
                     </div>
                 </div>
                 <div class="canvas-wrapper">
@@ -193,7 +203,7 @@
 
             <!-- Divergence Analysis Insights Cards -->
             <section class="divergence-section">
-                <h2>🔍 라이벌 격차(Divergence) & 과거 vs 현재 가격 분석</h2>
+                <h2>🔍 비슷한 가격대 단지들과의 과거 vs 현재 Divergence (격차) 분석</h2>
                 <div class="div-grid" id="rivalInsightsGrid">
                     <!-- Populated dynamically via app.js -->
                 </div>
@@ -203,18 +213,19 @@
         <!-- TAB 3: 20-Year Master Comparison Table -->
         <main class="tab-view" id="view-table">
             <section class="table-container">
-                <h2 class="section-title">📜 20개년(2006~2026) 1대1 라이벌 연도별 매매 시세비교표</h2>
+                <h2 class="section-title">📜 20개년(2006~2026) 보유 호기 vs 주요 아파트 연도별 매매 시세비교표</h2>
                 <table class="master-table">
                     <thead>
                         <tr>
                             <th>연도</th>
                             <th class="highlight-sale">1호기 (역삼아이파크)</th>
-                            <th>라이벌: 힐스테이트 2단지</th>
+                            <th>힐스테이트 2단지</th>
+                            <th>도곡 렉슬 13평</th>
                             <th class="highlight-sale">2호기 (쌍용더플래티넘)</th>
-                            <th>라이벌: 브라운스톤</th>
+                            <th>브라운스톤서울</th>
                             <th class="highlight-sale">3호기 (삼성동한솔)</th>
-                            <th>라이벌: 삼성동 석탑</th>
-                            <th>3호기 vs 석탑 격차</th>
+                            <th>삼성동 석탑</th>
+                            <th>반포 미도1차 (20년전 동급)</th>
                         </tr>
                     </thead>
                     <tbody id="rivalMilestoneTableBody">
