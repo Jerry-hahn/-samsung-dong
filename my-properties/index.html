@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부동산 포트폴리오 vs 1대1 대표 라이벌 20년(2006~2026) 승부처 대시보드</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Section -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="brand">
+                    <span class="badge">RIVAL COMPARATIVE ANALYTICS (2006~2026)</span>
+                    <h1>보유 자산 vs 1대1 대표 라이벌 단지 20년 성과 분석 <span>(2006년 ~ 2026년)</span></h1>
+                </div>
+                <div class="last-updated">
+                    <i class="icon-sync">🔄</i> 실거래가 국토교통부 API (20개년 1대1 상대가치 격차 분석)
+                </div>
+            </div>
+        </header>
+
+        <!-- Rival Selection Tab Header -->
+        <section class="rival-selector-section">
+            <h2>🥊 라이벌 단지 비교 선택</h2>
+            <div class="rival-tab-group" id="rivalPairTabs">
+                <button class="r-tab-btn active" data-pair="1">
+                    <span class="r-num">1호기 vs 라이벌</span>
+                    <span class="r-names">역삼아이파크 11평 🆚 삼성동 힐스테이트2단지 15평</span>
+                </button>
+                <button class="r-tab-btn" data-pair="2">
+                    <span class="r-num">2호기 vs 라이벌</span>
+                    <span class="r-names">쌍용더플래티넘 17㎡ 🆚 중림동 브라운스톤서울</span>
+                </button>
+                <button class="r-tab-btn" data-pair="3">
+                    <span class="r-num">3호기 vs 라이벌</span>
+                    <span class="r-names">삼성동 한솔 23평 🆚 삼성동 석탑아파트 23평</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Interactive Rival Comparison Chart -->
+        <section class="chart-section">
+            <div class="chart-header">
+                <div>
+                    <h2 id="rivalChartTitle">📈 [1호기] 역삼아이파크 11평 vs 삼성동 힐스테이트2단지 15평 (2006~2026년)</h2>
+                    <p class="chart-sub" id="rivalChartSub">20년간 두 단지의 매매 실거래 시세 격차 및 우상향 추이 비교</p>
+                </div>
+            </div>
+            <div class="canvas-wrapper">
+                <canvas id="rivalComparisonChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Rival Deep Comparison Insights Cards -->
+        <section class="divergence-section">
+            <h2>🔍 라이벌 격차(Divergence) & 과거 vs 현재 가격 분석</h2>
+            <div class="div-grid" id="rivalInsightsGrid">
+                <!-- Dynamic Insight Content populated via app.js -->
+            </div>
+        </section>
+
+        <!-- 20-Year Rival Comparison Table -->
+        <section class="table-container">
+            <h2 class="section-title">📜 20개년(2006~2026) 1대1 라이벌 연도별 매매 시세비교표</h2>
+            <table class="master-table">
+                <thead>
+                    <tr>
+                        <th>연도</th>
+                        <th class="highlight-sale">1호기 (역삼아이파크)</th>
+                        <th>라이벌: 삼성동 힐스테이트2단지</th>
+                        <th class="highlight-sale">2호기 (쌍용더플래티넘)</th>
+                        <th>라이벌: 중림동 브라운스톤</th>
+                        <th class="highlight-sale">3호기 (삼성동한솔)</th>
+                        <th>라이벌: 삼성동 석탑</th>
+                        <th>3호기 vs 석탑 격차</th>
+                    </tr>
+                </thead>
+                <tbody id="rivalMilestoneTableBody">
+                    <!-- Populated dynamically via app.js -->
+                </tbody>
+            </table>
+        </section>
+
+        <footer class="dashboard-footer">
+            <p>© 2026 My Real Estate Portfolio Dashboard | 국토교통부 실거래가 공개시스템 2006~2026 전수 데이터 연동</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+.venv/
+venv/
+
+# macOS
+.DS_Store
+.AppleDouble
+
+# 임시 스크립트 (로컬 개발용)
+test_*.py
+scratch/
+
+# IDE
+.vscode/
+.idea/

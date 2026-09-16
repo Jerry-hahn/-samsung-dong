@@ -1,0 +1,75 @@
+name: 🏠 Daily Property Data Update & Deploy
+
+on:
+  schedule:
+    # 매일 한국 시간 오전 9시 (UTC 00:00) 자동 실행
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    # 수동 실행 버튼 (GitHub Actions 탭에서 즉시 실행 가능)
+    inputs:
+      force_update:
+        description: '강제 업데이트 여부'
+        required: false
+        default: 'false'
+
+jobs:
+  update-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: 📥 저장소 체크아웃
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
+
+    - name: 🐍 Python 3.11 환경 설정
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: 📦 의존성 설치
+      run: |
+        pip install -r requirements.txt
+
+    - name: 🔄 실거래가 데이터 업데이트
+      env:
+        MOLIT_API_KEY: ${{ secrets.MOLIT_API_KEY }}
+      run: |
+        echo "데이터 업데이트 시작: $(date '+%Y-%m-%d %H:%M:%S KST')"
+        python updater.py
+        echo "업데이트 완료"
+
+    - name: 📊 라이벌 비교 데이터 갱신
+      env:
+        MOLIT_API_KEY: ${{ secrets.MOLIT_API_KEY }}
+      run: |
+        python fetch_rival_history.py || echo "라이벌 데이터 업데이트 스킵 (API 제한)"
+
+    - name: 📝 변경된 JSON 파일 커밋 및 푸시
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "Property Bot 🏠"
+        git add property_data.json rival-historical-data.json max-historical-data.json || true
+        # 변경사항이 있을 때만 커밋
+        if git diff --staged --quiet; then
+          echo "변경사항 없음 - 커밋 스킵"
+        else
+          git commit -m "🔄 Auto-update: $(date '+%Y-%m-%d') 실거래가 데이터 갱신"
+          git push
+          echo "✅ 데이터 업데이트 완료 및 푸시 성공"
+        fi
+
+    - name: 🚀 Netlify 배포 트리거
+      env:
+        NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+      run: |
+        if [ -n "$NETLIFY_BUILD_HOOK" ]; then
+          curl -s -X POST "$NETLIFY_BUILD_HOOK"
+          echo "✅ Netlify 빌드 훅 트리거 완료"
+        else
+          echo "⚠️ NETLIFY_BUILD_HOOK 시크릿이 설정되지 않았습니다"
+        fi
