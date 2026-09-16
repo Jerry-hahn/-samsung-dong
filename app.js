@@ -3,19 +3,19 @@ let chartInstance = null;
 let currentPair = '1';
 let currentTab = 'overview';
 
-// 각 보유 호기별 다중 비교 단지 옵션 정의 (도곡렉슬 -> 역삼래미안 13평 수정)
+// 각 보유 호기별 과거/현재 가격대 일치 아파트 비교 옵션 정의
 const RIVAL_OPTIONS = {
     '1': [
         { id: 'p1', name: '1호기: 역삼아이파크 11평 (내물건)', color: '#f59e0b', default: true, isBase: true },
         { id: 'r1_hillstate', name: '삼성동 힐스테이트 2단지 15평', color: '#ef4444', default: true },
-        { id: 'r1_yeoksam_raemian', name: '역삼 래미안 13평 (전용 33㎡)', color: '#ec4899', default: true },
-        { id: 'r1_jamsil', name: '잠실 리센츠/엘스 12평', color: '#8b5cf6', default: false },
-        { id: 'r1_mapu', name: '마포 래미안푸르지오 24평', color: '#3b82f6', default: false }
+        { id: 'r1_haengdang', name: '성동구 행당 한진타운 24평 (현재 시세동급 11.2억)', color: '#ec4899', default: true },
+        { id: 'r1_sindorim', name: '신도림 태영데시앙 24평 (20년전 1.85억 동급)', color: '#8b5cf6', default: true },
+        { id: 'r1_nowon', name: '노원 중계 주공5단지 24평 (노도강 24평)', color: '#3b82f6', default: false }
     ],
     '2': [
         { id: 'p2', name: '2호기: 쌍용더플래티넘 17㎡ (내물건)', color: '#06b6d4', default: true, isBase: true },
         { id: 'r2_brown', name: '중림동 브라운스톤서울 25㎡', color: '#a855f7', default: true },
-        { id: 'r2_gongdeok', name: '공덕 디오빌 20㎡', color: '#10b981', default: true },
+        { id: 'r2_gongdeok', name: '공덕 디오빌 20㎡ (20년전 1.1억 동급)', color: '#10b981', default: true },
         { id: 'r2_lexion', name: '서초 현대렉시온 26㎡', color: '#f59e0b', default: false }
     ],
     '3': [
@@ -207,8 +207,8 @@ function getChartConfig(pair) {
     let datasets = [];
 
     if (pair === '1') {
-        document.getElementById('rivalChartTitle').innerText = '📈 [1호기] 역삼아이파크 11평 vs 과거/현재 주요 아파트 시세 추이';
-        document.getElementById('rivalChartSub').innerText = '강남 소형 대표 아파트(역삼래미안·힐스테이트) 20년간 시세 추이 및 프리미엄 격차 변화 (2006~2026년)';
+        document.getElementById('rivalChartTitle').innerText = '📈 [1호기] 역삼아이파크 11평 vs 과거/현재 시세 일치 아파트 추이';
+        document.getElementById('rivalChartSub').innerText = '20년 전 가격이 동일했던 아파트 & 현재 시세가 일치하는 마용성 24평과의 20개년 비교';
     } else if (pair === '2') {
         document.getElementById('rivalChartTitle').innerText = '📈 [2호기] 쌍용더플래티넘 17㎡ vs 주요 도심 오피스텔';
         document.getElementById('rivalChartSub').innerText = '서울역·공덕·강남 도심 직주근접 주요 오피스텔 20개년 시세 비교 (2006~2026년)';
@@ -249,8 +249,39 @@ function renderInsightCards(pair) {
         grid.innerHTML = `
             <div class="div-card border-gold">
                 <div class="div-header">
-                    <span class="div-badge gold-bg">1호기 vs 역삼래미안·힐스테이트·리센츠 비교</span>
-                    <h3>역삼동 대표 쌍두마차 (역삼아이파크 11평 vs 역삼래미안 13평)</h3>
+                    <span class="div-badge gold-bg">💡 20년 전 똑같이 1.85억에 시작했던 아파트의 현재!</span>
+                    <h3>1호기(역삼아이파크 11평) vs 신도림 태영데시앙 24평</h3>
+                </div>
+                <div class="div-body">
+                    <div class="div-comparison-box">
+                        <div class="c-item">
+                            <span class="year-lbl">2006년 당시 (완벽 동급)</span>
+                            <div class="val-group">
+                                <span>1호기(11평): 1.85억</span>
+                                <span>신도림 태영(24평): 1.85억</span>
+                            </div>
+                            <div class="gap-result">격차: <strong>0원 (동일)</strong></div>
+                        </div>
+                        <div class="arrow-divider">➔</div>
+                        <div class="c-item">
+                            <span class="year-lbl">2026년 현재</span>
+                            <div class="val-group">
+                                <span>1호기(11평): 11.5억~12억</span>
+                                <span>신도림 태영(24평): 8.8억</span>
+                            </div>
+                            <div class="gap-result text-gold">격차: <strong>3.0억 원 이상 벌어짐!</strong></div>
+                        </div>
+                    </div>
+                    <p class="div-desc">
+                        💡 <strong>입지격차 분석:</strong> 2006년 당시 서남권 구로/신도림 24평 아파트(1.85억)와 1호기 강남 소형(1.85억)은 분양·매매가가 정확히 같았습니다. 하지만 **20년이 지난 지금, 강남 입지 프리미엄이 누적되어 1호기가 3억 원 이상 시세를 앞지르는 결과**를 냈습니다.
+                    </p>
+                </div>
+            </div>
+
+            <div class="div-card border-gold">
+                <div class="div-header">
+                    <span class="div-badge gold-bg">💡 현재 11.2~11.5억으로 시세가 똑같은 아파트!</span>
+                    <h3>1호기(강남 11평) vs 성동구 행당 한진타운 24평 (마용성)</h3>
                 </div>
                 <div class="div-body">
                     <div class="div-comparison-box">
@@ -258,34 +289,20 @@ function renderInsightCards(pair) {
                             <span class="year-lbl">2006년 당시 시세</span>
                             <div class="val-group">
                                 <span>1호기(11평): 1.85억</span>
-                                <span>역삼래미안(13평): 2.20억</span>
-                                <span>힐스테이트(15평): 2.90억</span>
+                                <span>행당한진(24평): 2.15억</span>
                             </div>
                         </div>
                         <div class="arrow-divider">➔</div>
                         <div class="c-item">
-                            <span class="year-lbl">2026년 현재 시세</span>
+                            <span class="year-lbl">2026년 현재 시세 (일치)</span>
                             <div class="val-group">
                                 <span>1호기(11평): 11.5억~12억</span>
-                                <span>역삼래미안(13평): 12.8억</span>
-                                <span>힐스테이트(15평): 15.3억</span>
+                                <span>행당한진(24평): 11.2억</span>
                             </div>
                         </div>
                     </div>
                     <p class="div-desc">
-                        💡 <strong>가격 분석:</strong> 바로 옆에 위치한 **역삼 래미안 13평(전용 33㎡, 현 12.8억)**과 1호기 역삼아이파크 11평(전용 28.2㎡, 현 11.5~12억)은 20년 전 불과 3,500만 원 차이에서 시작하여 현재도 1억 안팎의 근소한 격차를 유지하며 **역삼동 소형 아파트 시세를 끌어올리는 쌍두마차** 역할을 하고 있습니다.
-                    </p>
-                </div>
-            </div>
-
-            <div class="div-card border-gold">
-                <div class="div-header">
-                    <span class="div-badge gold-bg">마포래미안푸르지오(24평)와의 가격 역전 및 추이</span>
-                    <h3>마포 대장주 24평(12.6억) vs 강남 11평(11.5~12억)</h3>
-                </div>
-                <div class="div-body">
-                    <p class="div-desc">
-                        • <strong>시세 교차점:</strong> 2014년 마포래미안푸르지오 24평 분양·입주 당시(5.25억) 대비 1호기(3.05억)는 큰 차이가 났으나, 강남 입지 프리미엄이 누적되면서 **강북 대표 24평 아파트 시세에 필적하는 평당 가치**를 증명했습니다.<br>
+                        • <strong>현재 시세 일치 분석:</strong> 마용성(성동구 행당동) 대단지 24평 아파트(11.2억)와 1호기 강남 11평(11.5억~12억)은 **현재 거의 동일한 가격대**를 형성하고 있습니다. 강남권 핵심 입지 소형이 마용성 중형 평형과 맞먹는 프리미엄을 유지하고 있습니다.<br>
                         • <strong>임대 방어력:</strong> 보유 1호기는 14층 로열층 + 최상급 인테리어로 **전세 5.7억 안착 완료**.
                     </p>
                 </div>
@@ -399,12 +416,12 @@ function renderMilestoneTable() {
             <td><strong>${row.year}년</strong></td>
             <td class="highlight-sale"><strong>${row.p1}억 원</strong></td>
             <td>${row.r1_hillstate}억 원</td>
-            <td>${row.r1_yeoksam_raemian}억 원</td>
+            <td>${row.r1_haengdang}억 원</td>
+            <td>${row.r1_sindorim}억 원</td>
             <td class="highlight-sale"><strong>${row.p2}억 원</strong></td>
             <td>${row.r2_brown}억 원</td>
             <td class="highlight-sale"><strong>${row.p3}억 원</strong></td>
             <td>${row.r3_seoktap}억 원</td>
-            <td><strong style="color: var(--rose);">${row.r3_banpo_mido}억 원</strong></td>
         </tr>`;
     });
 
