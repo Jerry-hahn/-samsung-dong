@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>1·2·3호기 부동산 포트폴리오 & 과거/현재 시세 비교</title>
+    <title>1·2·3호기 부동산 포트폴리오 & ±10% 실거래 매칭 비교 대시보드</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
             <div class="header-content">
                 <div class="brand">
                     <span class="badge">MY REAL ESTATE PORTFOLIO</span>
-                    <h1>보유 자산 현황 & 주요 아파트 시세 비교 <span>(2006~2026)</span></h1>
+                    <h1>보유 자산 현황 & ±10% 동일 가격대 실거래 매칭 <span>(2006~2026)</span></h1>
                 </div>
                 <div class="last-updated">
                     <i class="icon-sync">🔄</i> 매일 실거래가 갱신중 (국토교통부 API)
@@ -32,12 +32,16 @@
                     <span class="nav-text">자산 현황 한눈보기</span>
                 </button>
                 <button class="nav-tab-btn" data-tab="rival">
-                    <span class="nav-icon">🥊</span>
-                    <span class="nav-text">주요 아파트 시세 비교</span>
+                    <span class="nav-icon">🎯</span>
+                    <span class="nav-text">±10% 동급 실거래 매칭</span>
+                </button>
+                <button class="nav-tab-btn" data-tab="chart">
+                    <span class="nav-icon">📈</span>
+                    <span class="nav-text">20년 시세 차트</span>
                 </button>
                 <button class="nav-tab-btn" data-tab="table">
                     <span class="nav-icon">📜</span>
-                    <span class="nav-text">20년 시세 비교표</span>
+                    <span class="nav-text">시세 비교표</span>
                 </button>
             </nav>
         </header>
@@ -81,8 +85,8 @@
                             <span class="p-val text-white">전세 5.7억 원</span>
                         </div>
                         <div class="p-row">
-                            <span class="p-lbl">20년 상승률</span>
-                            <span class="p-val text-gold">+521.6% (1.85억 ➔ 11.5억)</span>
+                            <span class="p-lbl">±10% 매칭 범위</span>
+                            <span class="p-val text-gold">10.35억 ~ 12.65억 범위 단지 비교</span>
                         </div>
                     </div>
 
@@ -110,8 +114,8 @@
                             <span class="p-val text-white">전세 2.55억 원</span>
                         </div>
                         <div class="p-row">
-                            <span class="p-lbl">투자 갭 현황</span>
-                            <span class="p-val text-cyan">단 2,300만 원 (전세가율 91.7%)</span>
+                            <span class="p-lbl">±10% 매칭 범위</span>
+                            <span class="p-val text-cyan">2.50억 ~ 3.05억 범위 오피스텔 비교</span>
                         </div>
                     </div>
 
@@ -139,8 +143,8 @@
                             <span class="p-val text-white">실거주 중 (전세시세 9~10억)</span>
                         </div>
                         <div class="p-row">
-                            <span class="p-lbl">20년 상승률</span>
-                            <span class="p-val text-emerald">+460.5% (3.80억 ➔ 21.3억)</span>
+                            <span class="p-lbl">±10% 매칭 범위</span>
+                            <span class="p-val text-emerald">19.17억 ~ 23.43억 범위 아파트 비교</span>
                         </div>
                     </div>
 
@@ -152,33 +156,48 @@
 
             <div class="overview-cta">
                 <button class="btn-goto-rival" onclick="switchTab('rival')">
-                    🥊 과거/현재 비슷한 가격대 주요 아파트 다중 비교하기 ➔
+                    🎯 매일 자동 갱신: ±10% 동일 가격대 실거래 아파트 비교 ➔
                 </button>
             </div>
         </main>
 
-        <!-- TAB 2: Multi-Property Rival Comparison Analytics -->
+        <!-- TAB 2: Dynamic ±10% Price-Matched Real Transactions -->
         <main class="tab-view" id="view-rival">
             <!-- Property Selector Tabs -->
             <section class="rival-selector-section">
-                <h2>🥊 분석 대상 보유 물건 선택</h2>
+                <h2>🎯 기준 물건 선택 (시세 ±10% 범위 매칭)</h2>
                 <div class="rival-tab-group" id="rivalPairTabs">
                     <button class="r-tab-btn active" data-pair="1">
-                        <span class="r-num">1호기 대상</span>
-                        <span class="r-names">역삼아이파크 11평 🆚 과거/현재 시세 일치 아파트</span>
+                        <span class="r-num">1호기 기준 (11.5억)</span>
+                        <span class="r-names">±10% 매칭범위: 10.35억 ~ 12.65억 원</span>
                     </button>
                     <button class="r-tab-btn" data-pair="2">
-                        <span class="r-num">2호기 대상</span>
-                        <span class="r-names">쌍용더플래티넘 17㎡ 🆚 주요 도심 오피스텔</span>
+                        <span class="r-num">2호기 기준 (2.78억)</span>
+                        <span class="r-names">±10% 매칭범위: 2.50억 ~ 3.05억 원</span>
                     </button>
                     <button class="r-tab-btn" data-pair="3">
-                        <span class="r-num">3호기 대상</span>
-                        <span class="r-names">삼성동 한솔 23평 🆚 강남/주요 지역 비교</span>
+                        <span class="r-num">3호기 기준 (21.3억)</span>
+                        <span class="r-names">±10% 매칭범위: 19.17억 ~ 23.43억 원</span>
                     </button>
                 </div>
             </section>
 
-            <!-- Dynamic Multi-Rival Checkbox Filter Bar -->
+            <!-- Matched Property Banner -->
+            <section class="range-banner" id="matchRangeBanner">
+                <!-- Populated dynamically via app.js -->
+            </section>
+
+            <!-- Real Transaction Matches Grid -->
+            <section class="divergence-section">
+                <h2>🏢 최근 서울 실거래 중 ±10% 가격대 동일 경쟁 아파트/오피스텔 목록</h2>
+                <div class="div-grid" id="matchedCardsGrid">
+                    <!-- Populated dynamically via app.js -->
+                </div>
+            </section>
+        </main>
+
+        <!-- TAB 3: 20-Year Chart View -->
+        <main class="tab-view" id="view-chart">
             <section class="filter-chips-section">
                 <div class="filter-title">
                     <span>💡 <strong>함께 비교할 주요 단지 온/오프 (터치 시 차트 반영)</strong></span>
@@ -188,29 +207,20 @@
                 </div>
             </section>
 
-            <!-- Interactive Multi-Rival Chart -->
             <section class="chart-section">
                 <div class="chart-header">
                     <div>
                         <h2 id="rivalChartTitle">📈 [1호기] 역삼아이파크 11평 vs 과거/현재 시세 일치 아파트 추이</h2>
-                        <p class="chart-sub" id="rivalChartSub">20년 전 가격이 동일했던 아파트 & 현재 시세가 일치하는 마용성 24평과의 20개년 비교</p>
+                        <p class="chart-sub" id="rivalChartSub">20년간 비슷한 가격대를 형성했거나 현재 경쟁구도인 단지들과의 실거래 시세 비교</p>
                     </div>
                 </div>
                 <div class="canvas-wrapper">
                     <canvas id="rivalComparisonChart"></canvas>
                 </div>
             </section>
-
-            <!-- Divergence Analysis Insights Cards -->
-            <section class="divergence-section">
-                <h2>🔍 비슷한 가격대 단지들과의 과거 vs 현재 Divergence (격차) 분석</h2>
-                <div class="div-grid" id="rivalInsightsGrid">
-                    <!-- Populated dynamically via app.js -->
-                </div>
-            </section>
         </main>
 
-        <!-- TAB 3: 20-Year Master Comparison Table -->
+        <!-- TAB 4: 20-Year Master Comparison Table -->
         <main class="tab-view" id="view-table">
             <section class="table-container">
                 <h2 class="section-title">📜 20개년(2006~2026) 보유 호기 vs 과거/현재 시세 일치 아파트 연도별 비교표</h2>

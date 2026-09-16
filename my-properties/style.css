@@ -97,13 +97,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    padding: 12px 16px;
+    gap: 6px;
+    padding: 10px 12px;
     background: transparent;
     border: none;
     border-radius: 10px;
     color: var(--text-secondary);
-    font-size: 0.92rem;
+    font-size: 0.86rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -121,7 +121,7 @@ body {
     box-shadow: 0 4px 15px var(--cyan-glow);
 }
 
-.nav-icon { font-size: 1.1rem; }
+.nav-icon { font-size: 1.05rem; }
 
 /* Tab View Panels Animation */
 .tab-view {
@@ -136,6 +136,36 @@ body {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* Range Banner */
+.range-banner {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.9));
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.rb-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.rb-badge {
+    font-size: 0.88rem;
+    font-weight: 800;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: rgba(6, 182, 212, 0.2);
+    color: var(--cyan);
+    border: 1px solid var(--cyan);
 }
 
 /* TAB 1: Overview Styles */
@@ -453,7 +483,66 @@ body {
 .arrow-divider { font-size: 1.1rem; color: var(--text-muted); padding: 0 8px; }
 .div-desc { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; }
 
-/* TAB 3: Milestone Table */
+/* Matched Card Styling */
+.matched-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.mc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.mc-dong {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.mc-diff {
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--emerald);
+}
+
+.mc-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 2px;
+}
+
+.mc-area {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.mc-price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    background: rgba(15, 23, 42, 0.6);
+    padding: 10px 12px;
+    border-radius: 10px;
+}
+
+.mc-price-lbl { font-size: 0.75rem; color: var(--text-muted); }
+.mc-price-val { font-size: 1.15rem; font-weight: 900; color: var(--gold); }
+.mc-date { font-size: 0.75rem; color: var(--text-muted); }
+
+/* TAB 4: Milestone Table */
 .section-title { font-size: 1.15rem; font-weight: 800; color: #ffffff; padding: 16px 20px; border-bottom: 1px solid var(--border-color); }
 .table-container { background: var(--bg-card); backdrop-filter: blur(12px); border: 1px solid var(--border-color); border-radius: 16px; overflow-x: auto; margin-bottom: 28px; }
 .master-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.84rem; }
@@ -470,8 +559,8 @@ body {
     .header-content { flex-direction: column; align-items: flex-start; gap: 8px; }
     .brand h1 { font-size: 1.25rem; }
     
-    .main-nav-tabs { width: 100%; }
-    .nav-tab-btn { padding: 10px 8px; font-size: 0.82rem; }
+    .main-nav-tabs { width: 100%; overflow-x: auto; }
+    .nav-tab-btn { padding: 8px 6px; font-size: 0.78rem; white-space: nowrap; }
     
     .overview-grid { grid-template-columns: 1fr; gap: 12px; }
     .property-card { padding: 16px; }
