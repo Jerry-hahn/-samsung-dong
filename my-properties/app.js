@@ -1,6 +1,7 @@
 let rivalData = [];
 let chartInstance = null;
 let currentPair = '1';
+let currentTab = 'overview';
 
 document.addEventListener('DOMContentLoaded', async () => {
     // 1. Fetch Rival Dataset
@@ -11,16 +12,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error("Error loading rival dataset:", e);
     }
 
-    // 2. Initialize Chart
+    // 2. Initialize Main Navigation Tab Handlers
+    initMainTabs();
+
+    // 3. Initialize Rival Chart
     initChart();
 
-    // 3. Render Insight Cards for initial pair
+    // 4. Render Insight Cards for initial pair
     renderInsightCards('1');
 
-    // 4. Render Milestone Table
+    // 5. Render Milestone Table
     renderMilestoneTable();
 
-    // 5. Rival Pair Tab Switch
+    // 6. Rival Pair Sub-Tab Switch
     const rTabs = document.querySelectorAll('#rivalPairTabs .r-tab-btn');
     rTabs.forEach(tab => {
         tab.addEventListener('click', () => {
@@ -33,8 +37,54 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 });
 
+function initMainTabs() {
+    const navButtons = document.querySelectorAll('#mainNavTabs .nav-tab-btn');
+    navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetTab = btn.getAttribute('data-tab');
+            switchTab(targetTab);
+        });
+    });
+}
+
+function switchTab(tabId) {
+    currentTab = tabId;
+    
+    // Update main nav tab active buttons
+    const navButtons = document.querySelectorAll('#mainNavTabs .nav-tab-btn');
+    navButtons.forEach(btn => {
+        if (btn.getAttribute('data-tab') === tabId) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    // Update tab view panels visibility
+    const views = document.querySelectorAll('.tab-view');
+    views.forEach(v => v.classList.remove('active'));
+
+    const targetView = document.getElementById(`view-${tabId}`);
+    if (targetView) {
+        targetView.classList.add('active');
+    }
+
+    // If switching to rival chart tab, refresh Chart.js layout & canvas size
+    if (tabId === 'rival' && chartInstance) {
+        setTimeout(() => {
+            chartInstance.resize();
+            chartInstance.update();
+        }, 50);
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function initChart() {
-    const ctx = document.getElementById('rivalComparisonChart').getContext('2d');
+    const canvas = document.getElementById('rivalComparisonChart');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
     chartInstance = new Chart(ctx, {
         type: 'line',
         data: getChartConfig(currentPair),
@@ -44,7 +94,7 @@ function initChart() {
             interaction: { mode: 'index', intersect: false },
             plugins: {
                 legend: {
-                    labels: { color: '#94a3b8', font: { family: 'Inter', size: 13, weight: 'bold' } }
+                    labels: { color: '#94a3b8', font: { family: 'Inter', size: 12, weight: 'bold' } }
                 },
                 tooltip: {
                     callbacks: {
@@ -69,12 +119,14 @@ function initChart() {
 }
 
 function getChartConfig(pair) {
+    if (!rivalData || rivalData.length === 0) return { labels: [], datasets: [] };
+
     const years = rivalData.map(d => d.year + '년');
     let datasets = [];
 
     if (pair === '1') {
-        document.getElementById('rivalChartTitle').innerText = '📈 [1호기] 역삼아이파크 11평 🆚 라이벌: 삼성동 힐스테이트 2단지 15평 (2006~2026년)';
-        document.getElementById('rivalChartSub').innerText = '강남 소형 대표 아파트 20년간 시세 추이 및 프리미엄 격차 변화';
+        document.getElementById('rivalChartTitle').innerText = '📈 [1호기] 역삼아이파크 11평 🆚 라이벌: 삼성동 힐스테이트 2단지 15평';
+        document.getElementById('rivalChartSub').innerText = '강남 소형 대표 아파트 20년간 시세 추이 및 프리미엄 격차 변화 (2006~2026년)';
 
         datasets = [
             {
@@ -94,8 +146,8 @@ function getChartConfig(pair) {
             }
         ];
     } else if (pair === '2') {
-        document.getElementById('rivalChartTitle').innerText = '📈 [2호기] 중림동 쌍용더플래티넘 17㎡ 🆚 라이벌: 중림동 브라운스톤서울 (2006~2026년)';
-        document.getElementById('rivalChartSub').innerText = '서울역 도심 직주근접 오피스텔 대표 라이벌 20개년 매매 시세 비교';
+        document.getElementById('rivalChartTitle').innerText = '📈 [2호기] 쌍용더플래티넘 17㎡ 🆚 라이벌: 중림동 브라운스톤서울';
+        document.getElementById('rivalChartSub').innerText = '서울역 도심 직주근접 오피스텔 대표 라이벌 20개년 매매 시세 비교 (2006~2026년)';
 
         datasets = [
             {
@@ -115,8 +167,8 @@ function getChartConfig(pair) {
             }
         ];
     } else if (pair === '3') {
-        document.getElementById('rivalChartTitle').innerText = '📈 [3호기] 삼성동 한솔 23평 🆚 라이벌: 삼성동 석탑아파트 23평 (2006~2026년)';
-        document.getElementById('rivalChartSub').innerText = '삼성동 입지 동급 평형 나홀로/중소형 아파트 1대1 20년 맞대결 추이';
+        document.getElementById('rivalChartTitle').innerText = '📈 [3호기] 삼성동 한솔 23평 🆚 라이벌: 삼성동 석탑아파트 23평';
+        document.getElementById('rivalChartSub').innerText = '삼성동 입지 동급 평형 나홀로/중소형 아파트 1대1 20년 맞대결 추이 (2006~2026년)';
 
         datasets = [
             {
@@ -178,7 +230,7 @@ function renderInsightCards(pair) {
                         </div>
                     </div>
                     <p class="div-desc">
-                        💡 <strong>분석 메시지:</strong> 1호기와 힐스테이트 2단지는 모두 강남 초소형 입지로서 20년간 **동반 6배 이상 폭등**했습니다. 11평과 15평의 실평수 차이만큼 시세 프리미엄 격차가 정비례하여 유지·확대되었으며, 두 단지 모두 강남권 대표 소형 자산으로서 최고 수준의 우상향 성과를 냈습니다.
+                        💡 <strong>분석 메시지:</strong> 1호기와 힐스테이트 2단지는 모두 강남 초소형 입지로서 20년간 **동반 6배 이상 폭등**했습니다. 11평과 15평의 실평수 차이만큼 시세 프리미엄 격차가 정비례하여 유지·확대되었습니다.
                     </p>
                 </div>
             </div>
@@ -224,7 +276,7 @@ function renderInsightCards(pair) {
                         </div>
                     </div>
                     <p class="div-desc">
-                        💡 <strong>분석 메시지:</strong> 브라운스톤이 면적이 넓어 매매가는 높으나, **2호기(쌍용더플래티넘)는 복층 설계 구조** 덕분에 전세가율이 91.7%에 달해 **단 2,300만 원이라는 독보적 소액 갭**으로 매수가 가능했습니다. 투자금 대비 레버리지 수익률 측면에서는 2호기가 압승입니다.
+                        💡 <strong>분석 메시지:</strong> 브라운스톤이 면적이 넓어 매매가는 높으나, **2호기(쌍용더플래티넘)는 복층 설계 구조** 덕분에 전세가율이 91.7%에 달해 **단 2,300만 원이라는 독보적 소액 갭**으로 매수가 가능했습니다.
                     </p>
                 </div>
             </div>
@@ -247,7 +299,7 @@ function renderInsightCards(pair) {
             <div class="div-card border-emerald">
                 <div class="div-header">
                     <span class="div-badge emerald-bg">3호기(삼성동한솔) vs 삼성동 석탑아파트</span>
-                    <h3>동급 연식·평형 대결 ➔ 3호기의 1.8억 격차 벌림</h3>
+                    <h3>동급 연식·평형 대결 ➔ 3호기의 1.5억 격차 벌림</h3>
                 </div>
                 <div class="div-body">
                     <div class="div-comparison-box">
@@ -294,6 +346,7 @@ function renderInsightCards(pair) {
 function renderMilestoneTable() {
     const tbody = document.getElementById('rivalMilestoneTableBody');
     if (!tbody) return;
+    if (!rivalData || rivalData.length === 0) return;
 
     let html = '';
     const reversed = [...rivalData].reverse();

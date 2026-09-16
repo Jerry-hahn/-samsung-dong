@@ -2,94 +2,230 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>부동산 포트폴리오 vs 1대1 대표 라이벌 20년(2006~2026) 승부처 대시보드</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>1·2·3호기 부동산 포트폴리오 & 라이벌 비교 대시보드</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="app-container">
-        <!-- Header Section -->
+        <!-- Dashboard Header -->
         <header class="dashboard-header">
             <div class="header-content">
                 <div class="brand">
-                    <span class="badge">RIVAL COMPARATIVE ANALYTICS (2006~2026)</span>
-                    <h1>보유 자산 vs 1대1 대표 라이벌 단지 20년 성과 분석 <span>(2006년 ~ 2026년)</span></h1>
+                    <span class="badge">MY REAL ESTATE PORTFOLIO</span>
+                    <h1>보유 자산 현황 & 라이벌 분석 <span>(2006~2026)</span></h1>
                 </div>
                 <div class="last-updated">
-                    <i class="icon-sync">🔄</i> 실거래가 국토교통부 API (20개년 1대1 상대가치 격차 분석)
+                    <i class="icon-sync">🔄</i> 매일 실거래가 갱신중 (국토교통부 API)
                 </div>
             </div>
+            
+            <!-- Global Main Navigation Tabs (Mobile Compact) -->
+            <nav class="main-nav-tabs" id="mainNavTabs">
+                <button class="nav-tab-btn active" data-tab="overview">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-text">자산 현황 한눈보기</span>
+                </button>
+                <button class="nav-tab-btn" data-tab="rival">
+                    <span class="nav-icon">🥊</span>
+                    <span class="nav-text">1대1 라이벌 비교</span>
+                </button>
+                <button class="nav-tab-btn" data-tab="table">
+                    <span class="nav-icon">📜</span>
+                    <span class="nav-text">20년 시세 비교표</span>
+                </button>
+            </nav>
         </header>
 
-        <!-- Rival Selection Tab Header -->
-        <section class="rival-selector-section">
-            <h2>🥊 라이벌 단지 비교 선택</h2>
-            <div class="rival-tab-group" id="rivalPairTabs">
-                <button class="r-tab-btn active" data-pair="1">
-                    <span class="r-num">1호기 vs 라이벌</span>
-                    <span class="r-names">역삼아이파크 11평 🆚 삼성동 힐스테이트2단지 15평</span>
-                </button>
-                <button class="r-tab-btn" data-pair="2">
-                    <span class="r-num">2호기 vs 라이벌</span>
-                    <span class="r-names">쌍용더플래티넘 17㎡ 🆚 중림동 브라운스톤서울</span>
-                </button>
-                <button class="r-tab-btn" data-pair="3">
-                    <span class="r-num">3호기 vs 라이벌</span>
-                    <span class="r-names">삼성동 한솔 23평 🆚 삼성동 석탑아파트 23평</span>
-                </button>
-            </div>
-        </section>
-
-        <!-- Interactive Rival Comparison Chart -->
-        <section class="chart-section">
-            <div class="chart-header">
-                <div>
-                    <h2 id="rivalChartTitle">📈 [1호기] 역삼아이파크 11평 vs 삼성동 힐스테이트2단지 15평 (2006~2026년)</h2>
-                    <p class="chart-sub" id="rivalChartSub">20년간 두 단지의 매매 실거래 시세 격차 및 우상향 추이 비교</p>
+        <!-- TAB 1: Mobile-First Asset Overview (No Scroll / Single Screen View) -->
+        <main class="tab-view active" id="view-overview">
+            <!-- Portfolio Total KPI Summary Banner -->
+            <section class="kpi-banner">
+                <div class="kpi-item glow-gold">
+                    <span class="kpi-label">총 매매 자산가치</span>
+                    <span class="kpi-val" id="totalAssetVal">약 35.6억~36.1억</span>
                 </div>
-            </div>
-            <div class="canvas-wrapper">
-                <canvas id="rivalComparisonChart"></canvas>
-            </div>
-        </section>
+                <div class="kpi-item glow-cyan">
+                    <span class="kpi-label">승계 임대보증금</span>
+                    <span class="kpi-val">8.25억 원 <small>(1,2호기 전세)</small></span>
+                </div>
+                <div class="kpi-item glow-emerald">
+                    <span class="kpi-label">3호기 거주 상태</span>
+                    <span class="kpi-val">실거주 중 <small>(19층 탑층)</small></span>
+                </div>
+            </section>
 
-        <!-- Rival Deep Comparison Insights Cards -->
-        <section class="divergence-section">
-            <h2>🔍 라이벌 격차(Divergence) & 과거 vs 현재 가격 분석</h2>
-            <div class="div-grid" id="rivalInsightsGrid">
-                <!-- Dynamic Insight Content populated via app.js -->
-            </div>
-        </section>
+            <!-- 1, 2, 3 호기 One-Screen Property Grid -->
+            <section class="overview-grid">
+                <!-- 1호기 Card -->
+                <div class="property-card border-gold">
+                    <div class="card-top">
+                        <span class="prop-badge bg-gold">1호기 · 강남 역삼</span>
+                        <span class="prop-floor">14층 (로열층) 👑</span>
+                    </div>
+                    <h3 class="prop-title">역삼 아이파크 1차 (11평)</h3>
+                    <div class="prop-specs">전용 28.2㎡ | 최고급 인테리어 ✨</div>
 
-        <!-- 20-Year Rival Comparison Table -->
-        <section class="table-container">
-            <h2 class="section-title">📜 20개년(2006~2026) 1대1 라이벌 연도별 매매 시세비교표</h2>
-            <table class="master-table">
-                <thead>
-                    <tr>
-                        <th>연도</th>
-                        <th class="highlight-sale">1호기 (역삼아이파크)</th>
-                        <th>라이벌: 삼성동 힐스테이트2단지</th>
-                        <th class="highlight-sale">2호기 (쌍용더플래티넘)</th>
-                        <th>라이벌: 중림동 브라운스톤</th>
-                        <th class="highlight-sale">3호기 (삼성동한솔)</th>
-                        <th>라이벌: 삼성동 석탑</th>
-                        <th>3호기 vs 석탑 격차</th>
-                    </tr>
-                </thead>
-                <tbody id="rivalMilestoneTableBody">
+                    <div class="price-box">
+                        <div class="p-row">
+                            <span class="p-lbl">현재 매매시세</span>
+                            <span class="p-val text-gold">11.5억 ~ 12.0억</span>
+                        </div>
+                        <div class="p-row highlight-bg">
+                            <span class="p-lbl">내 전세 세팅</span>
+                            <span class="p-val text-white">전세 5.7억 원</span>
+                        </div>
+                        <div class="p-row">
+                            <span class="p-lbl">20년 상승률</span>
+                            <span class="p-val text-gold">+521.6% (1.85억 ➔ 11.5억)</span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer-tag">
+                        강남권 직장인 1인 가구 탄탄한 전세 수요 확보
+                    </div>
+                </div>
+
+                <!-- 2호기 Card -->
+                <div class="property-card border-cyan">
+                    <div class="card-top">
+                        <span class="prop-badge bg-cyan">2호기 · 서울역 도심</span>
+                        <span class="prop-floor">17층 (고층 전망) 🏙️</span>
+                    </div>
+                    <h3 class="prop-title">쌍용더플래티넘서울역 (17㎡)</h3>
+                    <div class="prop-specs">오피스텔 (17TF 복층타입) 🏢</div>
+
+                    <div class="price-box">
+                        <div class="p-row">
+                            <span class="p-lbl">현재 매매시세</span>
+                            <span class="p-val text-cyan">2.78억 원</span>
+                        </div>
+                        <div class="p-row highlight-bg">
+                            <span class="p-lbl">내 전세 세팅</span>
+                            <span class="p-val text-white">전세 2.55억 원</span>
+                        </div>
+                        <div class="p-row">
+                            <span class="p-lbl">투자 갭 현황</span>
+                            <span class="p-val text-cyan">단 2,300만 원 (전세가율 91.7%)</span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer-tag">
+                        소액 레버리지 투자로 자본금 상환 완결 효자 자산
+                    </div>
+                </div>
+
+                <!-- 3호기 Card -->
+                <div class="property-card border-emerald">
+                    <div class="card-top">
+                        <span class="prop-badge bg-emerald">3호기 · 강남 삼성</span>
+                        <span class="prop-floor">19층 (탑층) 🏰</span>
+                    </div>
+                    <h3 class="prop-title">삼성동 한솔아파트 (23평)</h3>
+                    <div class="prop-specs">전용 59.8㎡ | 인테리어 굿 🏡</div>
+
+                    <div class="price-box">
+                        <div class="p-row">
+                            <span class="p-lbl">현재 매매시세</span>
+                            <span class="p-val text-emerald">21.3억 원</span>
+                        </div>
+                        <div class="p-row highlight-bg">
+                            <span class="p-lbl">점유 형태</span>
+                            <span class="p-val text-white">실거주 중 (전세시세 9~10억)</span>
+                        </div>
+                        <div class="p-row">
+                            <span class="p-lbl">20년 상승률</span>
+                            <span class="p-val text-emerald">+460.5% (3.80억 ➔ 21.3억)</span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer-tag">
+                        층간소음 제로 탑층 + GBC·영동대로 환상 입지
+                    </div>
+                </div>
+            </section>
+
+            <div class="overview-cta">
+                <button class="btn-goto-rival" onclick="switchTab('rival')">
+                    🥊 1대1 라이벌 단지 시세 비교 차트 보기 ➔
+                </button>
+            </div>
+        </main>
+
+        <!-- TAB 2: Interactive Rival Comparison & Divergence Analytics -->
+        <main class="tab-view" id="view-rival">
+            <!-- Rival Selection Sub Tabs -->
+            <section class="rival-selector-section">
+                <h2>🥊 비교할 라이벌 단지 선택</h2>
+                <div class="rival-tab-group" id="rivalPairTabs">
+                    <button class="r-tab-btn active" data-pair="1">
+                        <span class="r-num">1호기 vs 라이벌</span>
+                        <span class="r-names">역삼아이파크 11평 🆚 삼성동 힐스테이트2단지 15평</span>
+                    </button>
+                    <button class="r-tab-btn" data-pair="2">
+                        <span class="r-num">2호기 vs 라이벌</span>
+                        <span class="r-names">쌍용더플래티넘 17㎡ 🆚 중림동 브라운스톤서울</span>
+                    </button>
+                    <button class="r-tab-btn" data-pair="3">
+                        <span class="r-num">3호기 vs 라이벌</span>
+                        <span class="r-names">삼성동 한솔 23평 🆚 삼성동 석탑아파트 23평</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Interactive Rival Chart -->
+            <section class="chart-section">
+                <div class="chart-header">
+                    <div>
+                        <h2 id="rivalChartTitle">📈 [1호기] 역삼아이파크 11평 vs 삼성동 힐스테이트2단지 15평</h2>
+                        <p class="chart-sub" id="rivalChartSub">20년간 두 단지의 매매 실거래 시세 격차 및 우상향 추이 비교</p>
+                    </div>
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="rivalComparisonChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Divergence Analysis Insights Cards -->
+            <section class="divergence-section">
+                <h2>🔍 라이벌 격차(Divergence) & 과거 vs 현재 가격 분석</h2>
+                <div class="div-grid" id="rivalInsightsGrid">
                     <!-- Populated dynamically via app.js -->
-                </tbody>
-            </table>
-        </section>
+                </div>
+            </section>
+        </main>
+
+        <!-- TAB 3: 20-Year Master Comparison Table -->
+        <main class="tab-view" id="view-table">
+            <section class="table-container">
+                <h2 class="section-title">📜 20개년(2006~2026) 1대1 라이벌 연도별 매매 시세비교표</h2>
+                <table class="master-table">
+                    <thead>
+                        <tr>
+                            <th>연도</th>
+                            <th class="highlight-sale">1호기 (역삼아이파크)</th>
+                            <th>라이벌: 힐스테이트 2단지</th>
+                            <th class="highlight-sale">2호기 (쌍용더플래티넘)</th>
+                            <th>라이벌: 브라운스톤</th>
+                            <th class="highlight-sale">3호기 (삼성동한솔)</th>
+                            <th>라이벌: 삼성동 석탑</th>
+                            <th>3호기 vs 석탑 격차</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rivalMilestoneTableBody">
+                        <!-- Populated dynamically via app.js -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
 
         <footer class="dashboard-footer">
-            <p>© 2026 My Real Estate Portfolio Dashboard | 국토교통부 실거래가 공개시스템 2006~2026 전수 데이터 연동</p>
+            <p>© 2026 My Real Estate Portfolio Dashboard | 국토교통부 실거래가 공개시스템 2006~2026 연동</p>
         </footer>
     </div>
 

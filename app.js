@@ -1,159 +1,371 @@
-const complexData = {
-    'complex-world-tower': { 
-        name: '월드타워', households: '46세대', far: '402.04%', area: '1,666㎡', 
-        strategy: '학동로변 최북단 입지로, 통합 개발 시 상업 및 업무 시설 배치의 핵심 관문 역할을 수행합니다.' 
-    },
-    'complex-clk': { 
-        name: 'CLK', households: '12세대', far: '295.14%', area: '592.5㎡', 
-        strategy: '소규모 단지이나 석탑/한솔 사이의 연결 고리로, 필지 합병을 통한 용적률 인센티브 확보의 필수 요충지입니다.' 
-    },
-    'complex-seoktap': { 
-        name: '석탑', households: '139세대', far: '298.34%', area: '3,859.7㎡', 
-        strategy: '중심부 L자형 필지로, 통합 시 커뮤니티 광장 및 대규모 조경 공간의 핵심부로 전환되어 단지 품격을 결정합니다.' 
-    },
-    'complex-hansol': { 
-        name: '한솔', households: '263세대', far: '270.0%', area: '3,745.5㎡', 
-        strategy: '동측 강남구청역 방향의 대규모 단지로, 통합 시 역세권 접근성을 극대화하는 주거 주동 배치의 중심축이 됩니다.' 
-    },
-    'complex-pureunsol': { 
-        name: '푸른솔진흥', households: '61세대', far: '244.31%', area: '2,131㎡', 
-        strategy: '최동단 독립 필지로, 통합 개발 시 숲세권 프라이빗 동 또는 특화 평형 배치를 통해 희소 가치를 창출합니다.' 
-    },
-    'complex-hyundai': { 
-        name: '현대', households: '396세대', far: '307.07%', area: '6,303.4㎡', 
-        strategy: '최남단 대규모 필지로, 선릉로와 주거지를 잇는 랜드마크 주동 배치가 가능하며 통합 단지의 규모감을 완성합니다.' 
-    },
-    'complex-woojung': { 
-        name: '우정에쉐르', households: '40세대', far: '296.84%', area: '1,120㎡', 
-        strategy: '남서측 진입로에 위치하여 통합 단지의 시그니처 게이트 및 연도형 상가 배치를 통한 가치 상승이 기대됩니다.' 
-    }
-};
+let rivalData = [];
+let chartInstance = null;
+let currentPair = '1';
+let currentTab = 'overview';
 
-document.addEventListener('DOMContentLoaded', () => {
-    const sites = document.querySelectorAll('.complex-site');
-    const sheet = document.getElementById('bottom-sheet');
-    const sheetTitle = document.getElementById('sheet-title');
-    const valHouseholds = document.getElementById('val-households');
-    const valFar = document.getElementById('val-far');
-    const valArea = document.getElementById('val-area');
-    const valStrategy = document.getElementById('val-strategy');
-    const sheetTrigger = document.getElementById('sheet-trigger');
-
-    // Bottom Sheet Interaction Logic
-    let isSheetOpen = false;
-
-    const toggleSheet = (forceState) => {
-        isSheetOpen = forceState !== undefined ? forceState : !isSheetOpen;
-        if (isSheetOpen) {
-            sheet.classList.remove('sheet-closed');
-            sheet.classList.add('sheet-open');
-        } else {
-            sheet.classList.add('sheet-closed');
-            sheet.classList.remove('sheet-open');
-        }
-    };
-
-    sheetTrigger.addEventListener('click', () => toggleSheet());
-
-    // Site Click Handler
-    sites.forEach(site => {
-        site.addEventListener('click', (e) => {
-            const rawId = site.id;
-            // Handle multi-part sites like Hyundai
-            const complexId = rawId.includes('hyundai') ? 'complex-hyundai' : rawId;
-            const data = complexData[complexId];
-
-            if (!data) return;
-
-            // Update Active Class for all parts of the complex
-            sites.forEach(s => s.classList.remove('active'));
-            if (complexId === 'complex-hyundai') {
-                document.querySelectorAll('[id*="hyundai"]').forEach(s => s.classList.add('active'));
-            } else {
-                site.classList.add('active');
-            }
-
-            // Update UI
-            sheetTitle.textContent = data.name;
-            valHouseholds.textContent = data.households;
-            valFar.textContent = data.far;
-            valArea.textContent = data.area;
-            valStrategy.textContent = data.strategy;
-
-            // Open Sheet automatically on selection
-            toggleSheet(true);
-
-            // Haptic Feedback (Mobile fallback)
-            if (window.navigator.vibrate) window.navigator.vibrate(10);
-        });
-    });
-
-    // Close sheet when clicking on map background
-    document.getElementById('blueprint-svg').addEventListener('click', (e) => {
-        if (e.target.tagName !== 'path') {
-            toggleSheet(false);
-            sites.forEach(s => s.classList.remove('active'));
-        }
-    });
-
-    // Swipe Logic for Bottom Sheet (Simple touch tracking)
-    let touchStartY = 0;
-    sheetTrigger.addEventListener('touchstart', (e) => {
-        touchStartY = e.touches[0].clientY;
-    });
-
-    sheetTrigger.addEventListener('touchend', (e) => {
-        const touchEndY = e.changedTouches[0].clientY;
-        if (touchStartY - touchEndY > 50) {
-            toggleSheet(true); // Swipe Up
-        } else if (touchEndY - touchStartY > 50) {
-            toggleSheet(false); // Swipe Down
-        }
-    // Counter Animations
-    const animateCounter = (el, target, duration = 2000) => {
-        let start = 0;
-        constステップ = (timestamp) => {
-            if (!start) start = timestamp;
-            const progress = Math.min((timestamp - start) / duration, 1);
-            const current = (progress * target).toFixed(target % 1 === 0 ? 0 : 1);
-            el.textContent = current;
-            if (progress < 1) {
-                window.requestAnimationFrame(ステップ);
-            }
-        };
-        window.requestAnimationFrame(ステップ);
-    };
-
-    const counterEl = document.querySelector('.counter');
-    if (counterEl) animateCounter(counterEl, 68.4);
-
-    const visitorEl = document.getElementById('live-visitors');
-    if (visitorEl) {
-        animateCounter(visitorEl, 846);
-        // Randomly fluctuate visitors
-        setInterval(() => {
-            const current = parseInt(visitorEl.textContent);
-            const delta = Math.floor(Math.random() * 5) - 2;
-            visitorEl.textContent = Math.max(800, current + delta);
-        }, 3000);
+document.addEventListener('DOMContentLoaded', async () => {
+    // 1. Fetch Rival Dataset
+    try {
+        const resp = await fetch('rival-comparison-2006-2026.json');
+        rivalData = await resp.json();
+    } catch (e) {
+        console.error("Error loading rival dataset:", e);
     }
 
-    // Scroll Reveal Animation (Intersection Observer)
-    const revealElements = document.querySelectorAll('.reveal-up');
-    const revealOptions = {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px"
-    };
+    // 2. Initialize Main Navigation Tab Handlers
+    initMainTabs();
 
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (!entry.isIntersecting) return;
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
+    // 3. Initialize Rival Chart
+    initChart();
+
+    // 4. Render Insight Cards for initial pair
+    renderInsightCards('1');
+
+    // 5. Render Milestone Table
+    renderMilestoneTable();
+
+    // 6. Rival Pair Sub-Tab Switch
+    const rTabs = document.querySelectorAll('#rivalPairTabs .r-tab-btn');
+    rTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            rTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            currentPair = tab.getAttribute('data-pair');
+            updateChart();
+            renderInsightCards(currentPair);
         });
-    }, revealOptions);
-
-    revealElements.forEach(el => {
-        revealObserver.observe(el);
     });
 });
+
+function initMainTabs() {
+    const navButtons = document.querySelectorAll('#mainNavTabs .nav-tab-btn');
+    navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetTab = btn.getAttribute('data-tab');
+            switchTab(targetTab);
+        });
+    });
+}
+
+function switchTab(tabId) {
+    currentTab = tabId;
+    
+    // Update main nav tab active buttons
+    const navButtons = document.querySelectorAll('#mainNavTabs .nav-tab-btn');
+    navButtons.forEach(btn => {
+        if (btn.getAttribute('data-tab') === tabId) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    // Update tab view panels visibility
+    const views = document.querySelectorAll('.tab-view');
+    views.forEach(v => v.classList.remove('active'));
+
+    const targetView = document.getElementById(`view-${tabId}`);
+    if (targetView) {
+        targetView.classList.add('active');
+    }
+
+    // If switching to rival chart tab, refresh Chart.js layout & canvas size
+    if (tabId === 'rival' && chartInstance) {
+        setTimeout(() => {
+            chartInstance.resize();
+            chartInstance.update();
+        }, 50);
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function initChart() {
+    const canvas = document.getElementById('rivalComparisonChart');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: getChartConfig(currentPair),
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: {
+                    labels: { color: '#94a3b8', font: { family: 'Inter', size: 12, weight: 'bold' } }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.dataset.label}: ${context.raw}억 원`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#64748b' },
+                    grid: { color: 'rgba(255,255,255,0.05)' }
+                },
+                y: {
+                    ticks: { color: '#64748b', callback: v => v + '억' },
+                    grid: { color: 'rgba(255,255,255,0.05)' }
+                }
+            }
+        }
+    });
+}
+
+function getChartConfig(pair) {
+    if (!rivalData || rivalData.length === 0) return { labels: [], datasets: [] };
+
+    const years = rivalData.map(d => d.year + '년');
+    let datasets = [];
+
+    if (pair === '1') {
+        document.getElementById('rivalChartTitle').innerText = '📈 [1호기] 역삼아이파크 11평 🆚 라이벌: 삼성동 힐스테이트 2단지 15평';
+        document.getElementById('rivalChartSub').innerText = '강남 소형 대표 아파트 20년간 시세 추이 및 프리미엄 격차 변화 (2006~2026년)';
+
+        datasets = [
+            {
+                label: '1호기: 역삼아이파크 11평 (전용 28.2㎡)',
+                data: rivalData.map(d => d.p1),
+                borderColor: '#f59e0b',
+                backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                tension: 0.3, pointRadius: 4, borderWidth: 3
+            },
+            {
+                label: '라이벌: 삼성동 힐스테이트 2단지 (전용 38.6㎡)',
+                data: rivalData.map(d => d.r1),
+                borderColor: '#ef4444',
+                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                borderDash: [5, 5],
+                tension: 0.3, pointRadius: 4, borderWidth: 3
+            }
+        ];
+    } else if (pair === '2') {
+        document.getElementById('rivalChartTitle').innerText = '📈 [2호기] 쌍용더플래티넘 17㎡ 🆚 라이벌: 중림동 브라운스톤서울';
+        document.getElementById('rivalChartSub').innerText = '서울역 도심 직주근접 오피스텔 대표 라이벌 20개년 매매 시세 비교 (2006~2026년)';
+
+        datasets = [
+            {
+                label: '2호기: 쌍용더플래티넘 17㎡ (오피스텔)',
+                data: rivalData.map(d => d.p2),
+                borderColor: '#06b6d4',
+                backgroundColor: 'rgba(6, 182, 212, 0.1)',
+                tension: 0.3, pointRadius: 4, borderWidth: 3
+            },
+            {
+                label: '라이벌: 중림동 브라운스톤서울',
+                data: rivalData.map(d => d.r2),
+                borderColor: '#a855f7',
+                backgroundColor: 'rgba(168, 85, 247, 0.1)',
+                borderDash: [5, 5],
+                tension: 0.3, pointRadius: 4, borderWidth: 3
+            }
+        ];
+    } else if (pair === '3') {
+        document.getElementById('rivalChartTitle').innerText = '📈 [3호기] 삼성동 한솔 23평 🆚 라이벌: 삼성동 석탑아파트 23평';
+        document.getElementById('rivalChartSub').innerText = '삼성동 입지 동급 평형 나홀로/중소형 아파트 1대1 20년 맞대결 추이 (2006~2026년)';
+
+        datasets = [
+            {
+                label: '3호기: 삼성동 한솔아파트 (23평)',
+                data: rivalData.map(d => d.p3),
+                borderColor: '#10b981',
+                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                tension: 0.3, pointRadius: 4, borderWidth: 3
+            },
+            {
+                label: '라이벌: 삼성동 석탑아파트 (23평)',
+                data: rivalData.map(d => d.r3),
+                borderColor: '#64748b',
+                backgroundColor: 'rgba(100, 116, 139, 0.1)',
+                borderDash: [5, 5],
+                tension: 0.3, pointRadius: 4, borderWidth: 3
+            }
+        ];
+    }
+
+    return { labels: years, datasets: datasets };
+}
+
+function updateChart() {
+    if (!chartInstance) return;
+    chartInstance.data = getChartConfig(currentPair);
+    chartInstance.update();
+}
+
+function renderInsightCards(pair) {
+    const grid = document.getElementById('rivalInsightsGrid');
+    if (!grid) return;
+
+    if (pair === '1') {
+        grid.innerHTML = `
+            <div class="div-card border-gold">
+                <div class="div-header">
+                    <span class="div-badge gold-bg">1호기 vs 힐스테이트 2단지 (20년 성과)</span>
+                    <h3>평형차이(11평 vs 15평) 프리미엄 유지 분석</h3>
+                </div>
+                <div class="div-body">
+                    <div class="div-comparison-box">
+                        <div class="c-item">
+                            <span class="year-lbl">2006년 당시</span>
+                            <div class="val-group">
+                                <span>1호기(11평): 1.85억</span>
+                                <span>힐스테이트(15평): 2.90억</span>
+                            </div>
+                            <div class="gap-result">격차: <strong>1.05억 원</strong></div>
+                        </div>
+                        <div class="arrow-divider">➔</div>
+                        <div class="c-item">
+                            <span class="year-lbl">2026년 현재</span>
+                            <div class="val-group">
+                                <span>1호기(11평): 11.5억~12억</span>
+                                <span>힐스테이트(15평): 15.3억</span>
+                            </div>
+                            <div class="gap-result text-gold">격차: <strong>3.80억 원</strong></div>
+                        </div>
+                    </div>
+                    <p class="div-desc">
+                        💡 <strong>분석 메시지:</strong> 1호기와 힐스테이트 2단지는 모두 강남 초소형 입지로서 20년간 **동반 6배 이상 폭등**했습니다. 11평과 15평의 실평수 차이만큼 시세 프리미엄 격차가 정비례하여 유지·확대되었습니다.
+                    </p>
+                </div>
+            </div>
+
+            <div class="div-card border-gold">
+                <div class="div-header">
+                    <span class="div-badge gold-bg">임대 수익률 & 갭 효율 비교</span>
+                    <h3>내 물건(14층/인테리어 굿)의 차별화 요소</h3>
+                </div>
+                <div class="div-body">
+                    <p class="div-desc">
+                        • <strong>전세 방어력:</strong> 힐스테이트 15평 전세(약 6.5억~7억) 대비 1호기(전세 5.7억)는 강남권 직장인 실속형 1인 가구 전세 수요가 대단히 탄탄함.<br>
+                        • <strong>인테리어 효과:</strong> 보유 1호기는 14층 로열층 + 최상급 인테리어로 동일 단지 평균 전세가 대비 우수한 전세금 세팅 완료.
+                    </p>
+                </div>
+            </div>
+        `;
+    } else if (pair === '2') {
+        grid.innerHTML = `
+            <div class="div-card border-cyan">
+                <div class="div-header">
+                    <span class="div-badge cyan-bg">2호기 vs 브라운스톤서울 (오피스텔 맞대결)</span>
+                    <h3>전용 면적 차이 대비 갭 투자 효율성 승부</h3>
+                </div>
+                <div class="div-body">
+                    <div class="div-comparison-box">
+                        <div class="c-item">
+                            <span class="year-lbl">2006년 당시</span>
+                            <div class="val-group">
+                                <span>2호기(17㎡): 1.05억</span>
+                                <span>브라운스톤(25㎡): 1.50억</span>
+                            </div>
+                            <div class="gap-result">격차: <strong>4,500만 원</strong></div>
+                        </div>
+                        <div class="arrow-divider">➔</div>
+                        <div class="c-item">
+                            <span class="year-lbl">2026년 현재</span>
+                            <div class="val-group">
+                                <span>2호기(17㎡): 2.78억</span>
+                                <span>브라운스톤(25㎡): 3.90억</span>
+                            </div>
+                            <div class="gap-result text-cyan">격차: <strong>1.12억 원</strong></div>
+                        </div>
+                    </div>
+                    <p class="div-desc">
+                        💡 <strong>분석 메시지:</strong> 브라운스톤이 면적이 넓어 매매가는 높으나, **2호기(쌍용더플래티넘)는 복층 설계 구조** 덕분에 전세가율이 91.7%에 달해 **단 2,300만 원이라는 독보적 소액 갭**으로 매수가 가능했습니다.
+                    </p>
+                </div>
+            </div>
+
+            <div class="div-card border-cyan">
+                <div class="div-header">
+                    <span class="div-badge cyan-bg">임대 가치 분석</span>
+                    <h3>서울역 도심 직주근접 든든한 2호기</h3>
+                </div>
+                <div class="div-body">
+                    <p class="div-desc">
+                        • <strong>17층 고층 전망:</strong> 서울역 조망 및 탁 트인 채광 보유.<br>
+                        • <strong>전세 2.55억 안착:</strong> 매매가 2.78억 대비 높은 보증금 유지로 사실상 자본금 상환 완결 자산 역할.
+                    </p>
+                </div>
+            </div>
+        `;
+    } else if (pair === '3') {
+        grid.innerHTML = `
+            <div class="div-card border-emerald">
+                <div class="div-header">
+                    <span class="div-badge emerald-bg">3호기(삼성동한솔) vs 삼성동 석탑아파트</span>
+                    <h3>동급 연식·평형 대결 ➔ 3호기의 1.5억 격차 벌림</h3>
+                </div>
+                <div class="div-body">
+                    <div class="div-comparison-box">
+                        <div class="c-item">
+                            <span class="year-lbl">2006년 당시</span>
+                            <div class="val-group">
+                                <span>3호기(한솔): 3.80억</span>
+                                <span>석탑아파트: 3.60억</span>
+                            </div>
+                            <div class="gap-result">격차: <strong>2,000만 원</strong> (미세한 차이)</div>
+                        </div>
+                        <div class="arrow-divider">➔</div>
+                        <div class="c-item">
+                            <span class="year-lbl">2026년 현재</span>
+                            <div class="val-group">
+                                <span>3호기(한솔): 21.3억</span>
+                                <span>석탑아파트: 19.8억</span>
+                            </div>
+                            <div class="gap-result text-emerald">격차: <strong>1.50억 원!</strong> (격차 확대)</div>
+                        </div>
+                    </div>
+                    <p class="div-desc">
+                        💡 <strong>분석 메시지:</strong> 20년 전에는 불과 2,000만 원 차이였으나, 시간이 지남에 따라 **삼성동 한솔(263세대)이 석탑(84세대) 대비 단지 규모 및 언북초 배정 입지 프리미엄**이 누적되어 현재 1.5억 원 이상 시세를 앞서나가는 우월한 성과를 보였습니다.
+                    </p>
+                </div>
+            </div>
+
+            <div class="div-card border-emerald">
+                <div class="div-header">
+                    <span class="div-badge emerald-bg">실거주 만족도 프리미엄</span>
+                    <h3>19층 탑층의 독보적 주거 가치</h3>
+                </div>
+                <div class="div-body">
+                    <p class="div-desc">
+                        • <strong>19층 탑층 프리미엄:</strong> 층간소음 제로, 우수한 조망과 채광으로 동일 단지 내 최고 선호 층수.<br>
+                        • <strong>삼성동 미래 호재:</strong> 영동대로 복합환승센터 & GBC 개발 완료 시 추가적인 시세 분출이 가장 기대되는 실거주 메인 자산.
+                    </p>
+                </div>
+            </div>
+        `;
+    }
+}
+
+function renderMilestoneTable() {
+    const tbody = document.getElementById('rivalMilestoneTableBody');
+    if (!tbody) return;
+    if (!rivalData || rivalData.length === 0) return;
+
+    let html = '';
+    const reversed = [...rivalData].reverse();
+
+    reversed.forEach(row => {
+        const gap3 = (row.p3 - row.r3).toFixed(2);
+        const gapSign = gap3 >= 0 ? `+${gap3}` : `${gap3}`;
+
+        html += `<tr>
+            <td><strong>${row.year}년</strong></td>
+            <td class="highlight-sale"><strong>${row.p1}억 원</strong></td>
+            <td>${row.r1}억 원</td>
+            <td class="highlight-sale"><strong>${row.p2}억 원</strong></td>
+            <td>${row.r2}억 원</td>
+            <td class="highlight-sale"><strong>${row.p3}억 원</strong></td>
+            <td>${row.r3}억 원</td>
+            <td><strong style="color: var(--emerald);">${gapSign}억 원</strong></td>
+        </tr>`;
+    });
+
+    tbody.innerHTML = html;
+}

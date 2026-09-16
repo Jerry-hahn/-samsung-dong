@@ -3,264 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SAMSUNG-DONG MEGA TOWN | Geometic Blueprint</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <title>1·2·3호기 부동산 포트폴리오 & 라이벌 비교 대시보드</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div id="app">
-        <!-- Background Cinematic Gradient -->
-        <div class="cinematic-bg"></div>
-
-        <div class="layout-container">
-            <!-- Left Pane (Map & Core Visual) -->
-            <div class="pane-left">
-                <!-- Dashboard Header -->
-                <header class="dashboard-header">
-                    <div class="live-activity-bar">
-                        <span class="pulse-icon"></span>
-                        <span id="live-visitors">846</span> 명의 소유주가 통합 비전을 확인 중입니다
-                    </div>
-                    <div class="header-content">
-                        <span class="badge">SAMSUNG-DONG UNIFIED COUNCIL</span>
-                        <h1>삼성동 7개 단지 통합<br><span class="text-gold">평당 2억 시대를 여는 위대한 결단</span></h1>
-                        <p>단독 재건축의 한계를 넘어, 현대차 GBC와 영동대로 지하도시를 품은 대한민국 0.1% 하이엔드 랜드마크로 재탄생합니다.</p>
-                    </div>
-                </header>
-
-                <!-- Consensus Mastery: Momentum Tracker -->
-                <section class="consensus-momentum">
-                    <div class="momentum-header">
-                        <div class="m-stat">
-                            <span class="m-label">현재 동의율</span>
-                            <span class="m-count text-gold"><span class="counter">68.4</span>%</span>
-                        </div>
-                        <div class="m-stat right">
-                            <span class="m-label">법정 한도까지</span>
-                            <span class="m-count">-6.6%</span>
-                        </div>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar" style="width: 68.4%;"></div>
-                        <div class="progress-target" style="left: 75%;"></div>
-                    </div>
-                    <p class="momentum-desc">75% 동의 시 하이엔드 브랜드 선정 및 사업시행 인가 단계로 즉시 진입합니다.</p>
-                </section>
-
-                <!-- Interactive Map Frame -->
-                <main class="map-frame">
-                    <div id="blueprint-container">
-                        <svg id="blueprint-svg" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Road Networks (Accurate Geometry) -->
-                            <g class="roads">
-                                <rect x="0" y="80" width="1000" height="60" fill="rgba(255,255,255,0.03)" />
-                                <text x="50" y="120" fill="rgba(255,255,255,0.2)" font-size="24" font-weight="800">학동로 (HAKDONG-RO)</text>
-                                
-                                <rect x="0" y="520" width="1000" height="40" fill="rgba(255,255,255,0.02)" />
-                                <text x="50" y="545" fill="rgba(255,255,255,0.15)" font-size="18">선릉로 130길 (SEONREUNG-RO 130-GIL)</text>
-
-                                <rect x="750" y="140" width="40" height="860" fill="rgba(255,255,255,0.02)" />
-                                <text x="765" y="900" fill="rgba(255,255,255,0.1)" font-size="16" transform="rotate(-90 765, 900)">학동로 64길</text>
-                            </g>
-
-                            <!-- Station Reference -->
-                            <g class="station" transform="translate(850, 100)">
-                                <circle r="30" fill="rgba(201, 162, 109, 0.15)" stroke="var(--primary)" stroke-width="2" />
-                                <text y="5" text-anchor="middle" fill="var(--primary)" font-size="14" font-weight="900">7/수인</text>
-                                <text y="45" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="14">강남구청역</text>
-                            </g>
-
-                            <!-- Complexes -->
-                            <path id="complex-world-tower" d="M 120 180 H 260 V 420 H 120 Z" class="complex-site" data-name="월드타워" />
-                            <path id="complex-clk" d="M 280 180 H 380 V 450 H 280 Z" class="complex-site" data-name="CLK" />
-                            <path id="complex-seoktap" d="M 400 180 H 720 V 380 H 520 V 500 H 400 Z" class="complex-site" data-name="석탑" />
-                            <path id="complex-hansol" d="M 800 180 H 950 V 700 H 840 V 350 H 800 Z" class="complex-site" data-name="한솔" />
-                            <path id="complex-pureunsol" d="M 820 400 H 980 V 650 H 820 Z" class="complex-site" data-name="푸른솔진흥" />
-                            <path id="complex-woojung" d="M 280 580 H 480 V 820 H 280 Z" class="complex-site" data-name="우정에쉐르" />
-                            <path id="complex-hyundai" d="M 120 580 H 260 V 750 H 720 V 950 H 120 V 850 H 120 Z" class="complex-site" data-name="현대" />
-                            <path id="complex-hyundai-wing" d="M 500 580 H 720 V 950 H 500 Z" class="complex-site no-stroke" data-name="현대" />
-
-                            <!-- Strategic Overlay -->
-                            <rect id="mega-town-boundary" x="100" y="160" width="880" height="820" fill="none" stroke="rgba(201, 162, 109, 0.1)" stroke-width="2" stroke-dasharray="10 10" />
-                        </svg>
-                    </div>
-                </main>
-            </div>
-
-            <!-- Right Pane (Information & Vision) -->
-            <div class="pane-right">
-                <!-- Roadmap & Timeline -->
-                <section class="timeline-roadmap reveal-up">
-                    <div class="section-title">
-                        <span class="sheet-sub">ROAD TO MEGA TOWN</span>
-                        <h2>성공적인 재건축을 위한 추진 경과</h2>
-                    </div>
-                    <div class="timeline-container">
-                        <div class="timeline-item completed">
-                            <div class="t-node"></div>
-                            <div class="t-content">
-                                <span class="t-date">2025.12.13</span>
-                                <h3>1차 통합 간담회 개최</h3>
-                            </div>
-                        </div>
-                        <div class="timeline-item completed">
-                            <div class="t-node"></div>
-                            <div class="t-content">
-                                <span class="t-date">2026.03.14</span>
-                                <h3>2차 통합 간담회 성료</h3>
-                            </div>
-                        </div>
-                        <div class="timeline-item active">
-                            <div class="t-node pulse"></div>
-                            <div class="t-content">
-                                <span class="t-date">현재 진행 중</span>
-                                <h3>3차 통합 간담회 예정</h3>
-                                <p class="t-desc">보다 구체적인 비전 공유와 소유주 의견 수렴을 위한 3차 간담회가 곧 개최됩니다.</p>
-                            </div>
-                        </div>
-                        <div class="timeline-item future">
-                            <div class="t-node"></div>
-                            <div class="t-content">
-                                <span class="t-date">향후 계획</span>
-                                <h3>조합 설립 및 하이엔드 시공사 선정</h3>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Value Vision: ROI & Synergy Dashboard -->
-                <section class="value-engine reveal-up">
-                    <div class="section-title">
-                        <span class="sheet-sub">STRATEGIC ROI</span>
-                        <h2>단지 통합의 압도적 시너지</h2>
-                    </div>
-                    
-                    <div class="value-card-stack">
-                        <div class="value-compare-card">
-                            <div class="vc-header">자산 가치 프리미엄 전망</div>
-                            <div class="vc-body">
-                                <div class="compare-row">
-                                    <span class="c-label">개별 재건축 시</span>
-                                    <span class="c-val">평당 8,500~9,000만</span>
-                                </div>
-                                <div class="compare-arrow"><i class="ph ph-trend-up"></i> 통합 시 최소 2배 이상 수익 예상</div>
-                                <div class="compare-row highlight">
-                                    <span class="c-label">통합 메가타운 완성 시</span>
-                                    <span class="c-val">평당 1.8억~2.1억 돌파</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="synergy-meter-box">
-                            <div class="vc-header">규모의 경제가 만드는 럭셔리 커뮤니티</div>
-                            <div class="meter-content">
-                                <div class="meter-circle">
-                                    <span class="m-big">34,000</span>
-                                    <span class="m-small">㎡ 통합 부지 확보</span>
-                                </div>
-                                <ul class="synergy-list">
-                                    <li><i class="ph ph-check-circle"></i> <strong>최고급 스카이라운지 및 인피니티 풀</strong> (단독 재건축 시 불가)</li>
-                                    <li><i class="ph ph-check-circle"></i> <strong>하이엔드 1군 브랜드 유치 확정적</strong> (디에이치, 아크로 등)</li>
-                                    <li><i class="ph ph-check-circle"></i> 호텔식 컨시어지 및 프리미엄 조식 서비스 제공</li>
-                                    <li><i class="ph ph-check-circle"></i> 대단지 프리미엄으로 인한 관리비 절감 및 상가 수익 극대화</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Global Vision -->
-                <section class="global-vision reveal-up">
-                    <div class="section-title center">
-                        <span class="sheet-sub">GLOBAL LANDMARK</span>
-                        <h2>현대차 GBC와 영동대로 지하도시를 품은<br>대한민국 0.1% 미니 신도시</h2>
-                    </div>
-                    
-                    <div class="benchmark-carousel">
-                        <div class="benchmark-card">
-                            <div class="b-img-placeholder" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&q=80&w=600'); background-size: cover;">
-                                <span class="b-location">TOKYO</span>
-                                <span class="b-name">Azabudai Hills</span>
-                            </div>
-                            <p>도심 파편화된 부지를 통합하여 일본 최고의 부촌이자 문화 랜드마크로 재탄생한 성공 사례</p>
-                        </div>
-                        <div class="benchmark-card">
-                            <div class="b-img-placeholder" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1517733925043-4731bd9dc14d?auto=format&fit=crop&q=80&w=600'); background-size: cover;">
-                                <span class="b-location">SAMSUNG-DONG</span>
-                                <span class="b-name">Mega Town</span>
-                            </div>
-                            <p>현대차 GBC, GTX-A/C, 영동대로 복합개발의 직접 수혜를 받는 3만 4천 헤베급 초대형 랜드마크 타운</p>
-                        </div>
-                    </div>
-                </section>
-                
-                <div class="bottom-spacer"></div>
-            </div>
-        </div>
-
-        <!-- Bottom Sheet HUD (iPhone Style) -->
-        <div id="bottom-sheet" class="sheet-closed">
-            <div class="sheet-handle-area" id="sheet-trigger">
-                <div class="sheet-bar"></div>
-            </div>
-            <div class="sheet-body">
-                <div class="sheet-header">
-                    <div class="title-group">
-                        <span class="sheet-sub">SAMSUNG-DONG MEGA TOWN UNIT</span>
-                        <h2 id="sheet-title">단지를 선택하십시오</h2>
-                    </div>
-                    <div class="sheet-actions">
-                        <button class="action-btn active" id="btn-basic">기본정보</button>
-                        <button class="action-btn" id="btn-vision">통합비전</button>
-                    </div>
+    <div class="app-container">
+        <!-- Dashboard Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="brand">
+                    <span class="badge">MY REAL ESTATE PORTFOLIO</span>
+                    <h1>보유 자산 현황 & 라이벌 분석 <span>(2006~2026)</span></h1>
                 </div>
-                <div class="sheet-main-info">
-                    <div class="metric-row">
-                        <div class="metric">
-                            <span class="m-label">현세대수</span>
-                            <span class="m-value" id="val-households">-</span>
-                        </div>
-                        <div class="metric">
-                            <span class="m-label">현재 용적률</span>
-                            <span class="m-value" id="val-far">-</span>
-                        </div>
-                        <div class="metric">
-                            <span class="m-label">대지면적</span>
-                            <span class="m-value" id="val-area">-</span>
-                        </div>
-                    </div>
-                    <div class="strategy-box">
-                        <div class="s-label"><i class="ph ph-lightning"></i> 통합 재건축 시너지 효과</div>
-                        <p id="val-strategy">지도의 단지를 터치하면 개별 제원과 통합 시 예상되는 가치 상승분을 분석해 드립니다.</p>
-                    </div>
-                    <div class="action-footer">
-                        <button class="cta-btn">상세 사업성 분석 리포트 보기 <i class="ph ph-arrow-right"></i></button>
-                    </div>
+                <div class="last-updated">
+                    <i class="icon-sync">🔄</i> 매일 실거래가 갱신중 (국토교통부 API)
                 </div>
             </div>
-        </div>
+            
+            <!-- Global Main Navigation Tabs (Mobile Compact) -->
+            <nav class="main-nav-tabs" id="mainNavTabs">
+                <button class="nav-tab-btn active" data-tab="overview">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-text">자산 현황 한눈보기</span>
+                </button>
+                <button class="nav-tab-btn" data-tab="rival">
+                    <span class="nav-icon">🥊</span>
+                    <span class="nav-text">1대1 라이벌 비교</span>
+                </button>
+                <button class="nav-tab-btn" data-tab="table">
+                    <span class="nav-icon">📜</span>
+                    <span class="nav-text">20년 시세 비교표</span>
+                </button>
+            </nav>
+        </header>
 
-        <!-- Fixed Bottom CTA -->
-        <div class="fixed-cta-bar">
-            <div class="cta-inner">
-                <div class="cta-text">
-                    <strong>추진위와 상담하기</strong>
-                    <span>동의율 68% 돌파 중</span>
+        <!-- TAB 1: Mobile-First Asset Overview (No Scroll / Single Screen View) -->
+        <main class="tab-view active" id="view-overview">
+            <!-- Portfolio Total KPI Summary Banner -->
+            <section class="kpi-banner">
+                <div class="kpi-item glow-gold">
+                    <span class="kpi-label">총 매매 자산가치</span>
+                    <span class="kpi-val" id="totalAssetVal">약 35.6억~36.1억</span>
                 </div>
-                <button class="nav-btn-gold">문의하기</button>
-            </div>
-        </div>
+                <div class="kpi-item glow-cyan">
+                    <span class="kpi-label">승계 임대보증금</span>
+                    <span class="kpi-val">8.25억 원 <small>(1,2호기 전세)</small></span>
+                </div>
+                <div class="kpi-item glow-emerald">
+                    <span class="kpi-label">3호기 거주 상태</span>
+                    <span class="kpi-val">실거주 중 <small>(19층 탑층)</small></span>
+                </div>
+            </section>
 
-        <!-- KakaoTalk Floating Button -->
-        <a href="https://open.kakao.com/o/gmjbVFed" target="_blank" class="floating-kakaotalk" title="통합 재건축 단톡방 참여하기">
-            <div class="kkt-pulse"></div>
-            <div class="kkt-icon-wrap">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/KakaoTalk_logo.svg" alt="KakaoTalk">
-            </div>
-            <span class="kkt-label">단톡방</span>
-        </a>
+            <!-- 1, 2, 3 호기 One-Screen Property Grid -->
+            <section class="overview-grid">
+                <!-- 1호기 Card -->
+                <div class="property-card border-gold">
+                    <div class="card-top">
+                        <span class="prop-badge bg-gold">1호기 · 강남 역삼</span>
+                        <span class="prop-floor">14층 (로열층) 👑</span>
+                    </div>
+                    <h3 class="prop-title">역삼 아이파크 1차 (11평)</h3>
+                    <div class="prop-specs">전용 28.2㎡ | 최고급 인테리어 ✨</div>
 
+                    <div class="price-box">
+                        <div class="p-row">
+                            <span class="p-lbl">현재 매매시세</span>
+                            <span class="p-val text-gold">11.5억 ~ 12.0억</span>
+                        </div>
+                        <div class="p-row highlight-bg">
+                            <span class="p-lbl">내 전세 세팅</span>
+                            <span class="p-val text-white">전세 5.7억 원</span>
+                        </div>
+                        <div class="p-row">
+                            <span class="p-lbl">20년 상승률</span>
+                            <span class="p-val text-gold">+521.6% (1.85억 ➔ 11.5억)</span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer-tag">
+                        강남권 직장인 1인 가구 탄탄한 전세 수요 확보
+                    </div>
+                </div>
+
+                <!-- 2호기 Card -->
+                <div class="property-card border-cyan">
+                    <div class="card-top">
+                        <span class="prop-badge bg-cyan">2호기 · 서울역 도심</span>
+                        <span class="prop-floor">17층 (고층 전망) 🏙️</span>
+                    </div>
+                    <h3 class="prop-title">쌍용더플래티넘서울역 (17㎡)</h3>
+                    <div class="prop-specs">오피스텔 (17TF 복층타입) 🏢</div>
+
+                    <div class="price-box">
+                        <div class="p-row">
+                            <span class="p-lbl">현재 매매시세</span>
+                            <span class="p-val text-cyan">2.78억 원</span>
+                        </div>
+                        <div class="p-row highlight-bg">
+                            <span class="p-lbl">내 전세 세팅</span>
+                            <span class="p-val text-white">전세 2.55억 원</span>
+                        </div>
+                        <div class="p-row">
+                            <span class="p-lbl">투자 갭 현황</span>
+                            <span class="p-val text-cyan">단 2,300만 원 (전세가율 91.7%)</span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer-tag">
+                        소액 레버리지 투자로 자본금 상환 완결 효자 자산
+                    </div>
+                </div>
+
+                <!-- 3호기 Card -->
+                <div class="property-card border-emerald">
+                    <div class="card-top">
+                        <span class="prop-badge bg-emerald">3호기 · 강남 삼성</span>
+                        <span class="prop-floor">19층 (탑층) 🏰</span>
+                    </div>
+                    <h3 class="prop-title">삼성동 한솔아파트 (23평)</h3>
+                    <div class="prop-specs">전용 59.8㎡ | 인테리어 굿 🏡</div>
+
+                    <div class="price-box">
+                        <div class="p-row">
+                            <span class="p-lbl">현재 매매시세</span>
+                            <span class="p-val text-emerald">21.3억 원</span>
+                        </div>
+                        <div class="p-row highlight-bg">
+                            <span class="p-lbl">점유 형태</span>
+                            <span class="p-val text-white">실거주 중 (전세시세 9~10억)</span>
+                        </div>
+                        <div class="p-row">
+                            <span class="p-lbl">20년 상승률</span>
+                            <span class="p-val text-emerald">+460.5% (3.80억 ➔ 21.3억)</span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer-tag">
+                        층간소음 제로 탑층 + GBC·영동대로 환상 입지
+                    </div>
+                </div>
+            </section>
+
+            <div class="overview-cta">
+                <button class="btn-goto-rival" onclick="switchTab('rival')">
+                    🥊 1대1 라이벌 단지 시세 비교 차트 보기 ➔
+                </button>
+            </div>
+        </main>
+
+        <!-- TAB 2: Interactive Rival Comparison & Divergence Analytics -->
+        <main class="tab-view" id="view-rival">
+            <!-- Rival Selection Sub Tabs -->
+            <section class="rival-selector-section">
+                <h2>🥊 비교할 라이벌 단지 선택</h2>
+                <div class="rival-tab-group" id="rivalPairTabs">
+                    <button class="r-tab-btn active" data-pair="1">
+                        <span class="r-num">1호기 vs 라이벌</span>
+                        <span class="r-names">역삼아이파크 11평 🆚 삼성동 힐스테이트2단지 15평</span>
+                    </button>
+                    <button class="r-tab-btn" data-pair="2">
+                        <span class="r-num">2호기 vs 라이벌</span>
+                        <span class="r-names">쌍용더플래티넘 17㎡ 🆚 중림동 브라운스톤서울</span>
+                    </button>
+                    <button class="r-tab-btn" data-pair="3">
+                        <span class="r-num">3호기 vs 라이벌</span>
+                        <span class="r-names">삼성동 한솔 23평 🆚 삼성동 석탑아파트 23평</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Interactive Rival Chart -->
+            <section class="chart-section">
+                <div class="chart-header">
+                    <div>
+                        <h2 id="rivalChartTitle">📈 [1호기] 역삼아이파크 11평 vs 삼성동 힐스테이트2단지 15평</h2>
+                        <p class="chart-sub" id="rivalChartSub">20년간 두 단지의 매매 실거래 시세 격차 및 우상향 추이 비교</p>
+                    </div>
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="rivalComparisonChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Divergence Analysis Insights Cards -->
+            <section class="divergence-section">
+                <h2>🔍 라이벌 격차(Divergence) & 과거 vs 현재 가격 분석</h2>
+                <div class="div-grid" id="rivalInsightsGrid">
+                    <!-- Populated dynamically via app.js -->
+                </div>
+            </section>
+        </main>
+
+        <!-- TAB 3: 20-Year Master Comparison Table -->
+        <main class="tab-view" id="view-table">
+            <section class="table-container">
+                <h2 class="section-title">📜 20개년(2006~2026) 1대1 라이벌 연도별 매매 시세비교표</h2>
+                <table class="master-table">
+                    <thead>
+                        <tr>
+                            <th>연도</th>
+                            <th class="highlight-sale">1호기 (역삼아이파크)</th>
+                            <th>라이벌: 힐스테이트 2단지</th>
+                            <th class="highlight-sale">2호기 (쌍용더플래티넘)</th>
+                            <th>라이벌: 브라운스톤</th>
+                            <th class="highlight-sale">3호기 (삼성동한솔)</th>
+                            <th>라이벌: 삼성동 석탑</th>
+                            <th>3호기 vs 석탑 격차</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rivalMilestoneTableBody">
+                        <!-- Populated dynamically via app.js -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+
+        <footer class="dashboard-footer">
+            <p>© 2026 My Real Estate Portfolio Dashboard | 국토교통부 실거래가 공개시스템 2006~2026 연동</p>
+        </footer>
     </div>
 
     <script src="app.js"></script>
