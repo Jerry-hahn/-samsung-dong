@@ -1,0 +1,46 @@
+name: 🏠 Daily Property Data Update & Deploy
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: 📥 저장소 체크아웃
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
+
+    - name: 🐍 Python 3.11 환경 설정
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: 📦 의존성 설치
+      run: pip install -r my-properties/requirements.txt
+
+    - name: 🔄 실거래가 데이터 업데이트
+      env:
+        MOLIT_API_KEY: ${{ secrets.MOLIT_API_KEY }}
+      run: |
+        cd my-properties && python updater.py
+
+    - name: 📝 커밋 및 푸시
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "Property Bot 🏠"
+        git add my-properties/property_data.json || true
+        git diff --staged --quiet || git commit -m "🔄 Auto-update: $(date '+%Y-%m-%d')" && git push
+
+    - name: 🚀 Netlify 재배포
+      env:
+        NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+      run: |
+        [ -n "$NETLIFY_BUILD_HOOK" ] && curl -s -X POST "$NETLIFY_BUILD_HOOK" && echo "✅ 완료"
