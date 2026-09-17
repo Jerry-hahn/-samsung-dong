@@ -1,5 +1,24 @@
 [build]
   publish = "."
+  command = ""
 
-[functions]
-  directory = "netlify/functions"
+# 정적 파일 직접 서빙 설정
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Cache-Control = "public, max-age=3600"
+
+# JSON 데이터 파일은 캐시 짧게
+[[headers]]
+  for = "/*.json"
+  [headers.values]
+    Cache-Control = "public, max-age=300"
+
+# SPA 리다이렉트 (필요 시)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false

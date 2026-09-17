@@ -1,116 +1,33 @@
-let matchedHistoricalData = {
-    "prop1": {
-        "name": "1호기 (역삼아이파크 11평 · 시세 11.5억)",
-        "rangeStr": "10.35억 ~ 12.65억 원 (±10% 서울 전체 아파트 밴드)",
-        "years": [2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026],
-        "items": [
-            {
-                "id": "p1", "name": "1호기: 역삼아이파크 11평 (내물건 · 현 11.5억)", "color": "#f59e0b", "isBase": true,
-                "data": [1.85, 2.25, 2.70, 2.75, 3.05, 3.65, 5.20, 7.50, 8.20, 8.85, 11.50]
-            },
-            {
-                "id": "haengdang", "name": "성동구 행당한진 24평 (현 11.20억)", "color": "#ec4899",
-                "data": [2.15, 2.65, 3.20, 3.10, 3.55, 4.30, 6.30, 9.20, 9.80, 10.20, 11.20],
-                "story": "2006년엔 행당한진(2.15억)이 1호기(1.85억)보다 비쌌으나 강남 입지 프리미엄으로 역전하여 현재 11.5억 동급 형성!"
-            },
-            {
-                "id": "mapu", "name": "마포 래미안푸르지오 24평 (현 12.60억)", "color": "#3b82f6",
-                "data": [null, null, null, null, 5.25, 6.60, 9.50, 12.80, 13.20, 11.80, 12.60],
-                "story": "마용성 대장주 24평 신축 아파트와 1호기 강남 11평 소형이 ±10% 상한 밴드(12.6억)에서 시세 교차점 형성!"
-            },
-            {
-                "id": "singil", "name": "영등포 신길래미안에스티움 34평 (현 11.95억)", "color": "#8b5cf6",
-                "data": [null, null, null, null, 5.50, 6.80, 9.20, 12.10, 12.50, 11.20, 11.95],
-                "story": "영등포 34평 준신축 아파트와 1호기가 11.95억 vs 11.5억으로 현재 시세 완벽 동급 형성."
-            },
-            {
-                "id": "sinchon", "name": "서대문 e편한세상신촌 24평 (현 12.40억)", "color": "#10b981",
-                "data": [null, null, null, null, null, 6.80, 9.80, 12.50, 13.00, 11.50, 12.40],
-                "story": "도심권 서대문 24평 신축 아파트(12.4억)와 1호기가 ±10% 시세 밴드 내에서 손잡고 동반 상승."
-            }
-        ]
-    },
-    "prop2": {
-        "name": "2호기 (쌍용더플래티넘 17㎡ · 현재가 2.78억)",
-        "rangeStr": "2.50억 ~ 3.05억 원 (±10% 서울 전체 도심 오피스텔 밴드)",
-        "years": [2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026],
-        "items": [
-            {
-                "id": "p2", "name": "2호기: 쌍용더플래티넘 17㎡ (내물건 · 현 2.78억)", "color": "#06b6d4", "isBase": true,
-                "data": [1.05, 1.25, 1.40, 1.50, 1.52, 1.65, 1.90, 2.10, 2.38, 2.54, 2.78]
-            },
-            {
-                "id": "gongdeok", "name": "공덕 디오빌 20㎡ (현 2.65억)", "color": "#10b981",
-                "data": [1.10, 1.28, 1.42, 1.50, 1.55, 1.68, 1.95, 2.15, 2.35, 2.50, 2.65],
-                "story": "2006년 당시엔 공덕디오빌(1.1억)이 더 비쌌으나 복층 구조 임대 인기로 2호기(2.78억)가 역전!"
-            },
-            {
-                "id": "gangnam_deovill", "name": "디오빌 강남 11평 (현 2.98억)", "color": "#f59e0b",
-                "data": [1.25, 1.45, 1.60, 1.68, 1.72, 1.85, 2.15, 2.40, 2.65, 2.80, 2.98],
-                "story": "강남역 테헤란로 중심 오피스텔(2.98억)과 2호기(2.78억)가 20년간 2천만원 안팎의 갭을 유지."
-            },
-            {
-                "id": "yongsan", "name": "용산 아스테리움 12평 (현 3.02억)", "color": "#a855f7",
-                "data": [null, null, 1.80, 1.85, 1.90, 2.05, 2.35, 2.60, 2.80, 2.90, 3.02],
-                "story": "용산 도심 오피스텔 시세와 2호기 서울역 오피스텔이 ±10% 상한 밴드에서 동반 우상향."
-            }
-        ]
-    },
-    "prop3": {
-        "name": "3호기 (삼성동 한솔 23평 · 현재가 21.3억)",
-        "rangeStr": "19.17억 ~ 23.43억 원 (±10% 서울 전체 아파트 밴드)",
-        "years": [2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026],
-        "items": [
-            {
-                "id": "p3", "name": "3호기: 삼성동 한솔 23평 (내물건 · 현 21.3억)", "color": "#10b981", "isBase": true,
-                "data": [3.80, 4.50, 5.10, 5.10, 5.60, 6.80, 9.80, 14.50, 15.85, 17.65, 21.30]
-            },
-            {
-                "id": "jamsil_else", "name": "잠실 엘스 25평 (현 21.8억)", "color": "#3b82f6",
-                "data": [null, 5.80, 6.40, 6.20, 6.90, 8.50, 12.50, 16.80, 18.20, 19.50, 21.80],
-                "story": "잠실 대장 엘스 25평(21.8억)과 3호기 삼성동 한솔 23평(21.3억)이 현재 완전 동일 시세 밴드 구축!"
-            },
-            {
-                "id": "daechi_hyundai", "name": "대치 현대 24평 (현 22.8억)", "color": "#06b6d4",
-                "data": [4.10, 4.80, 5.50, 5.40, 6.10, 7.50, 11.20, 16.00, 17.50, 19.50, 22.80],
-                "story": "대치동 학원가 대치현대 24평(22.8억)과 삼성동 GBC 입지의 3호기(21.3억)가 20년간 손잡고 우상향."
-            },
-            {
-                "id": "mapu_prestige", "name": "마포 프레스티지자이 34평 (현 20.8억)", "color": "#a855f7",
-                "data": [null, null, null, null, null, null, 11.50, 15.20, 17.80, 18.90, 20.80],
-                "story": "마포 신축 34평 대장주(20.8억)와 강남 삼성동 19층 탑층 23평(21.3억)이 현시점 시세 동급 완성!"
-            },
-            {
-                "id": "banpo_zai", "name": "반포 자이 25평 (현 23.2억)", "color": "#ef4444",
-                "data": [null, null, 7.20, 7.10, 7.80, 9.80, 14.20, 18.50, 19.80, 21.00, 23.20],
-                "story": "반포 대표 대단지 소형(23.2억)과 3호기(21.3억)가 ±10% 상한선에서 평형 가치 격차 유지."
-            }
-        ]
-    }
-};
-
+let matchedHistoricalData = {};
+let similarPriceMatches = {};
 let chartInstance = null;
 let currentPair = '1';
 let currentTab = 'overview';
-let activeSelectedIds = new Set();
 
 document.addEventListener('DOMContentLoaded', async () => {
     const cacheBuster = `?v=${Date.now()}`;
 
+    // 1. Fetch 20-Year Matched Historical Trajectory Dataset
     try {
         const resp = await fetch('matched_historical_data.json' + cacheBuster);
-        if (resp.ok) {
-            const fetched = await resp.json();
-            if (fetched && fetched.prop1) matchedHistoricalData = fetched;
-        }
+        if (resp.ok) matchedHistoricalData = await resp.json();
     } catch (e) {
         console.error("Error loading matched historical data:", e);
+    }
+
+    // 2. Fetch Real MOLIT API ±10% Matched Transactions Dataset
+    try {
+        const resp = await fetch('similar_price_matches.json' + cacheBuster);
+        if (resp.ok) similarPriceMatches = await resp.json();
+    } catch (e) {
+        console.error("Error loading similar price matches:", e);
     }
 
     initMainTabs();
     initChipsForPair('1');
     initChart();
     renderStories('1');
+    renderRealMolitCards('1');
     renderMilestoneTable();
 
     const rTabs = document.querySelectorAll('#rivalPairTabs .r-tab-btn');
@@ -122,6 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             initChipsForPair(currentPair);
             updateChart();
             renderStories(currentPair);
+            renderRealMolitCards(currentPair);
         });
     });
 });
@@ -167,21 +85,6 @@ function switchTab(tabId) {
 }
 
 function initChipsForPair(pair) {
-    activeSelectedIds.clear();
-    const key = `prop${pair}`;
-    const pGroup = matchedHistoricalData[key];
-    if (!pGroup) return;
-
-    pGroup.items.forEach(item => {
-        activeSelectedIds.add(item.id);
-    });
-
-    renderChipsUI(pair);
-}
-
-function renderChipsUI(pair) {
-    const container = document.getElementById('matchedChipsContainer');
-    if (!container) return;
 
     const key = `prop${pair}`;
     const pGroup = matchedHistoricalData[key];
@@ -189,36 +92,16 @@ function renderChipsUI(pair) {
 
     let html = '';
     pGroup.items.forEach(opt => {
-        const isChecked = activeSelectedIds.has(opt.id);
-        const activeClass = isChecked ? 'active' : '';
         html += `
-            <button class="chip-btn ${activeClass}" data-id="${opt.id}">
+            <span class="chip-btn active" style="cursor: default;">
                 <span class="dot" style="background-color: ${opt.color};"></span>
                 <span>${opt.name}</span>
-            </button>
+            </span>
         `;
     });
 
-    container.innerHTML = html;
-
-    container.querySelectorAll('.chip-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const id = btn.getAttribute('data-id');
-            const opt = pGroup.items.find(o => o.id === id);
-            
-            if (opt && opt.isBase) return;
-
-            if (activeSelectedIds.has(id)) {
-                activeSelectedIds.delete(id);
-                btn.classList.remove('active');
-            } else {
-                activeSelectedIds.add(id);
-                btn.classList.add('active');
-            }
-
-            updateChart();
-        });
-    });
+    const container = document.getElementById('matchedChipsContainer');
+    if (container) container.innerHTML = html;
 }
 
 function initChart() {
@@ -271,18 +154,16 @@ function getChartConfig(pair) {
 
     let datasets = [];
     pGroup.items.forEach(opt => {
-        if (activeSelectedIds.has(opt.id)) {
-            datasets.push({
-                label: opt.name,
-                data: opt.data,
-                borderColor: opt.color,
-                backgroundColor: opt.color + '1a',
-                borderDash: opt.isBase ? [] : [4, 4],
-                tension: 0.3,
-                pointRadius: opt.isBase ? 5 : 4,
-                borderWidth: opt.isBase ? 4 : 2
-            });
-        }
+        datasets.push({
+            label: opt.name,
+            data: opt.data,
+            borderColor: opt.color,
+            backgroundColor: opt.color + '1a',
+            borderDash: opt.isBase ? [] : [4, 4],
+            tension: 0.3,
+            pointRadius: opt.isBase ? 5 : 4,
+            borderWidth: opt.isBase ? 4 : 2
+        });
     });
 
     return { labels: years, datasets: datasets };
@@ -292,6 +173,42 @@ function updateChart() {
     if (!chartInstance) return;
     chartInstance.data = getChartConfig(currentPair);
     chartInstance.update();
+}
+
+function renderRealMolitCards(pair) {
+    const key = `prop${pair}`;
+    const pData = similarPriceMatches[key];
+    const grid = document.getElementById('realMolitGrid');
+
+    if (!pData || !grid) return;
+
+    let html = '';
+    pData.matches.forEach(item => {
+        const isPlus = item.diff.startsWith('+');
+        const diffColor = isPlus ? 'color: var(--rose);' : 'color: var(--emerald);';
+
+        html += `
+            <div class="matched-card">
+                <div>
+                    <div class="mc-header">
+                        <span class="mc-dong">🏛️ ${item.dong} (${item.floor})</span>
+                        <span class="mc-diff" style="${diffColor}">기준가 대비 ${item.diff}</span>
+                    </div>
+                    <h3 class="mc-title">${item.apt}</h3>
+                    <div class="mc-area">${item.area}</div>
+                </div>
+                <div class="mc-price-row">
+                    <div>
+                        <div class="mc-price-lbl">국토부 실거래가</div>
+                        <div class="mc-price-val">${item.priceStr}</div>
+                    </div>
+                    <div class="mc-date">📅 ${item.date}</div>
+                </div>
+            </div>
+        `;
+    });
+
+    grid.innerHTML = html;
 }
 
 function renderStories(pair) {
