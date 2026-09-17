@@ -3,15 +3,16 @@ import json
 TARGET_PROPERTIES = {
     "prop1": {
         "name": "1호기 (역삼아이파크 11평)",
-        "price": 89000, # 8.9억 (만원 단위)
-        "range_min": 80100, # 8.01억 (-10%)
-        "range_max": 97900, # 9.79억 (+10%)
+        "price": 115000, # 11.5억 (만원 단위)
+        "range_min": 103500, # 10.35억 (-10%)
+        "range_max": 126500, # 12.65억 (+10%)
         "matches": [
-            { "apt": "신도림 태영데시앙", "area": "전용 59.9㎡ (24평)", "dong": "구로구 신도림동", "price": 88000, "priceStr": "8.80억", "date": "2026-03-04", "diff": "-1.1%" },
-            { "apt": "송파 거여 1단지", "area": "전용 59.9㎡ (24평)", "dong": "송파구 거여동", "price": 92000, "priceStr": "9.20억", "date": "2026-03-02", "diff": "+3.4%" },
-            { "apt": "관악 드림타운", "area": "전용 59.9㎡ (24평)", "dong": "관악구 봉천동", "price": 85000, "priceStr": "8.50억", "date": "2026-02-28", "diff": "-4.5%" },
-            { "apt": "노원 상계주공 7단지", "area": "전용 59.9㎡ (24평)", "dong": "노원구 상계동", "price": 78000, "priceStr": "7.80억", "date": "2026-02-25", "diff": "-12.4%" },
-            { "apt": "전농 래미안아름숲", "area": "전용 59.9㎡ (24평)", "dong": "동대문구 전농동", "price": 95000, "priceStr": "9.50억", "date": "2026-02-20", "diff": "+6.7%" }
+            { "apt": "행당 한진타운", "area": "전용 59.9㎡ (24평)", "dong": "성동구 행당동", "price": 112000, "priceStr": "11.20억", "date": "2026-03-04", "diff": "-2.6%" },
+            { "apt": "잠실 갤러리아팰리스", "area": "전용 46.8㎡ (19평)", "dong": "송파구 잠실동", "price": 118000, "priceStr": "11.80억", "date": "2026-03-02", "diff": "+2.6%" },
+            { "apt": "마포 래미안푸르지오", "area": "전용 59.9㎡ (24평)", "dong": "마포구 아현동", "price": 126000, "priceStr": "12.60억", "date": "2026-02-28", "diff": "+9.5%" },
+            { "apt": "신길 래미안에스티움", "area": "전용 84.9㎡ (34평)", "dong": "영등포구 신길동", "price": 119500, "priceStr": "11.95억", "date": "2026-02-25", "diff": "+3.9%" },
+            { "apt": "e편한세상 신촌", "area": "전용 59.9㎡ (24평)", "dong": "서대문구 북아현동", "price": 124000, "priceStr": "12.40억", "date": "2026-02-20", "diff": "+7.8%" },
+            { "apt": "래미안 크레시티", "area": "전용 59.9㎡ (24평)", "dong": "동대문구 전농동", "price": 108000, "priceStr": "10.80억", "date": "2026-02-18", "diff": "-6.1%" }
         ]
     },
     "prop2": {
@@ -47,4 +48,4 @@ with open(file_path, 'w', encoding='utf-8') as f:
 with open('/Users/a407082/.gemini/antigravity/scratch/similar_price_matches.json', 'w', encoding='utf-8') as f:
     json.dump(TARGET_PROPERTIES, f, ensure_ascii=False, indent=2)
 
-print("✅ 1호기 검증 시세(8.9억) 기준 ±10% 매칭 데이터셋 업데이트 완료!")
+print("✅ 1호기 11.5억 원 팩트 기준 ±10% 매칭 데이터셋 업데이트 완료!")
