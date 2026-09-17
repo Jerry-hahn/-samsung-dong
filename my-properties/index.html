@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>1·2·3호기 부동산 포트폴리오 & ±10% 시세 궤적 대시보드</title>
+    <title>내 자산 통합 대시보드 (1·2·3호기 부동산 현황)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=20260917_v3">
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -17,11 +17,11 @@
         <header class="dashboard-header">
             <div class="header-content">
                 <div class="brand">
-                    <span class="badge">MY REAL ESTATE PORTFOLIO</span>
-                    <h1>보유 자산 현황 & ±10% 동급 20년 궤적 분석 <span>(2006~2026)</span></h1>
+                    <span class="badge">MY REAL ESTATE ASSETS</span>
+                    <h1>내 자산 한눈에 보기 <span>(1·2·3호기 통합 현황)</span></h1>
                 </div>
                 <div class="last-updated">
-                    <i class="icon-sync">🔄</i> 매일 실거래가 갱신중 (국토교통부 API)
+                    <i class="icon-sync">🔄</i> 국토교통부 실거래 API 연동 중
                 </div>
             </div>
             
@@ -29,38 +29,65 @@
             <nav class="main-nav-tabs" id="mainNavTabs">
                 <button class="nav-tab-btn active" data-tab="overview">
                     <span class="nav-icon">🏠</span>
-                    <span class="nav-text">자산 현황 한눈보기</span>
+                    <span class="nav-text">내 자산 한눈에 보기</span>
                 </button>
                 <button class="nav-tab-btn" data-tab="matched-rival">
-                    <span class="nav-icon">🎯</span>
-                    <span class="nav-text">±10% 동급 20년 궤적 차트</span>
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">±10% 동급 20년 궤적 비교</span>
                 </button>
                 <button class="nav-tab-btn" data-tab="table">
                     <span class="nav-icon">📜</span>
-                    <span class="nav-text">시세 비교표</span>
+                    <span class="nav-text">실거래 팩트 데이터</span>
                 </button>
             </nav>
         </header>
 
-        <!-- TAB 1: Mobile-First Asset Overview (No Scroll / Single Screen View) -->
+        <!-- TAB 1: Mobile-First Pure Asset Overview (Only My Properties) -->
         <main class="tab-view active" id="view-overview">
-            <!-- Portfolio Total KPI Summary Banner -->
+            <!-- Portfolio Key Stats KPI Banner -->
             <section class="kpi-banner">
                 <div class="kpi-item glow-gold">
-                    <span class="kpi-label">총 매매 자산가치</span>
-                    <span class="kpi-val" id="totalAssetVal">약 35.6억~36.1억</span>
+                    <span class="kpi-label">총 자산 평가가치</span>
+                    <span class="kpi-val text-gold">35.58억 원</span>
+                    <span class="kpi-sub">1호기(11.5억) + 2호기(2.78억) + 3호기(21.3억)</span>
                 </div>
                 <div class="kpi-item glow-cyan">
-                    <span class="kpi-label">승계 임대보증금</span>
-                    <span class="kpi-val">8.25억 원 <small>(1,2호기 전세)</small></span>
+                    <span class="kpi-label">총 승계 보증금 (부채)</span>
+                    <span class="kpi-val text-cyan">8.25억 원</span>
+                    <span class="kpi-sub">1호기 전세(5.7억) + 2호기 전세(2.55억)</span>
                 </div>
                 <div class="kpi-item glow-emerald">
-                    <span class="kpi-label">3호기 거주 상태</span>
-                    <span class="kpi-val">실거주 중 <small>(19층 탑층)</small></span>
+                    <span class="kpi-label">총 순자산 가치 (Net Equity)</span>
+                    <span class="kpi-val text-emerald">27.33억 원</span>
+                    <span class="kpi-sub">순자산 비중 76.8% (안정적 건전성)</span>
+                </div>
+                <div class="kpi-item glow-purple">
+                    <span class="kpi-label">3호기 실거주 현황</span>
+                    <span class="kpi-val text-purple">강남 19층 탑층</span>
+                    <span class="kpi-sub">삼성동 한솔 23평 (층간소음 0%)</span>
                 </div>
             </section>
 
-            <!-- 1, 2, 3 호기 One-Screen Property Grid -->
+            <!-- Asset Allocation Visual Bar -->
+            <section class="asset-visual-section">
+                <div class="asset-bar-header">
+                    <h3>📊 내 부동산 포트폴리오 비중 (총 35.58억 원)</h3>
+                    <span class="asset-equity-tag">순자산 27.33억 (76.8%) | 승계보증금 8.25억 (23.2%)</span>
+                </div>
+                <div class="asset-progress-bar">
+                    <div class="bar-segment seg-prop3" style="width: 59.9%;" title="3호기 (삼성동 한솔) 21.3억 (59.9%)">
+                        <span>3호기 (삼성동한솔) 59.9%</span>
+                    </div>
+                    <div class="bar-segment seg-prop1" style="width: 32.3%;" title="1호기 (역삼아이파크) 11.5억 (32.3%)">
+                        <span>1호기 32.3%</span>
+                    </div>
+                    <div class="bar-segment seg-prop2" style="width: 7.8%;" title="2호기 (쌍용더플래티넘) 2.78억 (7.8%)">
+                        <span>2호기 7.8%</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 1, 2, 3 호기 Pure Asset Property Cards -->
             <section class="overview-grid">
                 <!-- 1호기 Card -->
                 <div class="property-card border-gold">
@@ -69,90 +96,109 @@
                         <span class="prop-floor">14층 (로열층) 👑</span>
                     </div>
                     <h3 class="prop-title">역삼 아이파크 1차 (11평)</h3>
-                    <div class="prop-specs">전용 28.2㎡ | 최고급 인테리어 ✨</div>
+                    <div class="prop-specs">전용 28.2㎡ | 최고급 풀인테리어 ✨</div>
+
+                    <div class="price-hero">
+                        <span class="ph-label">현재 매매 시세</span>
+                        <span class="ph-val text-gold">11.50억 원</span>
+                    </div>
 
                     <div class="price-box">
-                        <div class="p-row">
-                            <span class="p-lbl">현재 매매시세</span>
-                            <span class="p-val text-gold">11.5억 ~ 12.0억 원</span>
-                        </div>
                         <div class="p-row highlight-bg">
-                            <span class="p-lbl">내 전세 세팅</span>
-                            <span class="p-val text-white">전세 5.7억 원 (갭 5.8억)</span>
+                            <span class="p-lbl">승계 전세 보증금</span>
+                            <span class="p-val text-white">5.70억 원</span>
                         </div>
                         <div class="p-row">
-                            <span class="p-lbl">±10% 매칭 범위</span>
-                            <span class="p-val text-gold">10.35억 ~ 12.65억 20년 궤적</span>
+                            <span class="p-lbl">실질 갭 투자금 (순자산)</span>
+                            <span class="p-val text-gold font-bold">5.80억 원</span>
                         </div>
                     </div>
 
-                    <div class="card-footer-tag">
-                        강남권 직장인 1인 가구 탄탄한 전세 수요 확보
-                    </div>
+                    <ul class="prop-highlights">
+                        <li><span>✓</span> 테헤란로 직주근접 강남 1인 가구 핵심 임대 자산</li>
+                        <li><span>✓</span> 탄탄한 전세 실수요층 확보로 전세가 하방 지지력 강력</li>
+                    </ul>
                 </div>
 
                 <!-- 2호기 Card -->
                 <div class="property-card border-cyan">
                     <div class="card-top">
                         <span class="prop-badge bg-cyan">2호기 · 서울역 도심</span>
-                        <span class="prop-floor">17층 (고층 전망) 🏙️</span>
+                        <span class="prop-floor">17층 (고층 파노라마뷰) 🏙️</span>
                     </div>
                     <h3 class="prop-title">쌍용더플래티넘서울역 (17㎡)</h3>
-                    <div class="prop-specs">오피스텔 (17TF 복층타입) 🏢</div>
+                    <div class="prop-specs">오피스텔 17TF (복층 구조) 🏢</div>
+
+                    <div class="price-hero">
+                        <span class="ph-label">현재 매매 시세</span>
+                        <span class="ph-val text-cyan">2.78억 원</span>
+                    </div>
 
                     <div class="price-box">
-                        <div class="p-row">
-                            <span class="p-lbl">현재 매매시세</span>
-                            <span class="p-val text-cyan">2.78억 원</span>
-                        </div>
                         <div class="p-row highlight-bg">
-                            <span class="p-lbl">내 전세 세팅</span>
-                            <span class="p-val text-white">전세 2.55억 원</span>
+                            <span class="p-lbl">승계 전세 보증금</span>
+                            <span class="p-val text-white">2.55억 원</span>
                         </div>
                         <div class="p-row">
-                            <span class="p-lbl">±10% 매칭 범위</span>
-                            <span class="p-val text-cyan">2.50억 ~ 3.05억 20년 궤적</span>
+                            <span class="p-lbl">실질 갭 투자금 (순자산)</span>
+                            <span class="p-val text-cyan font-bold">0.23억 원 <small>(초소액)</small></span>
                         </div>
                     </div>
 
-                    <div class="card-footer-tag">
-                        소액 레버리지 투자로 자본금 상환 완결 효자 자산
-                    </div>
+                    <ul class="prop-highlights">
+                        <li><span>✓</span> 투자금 전액 회수 완료된 100% 무위험 알짜 자산</li>
+                        <li><span>✓</span> 서울역 5개 노선 및 북부역세권 개발 직접 수혜</li>
+                    </ul>
                 </div>
 
                 <!-- 3호기 Card -->
                 <div class="property-card border-emerald">
                     <div class="card-top">
                         <span class="prop-badge bg-emerald">3호기 · 강남 삼성</span>
-                        <span class="prop-floor">19층 (탑층) 🏰</span>
+                        <span class="prop-floor">19층 (탑층 · 층간소음 0%) 🏰</span>
                     </div>
                     <h3 class="prop-title">삼성동 한솔아파트 (23평)</h3>
-                    <div class="prop-specs">전용 59.8㎡ | 인테리어 굿 🏡</div>
+                    <div class="prop-specs">전용 59.8㎡ | 인테리어 완비 🏡</div>
+
+                    <div class="price-hero">
+                        <span class="ph-label">현재 매매 시세</span>
+                        <span class="ph-val text-emerald">21.30억 원</span>
+                    </div>
 
                     <div class="price-box">
-                        <div class="p-row">
-                            <span class="p-lbl">현재 매매시세</span>
-                            <span class="p-val text-emerald">21.3억 원</span>
-                        </div>
                         <div class="p-row highlight-bg">
                             <span class="p-lbl">점유 형태</span>
-                            <span class="p-val text-white">실거주 중 (전세시세 9~10억)</span>
+                            <span class="p-val text-white">실거주 중 <small>(전세시세 9~10억)</small></span>
                         </div>
                         <div class="p-row">
-                            <span class="p-lbl">±10% 매칭 범위</span>
-                            <span class="p-val text-emerald">19.17억 ~ 23.43억 20년 궤적</span>
+                            <span class="p-lbl">순자산 반영 가치</span>
+                            <span class="p-val text-emerald font-bold">21.30억 원 (100%)</span>
                         </div>
                     </div>
 
-                    <div class="card-footer-tag">
-                        층간소음 제로 탑층 + GBC·영동대로 환상 입지
+                    <ul class="prop-highlights">
+                        <li><span>✓</span> 층간소음 제로 19층 탑층 강남 실거주 최상 프리미엄</li>
+                        <li><span>✓</span> 현대차 GBC 및 영동대로 복합환승센터 초근접 대장 자산</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- My Assets Value Structure Chart -->
+            <section class="chart-section my-assets-chart-section">
+                <div class="chart-header">
+                    <div>
+                        <h2>📈 내 보유 자산 가치 & 순자산 구조 차트</h2>
+                        <p class="chart-sub">각 호기별 매매시세 vs 승계 보증금 vs 순자산 현황 비교</p>
                     </div>
+                </div>
+                <div class="canvas-wrapper-small">
+                    <canvas id="myAssetsChart"></canvas>
                 </div>
             </section>
 
             <div class="overview-cta">
                 <button class="btn-goto-rival" onclick="switchTab('matched-rival')">
-                    🎯 현재 시세 ±10% 동급 아파트 20년 시세 궤적 차트 보기 ➔
+                    📊 필요시 클릭: ±10% 동급 아파트 20년 시세 궤적 비교 보기 ➔
                 </button>
             </div>
         </main>
@@ -181,7 +227,7 @@
             <!-- Dynamic Filter Chips Bar -->
             <section class="filter-chips-section">
                 <div class="filter-title">
-                    <span>💡 <strong>현재 시세 ±10% 동일 가격대 검증 경쟁 단지 온/오프 (차트 실시간 반영)</strong></span>
+                    <span>💡 <strong>현재 시세 ±10% 동일 가격대 검증 경쟁 단지 목록</strong></span>
                 </div>
                 <div class="chips-container" id="matchedChipsContainer">
                     <!-- Populated dynamically via app.js -->
@@ -210,9 +256,17 @@
             </section>
         </main>
 
-        <!-- TAB 3: 20-Year Master Comparison Table -->
+        <!-- TAB 3: Real MOLIT Transaction Cards -->
         <main class="tab-view" id="view-table">
-            <section class="table-container">
+            <section class="divergence-section">
+                <h2>📜 국토교통부 API 수집 실거래 팩트 검증 카드 (최근 거래)</h2>
+                <p class="chart-sub" style="margin-bottom: 16px;">국토교통부 실거래가 공개시스템에서 직접 검색해 확인할 수 있는 100% 팩트 데이터입니다.</p>
+                <div class="div-grid" id="realMolitCardsGrid">
+                    <!-- Populated dynamically via app.js -->
+                </div>
+            </section>
+
+            <section class="table-container" style="margin-top: 30px;">
                 <h2 class="section-title">📜 20개년(2006~2026) 보유 호기 vs 주요 아파트 연도별 실거래 비교표</h2>
                 <table class="master-table">
                     <thead>
@@ -236,10 +290,10 @@
         </main>
 
         <footer class="dashboard-footer">
-            <p>© 2026 My Real Estate Portfolio Dashboard | 국토교통부 실거래가 공개시스템 2006~2026 연동</p>
+            <p>© 2026 My Real Estate Portfolio Dashboard | 국토교통부 실거래가 공개시스템 연동</p>
         </footer>
     </div>
 
-    <script src="app.js?v=2026091705"></script>
+    <script src="app.js?v=20260917_v3"></script>
 </body>
 </html>

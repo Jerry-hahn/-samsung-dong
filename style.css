@@ -567,3 +567,107 @@ body {
     .canvas-wrapper { height: 300px; }
     .div-grid { grid-template-columns: 1fr; }
 }
+
+/* Asset Allocation Progress Bar & Hero Cards */
+.asset-visual-section {
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+}
+.asset-bar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+.asset-bar-header h3 {
+    font-size: 0.98rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+.asset-equity-tag {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.06);
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+}
+.asset-progress-bar {
+    display: flex;
+    height: 24px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--border-color);
+}
+.bar-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 6px;
+    transition: all 0.3s ease;
+}
+.seg-prop3 { background: linear-gradient(90deg, #10b981, #059669); }
+.seg-prop1 { background: linear-gradient(90deg, #f59e0b, #d97706); }
+.seg-prop2 { background: linear-gradient(90deg, #06b6d4, #0891b2); }
+
+.price-hero {
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin: 12px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.ph-label { font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); }
+.ph-val { font-size: 1.45rem; font-weight: 900; letter-spacing: -0.5px; }
+
+.prop-highlights {
+    list-style: none;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border-color);
+}
+.prop-highlights li {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    line-height: 1.4;
+}
+.prop-highlights li span {
+    color: var(--emerald);
+    font-weight: 900;
+}
+
+.glow-purple { border-left: 4px solid var(--purple); }
+.text-purple { color: var(--purple); }
+.bg-purple { background: rgba(168, 85, 247, 0.2); color: var(--purple); }
+
+.canvas-wrapper-small {
+    position: relative;
+    height: 280px;
+    width: 100%;
+}
+.my-assets-chart-section {
+    margin-top: 20px;
+    margin-bottom: 24px;
+}
+

@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     initMainTabs();
+    initMyAssetsChart();
     initChipsForPair('1');
     initChart();
     renderStories('1');
@@ -295,3 +296,65 @@ function renderMilestoneTable() {
 
     tbody.innerHTML = html;
 }
+
+let myAssetsChartInstance = null;
+
+function initMyAssetsChart() {
+    const canvas = document.getElementById('myAssetsChart');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    myAssetsChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['1호기 (역삼아이파크 11평)', '2호기 (쌍용더플래티넘 17㎡)', '3호기 (삼성동한솔 23평)'],
+            datasets: [
+                {
+                    label: '현재 매매 시세 (억 원)',
+                    data: [11.5, 2.78, 21.3],
+                    backgroundColor: ['rgba(245, 158, 11, 0.85)', 'rgba(6, 182, 212, 0.85)', 'rgba(16, 185, 129, 0.85)'],
+                    borderRadius: 6
+                },
+                {
+                    label: '승계 보증금 (억 원)',
+                    data: [5.7, 2.55, 0],
+                    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+                    borderRadius: 6
+                },
+                {
+                    label: '순자산 가치 (억 원)',
+                    data: [5.8, 0.23, 21.3],
+                    backgroundColor: ['rgba(245, 158, 11, 0.4)', 'rgba(6, 182, 212, 0.4)', 'rgba(16, 185, 129, 0.4)'],
+                    borderRadius: 6
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: { color: '#94a3b8', font: { family: 'Inter', size: 11, weight: 'bold' } }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.dataset.label}: ${context.raw}억 원`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#94a3b8', font: { family: 'Inter', size: 11, weight: 'bold' } },
+                    grid: { color: 'rgba(255,255,255,0.05)' }
+                },
+                y: {
+                    ticks: { color: '#64748b', callback: v => v + '억' },
+                    grid: { color: 'rgba(255,255,255,0.05)' }
+                }
+            }
+        }
+    });
+}
+
